@@ -1,0 +1,24 @@
+{
+  "schema": "verkeye.ades-runtime.v1",
+  "model_sha256": "eb768eb6691c08a5648424bb3fbc4a5ee09a64584e7faa3236afa778f5f5eabf",
+  "pipeline_evidence_sha256": "ffd295e8382bf29877f4c54be1d9a37948531fc2d16c22c6528b30dbe598b405",
+  "image": "xiezhouyi/cnngen@sha256:4c4266444740d9d52f6dd695fff86763ebb51dfb01b0c9778ca20209308cdcdb",
+  "platform": "linux/amd64",
+  "container_user": "1000:1000",
+  "toolchain_env": "/usr/local/amba-cv-tools-2.4.2.0.1073.ubuntu-18.04/env/cv22.env",
+  "libvasamif": "/usr/local/amba-cv-tools-2.4.2.0.1073.ubuntu-18.04/cv22/tv2/release/Amalgam/cv22.2.4.2.0.1073.ubu1804/lib/libvasamif.so.1",
+  "cavalry_version": "2.1.7",
+  "cavalry_hash": "c5db5f1",
+  "dvi_sha256": {
+    "yolov6s_det_608_1088_300_60epoch_fix_spa75_cv22_auto_fixed_prim_split_0.dvi": "683bc0652210a717daf769b4158073b28814f87811104b23d2f43a243eb9ee41",
+    "yolov6s_det_608_1088_300_60epoch_fix_spa75_cv22_auto_fixed_prim_split_1.dvi": "38a8911e1b4deadfb358ecb96f4a754637eb332ae54330b90955a44824cec78e",
+    "yolov6s_det_608_1088_300_60epoch_fix_spa75_cv22_auto_fixed_prim_split_2.dvi": "48b814347171be9ab2d2615ecfd057d7c46c54b092cf6af2f4a8540a71b5631b",
+    "yolov6s_det_608_1088_300_60epoch_fix_spa75_cv22_auto_fixed_prim_split_3.dvi": "a41a30592224414fde957255d06af38f512311d15041597d800d21122ed0d07b",
+    "yolov6s_det_608_1088_300_60epoch_fix_spa75_cv22_auto_fixed_prim_split_4.dvi": "eaebd733b9d8a509ed5387341043b719ca49eb69bacdfceadaaca77d52336132",
+    "yolov6s_det_608_1088_300_60epoch_fix_spa75_cv22_auto_fixed_prim_split_5.dvi": "3fc3806e8238912492471d8a9da2edbfdbf3f38cca4d013d56fd391b1ff4746e",
+    "yolov6s_det_608_1088_300_60epoch_fix_spa75_cv22_auto_fixed_prim_split_6.dvi": "9106cd92fd02e7b2d8183dc11446f3036701a87b42eccf011ca159bfb9d9d6a4",
+    "yolov6s_det_608_1088_300_60epoch_fix_spa75_cv22_auto_fixed_prim_split_7.dvi": "026bd75dc2413c04f00747518a2f44356e8004c00b0385614aacdc05374acbe7",
+    "yolov6s_det_608_1088_300_60epoch_fix_spa75_cv22_auto_fixed_prim_split_8.dvi": "7cdf133f2d43e7e12b1c9524f5b8e7076f2955161150443ee0e1d9b922a25c07",
+    "yolov6s_det_608_1088_300_60epoch_fix_spa75_cv22_auto_fixed_prim_split_9.dvi": "64aa5455db12adcf3073321ebab165d177bb4956aace66a0b2d6cfe5a9568146"
+  }
+}

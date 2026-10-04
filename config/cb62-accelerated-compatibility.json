@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "model_sha256": "eb768eb6691c08a5648424bb3fbc4a5ee09a64584e7faa3236afa778f5f5eabf",
+  "derivation_status": "provisional-exact",
+  "derivation": "Exact equality is pinned because all 22 raw split tensors matched byte-for-byte across two clean Kali executions and one macOS execution, while the decoded input, assembled prediction hash, and detections also matched across macOS and Kali media runs. Nonzero accelerated tolerances must be derived later from measured ADES differential evidence and a representative fixture corpus; they must not be guessed.",
+  "tensors": {
+    "output_0": {"dtype": "float32", "exact": true, "atol": 0.0, "rtol": 0.0},
+    "output_1": {"dtype": "float32", "exact": true, "atol": 0.0, "rtol": 0.0},
+    "output_2": {"dtype": "float32", "exact": true, "atol": 0.0, "rtol": 0.0},
+    "output_3": {"dtype": "float32", "exact": true, "atol": 0.0, "rtol": 0.0},
+    "output_4": {"dtype": "float32", "exact": true, "atol": 0.0, "rtol": 0.0},
+    "output_5": {"dtype": "float32", "exact": true, "atol": 0.0, "rtol": 0.0}
+  },
+  "prediction": {"dtype": "float32", "exact": true, "atol": 0.0, "rtol": 0.0},
+  "detections": {"confidence_atol": 0.0, "minimum_iou": 1.0, "exact_count": true},
+  "evidence_sha256": {
+    "zero_run_determinism": "8fea6be236dfbc16013b6657de49f081667f618bf2b75ebb59b3c471facc7f00",
+    "macos_media_smoke": "d4eed0234b94bc6e806cc2d2397c54728ff8931f1ca53c7efffb938dcb60c3e8",
+    "kali_media_smoke": "4c5579e6279ff1997bda5557576af095d5f0361ea8b8280bfbebef102885b399"
+  }
+}

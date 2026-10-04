@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gainsec.com/schemas/verkeye-compatibility-profile-v1.schema.json",
+  "title": "VerkEye numerical compatibility profile v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "model_sha256",
+    "derivation_status",
+    "derivation",
+    "tensors",
+    "prediction",
+    "detections",
+    "evidence_sha256"
+  ],
+  "properties": {
+    "version": {"const": 1},
+    "model_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "derivation_status": {
+      "enum": ["provisional-exact", "derived", "retired"]
+    },
+    "derivation": {"type": "string", "minLength": 1},
+    "tensors": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"$ref": "#/$defs/tensorTolerance"}
+    },
+    "prediction": {"$ref": "#/$defs/tensorTolerance"},
+    "detections": {"$ref": "#/$defs/detectionTolerance"},
+    "evidence_sha256": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      }
+    }
+  },
+  "$defs": {
+    "tensorTolerance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dtype", "exact", "atol", "rtol"],
+      "properties": {
+        "dtype": {"type": "string", "minLength": 1},
+        "exact": {"type": "boolean"},
+        "atol": {"type": "number", "minimum": 0},
+        "rtol": {"type": "number", "minimum": 0}
+      }
+    },
+    "detectionTolerance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["confidence_atol", "minimum_iou", "exact_count"],
+      "properties": {
+        "confidence_atol": {"type": "number", "minimum": 0},
+        "minimum_iou": {"type": "number", "minimum": 0, "maximum": 1},
+        "exact_count": {"type": "boolean"}
+      }
+    }
+  }
+}

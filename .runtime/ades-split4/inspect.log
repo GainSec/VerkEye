@@ -1,0 +1,96 @@
+[1mCopyright 2015-2022 Ambarella Inc.[0m
+[1mInitializing Ambarella Dag Emulation System(ADES) (libvdg Version: cv22.2.4.2.0.1073.ubu1804)[0m
+ADES started @ /usr/local/amba-cv-tools-2.4.2.0.1073.ubuntu-18.04/cv22/tv2/release/VpRef/cv22.2.4.2.0.1073.ubu1804
+home directory @ /home/xzy
+ADES configuration: chip product = CV25
+loading dag file (/dump/split4.dagbin)
+dag file, /dump/split4.dagbin, is 1584 bytes long
+operator (op0) of type, fastconvolution_operator_t (41), is constructed.
+operator (op1) of type, shuffle_operator_t (224), is constructed.
+operator (op2) of type, shuffle_operator_t (224), is constructed.
+operator (op3) of type, minmax_operator_t (36), is constructed.
+operator (op4) of type, minmax_operator_t (36), is constructed.
+operator (op5) of type, shuffle_operator_t (224), is constructed.
+operator (op6) of type, minmax_operator_t (36), is constructed.
+operator (op7) of type, shuffle_operator_t (224), is constructed.
+operator (op8) of type, minmax_operator_t (36), is constructed.
+operator (op9) of type, shuffle_operator_t (224), is constructed.
+operator (op10) of type, minmax_operator_t (36), is constructed.
+operator (op11) of type, shuffle_operator_t (224), is constructed.
+operator (op12) of type, minmax_operator_t (36), is constructed.
+operator (op13) of type, merge_operator_t (64), is constructed.
+operator (op14) of type, merge_operator_t (64), is constructed.
+operator (op15) of type, merge_operator_t (64), is constructed.
+operator (op16) of type, merge_operator_t (64), is constructed.
+operator (op17) of type, fastconvolution_operator_t (41), is constructed.
+operator (op18) of type, fastconvolution_operator_t (41), is constructed.
+operator (op19) of type, resample_operator_t (43), is constructed.
+operator (op20) of type, mux_operator_t (68), is constructed.
+operator (op21) of type, fastconvolution_operator_t (41), is constructed.
+operator (op22) of type, multiplyadd_operator_t (16), is constructed.
+operator (op23) of type, multiplyadd_operator_t (16), is constructed.
+operator (op24) of type, terminate_operator_t (255), is constructed.
+Link from OP[0] Port 3 to OP[1] Port 0
+Link from OP[0] Port 3 to OP[2] Port 0
+Link from OP[0] Port 3 to OP[14] Port 0
+Link from OP[1] Port 1 to OP[3] Port 0
+Link from OP[2] Port 1 to OP[4] Port 0
+Link from OP[5] Port 1 to OP[6] Port 0
+Link from OP[7] Port 1 to OP[8] Port 0
+Link from OP[9] Port 1 to OP[10] Port 0
+Link from OP[10] Port 3 to OP[13] Port 0
+Link from OP[11] Port 1 to OP[12] Port 0
+Link from OP[12] Port 3 to OP[13] Port 1
+Link from OP[13] Port 2 to OP[15] Port 1
+Link from OP[14] Port 2 to OP[16] Port 0
+Link from OP[15] Port 2 to OP[16] Port 1
+Link from OP[16] Port 2 to OP[17] Port 0
+Link from OP[17] Port 3 to OP[18] Port 0
+Link from OP[18] Port 3 to OP[19] Port 0
+Link from OP[19] Port 2 to OP[20] Port 1
+Link from OP[20] Port 3 to OP[21] Port 0
+Link from OP[21] Port 3 to OP[22] Port 2
+[1mDagbin loader: Input Descriptor d0 (1x256x38x68)   ->(op23, V2)[0m
+[1mDagbin loader: Input Descriptor d1 (1x83x19x34)   ->(op0, V0)[0m
+[1mDagbin loader: Input Descriptor d2 (1x1x1x17796)   ->(op0, V1)[0m
+[1mDagbin loader: Input Descriptor d3 (1x1x1x1348)   ->(op0, V2)[0m
+[1mDagbin loader: Input Descriptor d4 (1x1x1x442932)   ->(op17, V1)[0m
+[1mDagbin loader: Input Descriptor d5 (1x1x1x2560)   ->(op17, V2)[0m
+[1mDagbin loader: Input Descriptor d6 (1x1x1x56284)   ->(op18, V1)[0m
+[1mDagbin loader: Input Descriptor d7 (1x1x1x640)   ->(op18, V2)[0m
+[1mDagbin loader: Input Descriptor d8 (1x1x1x4)   ->(op19, V1)[0m
+[1mDagbin loader: Input Descriptor d9 (1x1x38x68)   ->(op20, V0)[0m
+[1mDagbin loader: Input Descriptor d10 (1x1x1x1)   ->(op20, V2)[0m
+[1mDagbin loader: Input Descriptor d11 (1x1x1x57440)   ->(op21, V1)[0m
+[1mDagbin loader: Input Descriptor d12 (1x1x1x640)   ->(op21, V2)[0m
+[1mDagbin loader: Input Descriptor d13 (1x1x1x1)   ->(op22, V0)[0m
+[1mDagbin loader: Input Descriptor d14 (1x1x1x1)   ->(op23, V0)[0m
+[1mDagbin loader: Input Descriptor d15 (1x256x19x34)   ->(op5, V0) ->(op7, V0) ->(op14, V1)[0m
+[1mDagbin loader: Input Descriptor d16 (1x256x19x34)   ->(op9, V0) ->(op11, V0) ->(op15, V0)[0m
+[1mDagbin loader: Input Descriptor d17 (1x384x38x68)  [0m
+[1mDagbin loader: Output Descriptor op0_d3[0m
+[1mDagbin loader: Output Descriptor op10_d3[0m
+[1mDagbin loader: Output Descriptor op11_d1[0m
+[1mDagbin loader: Output Descriptor op12_d3[0m
+[1mDagbin loader: Output Descriptor op13_d2[0m
+[1mDagbin loader: Output Descriptor op14_d2[0m
+[1mDagbin loader: Output Descriptor op15_d2[0m
+[1mDagbin loader: Output Descriptor op16_d2[0m
+[1mDagbin loader: Output Descriptor op17_d3[0m
+[1mDagbin loader: Output Descriptor op18_d3[0m
+[1mDagbin loader: Output Descriptor op19_d2[0m
+[1mDagbin loader: Output Descriptor op1_d1[0m
+[1mDagbin loader: Output Descriptor op20_d3[0m
+[1mDagbin loader: Output Descriptor op21_d3[0m
+[1mDagbin loader: Output Descriptor op22_d3[0m
+[1mDagbin loader: Output Descriptor op23_d3[0m
+[1mDagbin loader: Output Descriptor op24_d0[0m
+[1mDagbin loader: Output Descriptor op2_d1[0m
+[1mDagbin loader: Output Descriptor op3_d3[0m
+[1mDagbin loader: Output Descriptor op4_d3[0m
+[1mDagbin loader: Output Descriptor op5_d1[0m
+[1mDagbin loader: Output Descriptor op6_d3[0m
+[1mDagbin loader: Output Descriptor op7_d1[0m
+[1mDagbin loader: Output Descriptor op8_d3[0m
+[1mDagbin loader: Output Descriptor op9_d1[0m
+Stopping ADES CLI ... Bye bye

@@ -1,0 +1,11 @@
+{
+  "schema": "verkeye.vendor-source-snapshot.v1",
+  "name": "cavalry_mem",
+  "version": "0.0.6",
+  "upstream": "https://github.com/cchiou-amba/cavalry_mem.git",
+  "commit": "1258216ac5ab41285c67a81dee5ef01bd73d0350",
+  "git_tree": "858ed480f82dbc3f3e1cf79d7671ce35a24dadc2",
+  "file_count": 7,
+  "content_sha256": "d77109b99e58dcbc2eba4035c3c06c25ccd81509c6ae1675466747e767011961",
+  "license": "Apache-2.0"
+}

@@ -1,0 +1,27 @@
+ldag /dump/split4.dagbin
+lbin -d d0 /dump/d0.bin
+lbin -d d1 /dump/d1.bin
+lbin -d d2 /dump/d2.bin
+lbin -d d3 /dump/d3.bin
+lbin -d d4 /dump/d4.bin
+lbin -d d5 /dump/d5.bin
+lbin -d d6 /dump/d6.bin
+lbin -d d7 /dump/d7.bin
+lbin -d d8 /dump/d8.bin
+lbin -d d9 /dump/d9.bin
+lbin -d d11 /dump/d11.bin
+lbin -d d12 /dump/d12.bin
+run
+sbin d0 /dump/d0-logical.bin
+sbin d1 /dump/d1-logical.bin
+sbin d15 /dump/d15-logical.bin
+sbin d16 /dump/d16-logical.bin
+sbin op0_d3 /dump/op0.bin
+sbin op17_d3 /dump/op17.bin
+sbin op18_d3 /dump/op18.bin
+sbin op19_d2 /dump/op19.bin
+sbin op20_d3 /dump/op20.bin
+sbin op21_d3 /dump/op21.bin
+sbin op22_d3 /dump/op22.bin
+sbin op23_d3 /dump/op23.bin
+quit

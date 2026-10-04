@@ -1,0 +1,99 @@
+{
+  "backend": {
+    "backend": "mlx-cv22-exact",
+    "fastconv_session_count": 55,
+    "model_sha256": "eb768eb6691c08a5648424bb3fbc4a5ee09a64584e7faa3236afa778f5f5eabf",
+    "name": "mlx-cv22-exact",
+    "provider": {
+      "device": "Device(gpu, 0)",
+      "input_channel_chunk_size": 64,
+      "input_dtype": "uint8",
+      "numeric_path": "byte-decomposed float32 partial convolutions with exact int64 accumulation and CV22 requantization; byte-exactness must be established per registered operator",
+      "output_dtype": "uint8",
+      "provider": "mlx",
+      "version": "0.30.6"
+    },
+    "static_assets": {
+      "split4_mask": "154fad821b0f5ba811ef968165267d6d4fd26a53a9e5c1afaf173a61e0f55d32",
+      "split5_mask": "7789374e967c2ea33795ab70a5b083d30634f6fce95c3807d20e761f086fe904"
+    }
+  },
+  "banner": "DEMO 1 | SINGAPORE LTA | SMALL-OBJECT PROFILE",
+  "capture": {
+    "api_url": "https://api.data.gov.sg/v1/transport/traffic-images",
+    "closed": true,
+    "completed_polls": 1,
+    "current_camera_id": "2701",
+    "decoded_frames": 1,
+    "queue_policy": "drop-oldest",
+    "refresh_seconds": 60.0,
+    "retry_count": 0,
+    "source": "Singapore LTA traffic images"
+  },
+  "controls": {
+    "pause_resume": [
+      "space",
+      "p"
+    ],
+    "quit": [
+      "q",
+      "escape",
+      "window-close"
+    ]
+  },
+  "elapsed_ns": 2384148083,
+  "exit_reason": "frame-limit",
+  "fidelity": {
+    "dvi_hash_gate": "passed before backend execution",
+    "exact_recovered_model": true,
+    "physical_cv22_parity": "pending independent camera fixture",
+    "postprocess_operating_profile": "small-object"
+  },
+  "geometry": [
+    {
+      "identity": false,
+      "interpolation": "linear",
+      "pad_bgr": [
+        0,
+        0,
+        0
+      ],
+      "padding": {
+        "bottom": 0,
+        "left": 3,
+        "right": 4,
+        "top": 0
+      },
+      "policy": "centered-letterbox",
+      "resized_size": [
+        608,
+        1081
+      ],
+      "scale": 0.562962962962963,
+      "schema": "verkeye.viewer-geometry.v1",
+      "source_size": [
+        1080,
+        1920
+      ],
+      "target_size": [
+        608,
+        1088
+      ]
+    }
+  ],
+  "last_detections": [],
+  "metrics": {
+    "capture_fps": 0.0,
+    "captured_frames": 1,
+    "display_fps": 0.0,
+    "displayed_frames": 1,
+    "dropped_frames": 0,
+    "inference_fps": 14.17318084956087,
+    "inferred_frames": 1,
+    "recorded_frames": 0
+  },
+  "recording": null,
+  "run_id": "demo-1-5f55e37766a8",
+  "schema": "verkeye.live-viewer-session.v1",
+  "source": "Singapore LTA traffic stills"
+}

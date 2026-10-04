@@ -1,0 +1,236 @@
+{
+  "schema": "verkeye.artifact-corpus.v1",
+  "name": "verkada-cb62-non512-recovered-runtime",
+  "artifacts": [
+    {
+      "role": "primary_model",
+      "path": "../fixtures/models/yolov6n_hor.bin",
+      "size": 5561124,
+      "sha256": "eb768eb6691c08a5648424bb3fbc4a5ee09a64584e7faa3236afa778f5f5eabf",
+      "architecture": "ambarella-cv22-nnctrl",
+      "source": "CB62 non-512 decrypted approot /var/cache/cvproc/yolov6n_hor.bin",
+      "required": false,
+      "available": false
+    },
+    {
+      "role": "vertical_model_comparison_oracle",
+      "path": "../fixtures/models/yolov6n_ver.bin",
+      "size": 5551804,
+      "sha256": "e19ca243214332ae4bd1cec2e828366f66860d10f49e069c3f376941c92ec129",
+      "architecture": "ambarella-cv22-nnctrl",
+      "source": "CB62 non-512 decrypted approot /var/cache/cvproc/yolov6n_ver.bin",
+      "required": false,
+      "available": false
+    },
+    {
+      "role": "cvproc",
+      "path": "../fixtures/vendor/cv22/cvproc",
+      "size": 6773760,
+      "sha256": "47aad1ba15b23851ad606ba7ba2e92ceac9289176b0eacf0d124020f5606ba7b",
+      "architecture": "linux-aarch64",
+      "source": "CB62 non-512 decrypted approot /usr/bin/cvproc",
+      "required": false,
+      "available": false
+    },
+    {
+      "role": "cavalry_driver",
+      "path": "../fixtures/vendor/cv22/cavalry.ko",
+      "size": 154192,
+      "sha256": "39811bf17113e78c7babe9c0a6b8bad53ca80648847c364da5fccb5dd5f0de24",
+      "architecture": "linux-aarch64-kernel-module",
+      "source": "CB62 non-512 NAND rootfs B /lib/modules/4.14.183-bruce-4k/extra/cavalry.ko",
+      "required": false,
+      "available": false
+    },
+    {
+      "role": "cavalry_load",
+      "path": "../fixtures/vendor/cv22/cavalry_load",
+      "size": 67736,
+      "sha256": "d19a8d03f7cbc8e371bef1f5c653de400f117cd82d15a6b4e8b9f92d7f0c1ad6",
+      "architecture": "linux-aarch64",
+      "source": "CB62 non-512 decrypted approot /usr/bin/cavalry_load",
+      "required": false,
+      "available": false
+    },
+    {
+      "role": "cavalry_core_dump",
+      "path": "../fixtures/vendor/cv22/cavalry_core_dump",
+      "size": 67680,
+      "sha256": "066d91ee87d0c4b2dc65e2302946c249981fa21b736534e127b80d8704eef360",
+      "architecture": "linux-aarch64",
+      "source": "CB62 non-512 decrypted approot /usr/bin/cavalry_core_dump",
+      "required": false,
+      "available": false
+    },
+    {
+      "role": "cavalry_log",
+      "path": "../fixtures/vendor/cv22/cavalry_log",
+      "size": 67808,
+      "sha256": "b625f13e7a770451ffbb783ee367948c156dbfc0500b09156c81a2e127feb399",
+      "architecture": "linux-aarch64",
+      "source": "CB62 non-512 decrypted approot /usr/bin/cavalry_log",
+      "required": false,
+      "available": false
+    },
+    {
+      "role": "cavalry_monitor",
+      "path": "../fixtures/vendor/cv22/cavalry_monitor",
+      "size": 67760,
+      "sha256": "7733556ffb5d65b4fac7a1210eda09cf859372d2e73ee651964f9c2dd36683c3",
+      "architecture": "linux-aarch64",
+      "source": "CB62 non-512 decrypted approot /usr/bin/cavalry_monitor",
+      "required": false,
+      "available": false
+    },
+    {
+      "role": "cavalry_top",
+      "path": "../fixtures/vendor/cv22/cavalry_top",
+      "size": 67648,
+      "sha256": "2261d11e8434910adaaf17324bbe30c57acfaf896f7df83b547816a85c9c3606",
+      "architecture": "linux-aarch64",
+      "source": "CB62 non-512 decrypted approot /usr/bin/cavalry_top",
+      "required": false,
+      "available": false
+    },
+    {
+      "role": "cavalry_firmware",
+      "path": "../fixtures/vendor/cv22/cavalry.bin",
+      "size": 101332,
+      "sha256": "889c32b8b599454b1a98dfac4e6f9ee7f25abe8f02e21030646e697b07aa45f3",
+      "architecture": "ambarella-cv22-cavalry-microcode",
+      "source": "CB62 non-512 NAND rootfs A/B /lib/firmware/cavalry.bin",
+      "required": false,
+      "available": false
+    },
+    {
+      "role": "orc_firmware",
+      "path": "../fixtures/vendor/cv22/orccode.bin",
+      "size": 2231024,
+      "sha256": "2c5204c7b78821b70bf89c4f908e3186bd8f3829e91368b38d48cded4d685574",
+      "architecture": "ambarella-cv22-orc-microcode",
+      "source": "CB62 non-512 NAND rootfs B /lib/firmware/orccode.bin",
+      "required": false,
+      "available": false
+    },
+    {
+      "role": "orc_mdx_firmware",
+      "path": "../fixtures/vendor/cv22/orcmdxf.bin",
+      "size": 167632,
+      "sha256": "93012f3594a1eca938c03141958768180bb883ef5222a22b1d873a920811245a",
+      "architecture": "ambarella-cv22-orc-microcode",
+      "source": "CB62 non-512 NAND rootfs B /lib/firmware/orcmdxf.bin",
+      "required": false,
+      "available": false
+    },
+    {
+      "role": "orc_me_firmware",
+      "path": "../fixtures/vendor/cv22/orcme.bin",
+      "size": 272532,
+      "sha256": "5bd2d64f261f0c1c7830ca76ad38bbebd3aa85db9691e1f78c4eb48c7508e1c5",
+      "architecture": "ambarella-cv22-orc-microcode",
+      "source": "CB62 non-512 NAND rootfs B /lib/firmware/orcme.bin",
+      "required": false,
+      "available": false
+    },
+    {
+      "role": "libcavalry_mem",
+      "path": "../fixtures/vendor/cv22/libcavalry_mem.so.0.0.6",
+      "size": 67392,
+      "sha256": "330836af26ab536d02430ea8ac338fa2975688d290c3c12b0304d4554aac0ed4",
+      "architecture": "linux-aarch64",
+      "source": "CB62 non-512 decrypted approot /usr/lib/libcavalry_mem.so.0.0.6",
+      "required": false,
+      "available": false
+    },
+    {
+      "role": "libcavalry_opt_layers",
+      "path": "../fixtures/vendor/cv22/libcavalry_opt_layers.so.1.1.2",
+      "size": 71576,
+      "sha256": "3bb0aabd6d1adf1c8db17445ffbc1438ec417c1918f02eea3481ff0574a0c2f1",
+      "architecture": "linux-aarch64",
+      "source": "CB62 non-512 decrypted approot /usr/lib/libcavalry_opt_layers.so.1.1.2",
+      "required": false,
+      "available": false
+    },
+    {
+      "role": "libdewarp",
+      "path": "../fixtures/vendor/cv22/libdewarp.so.2.13.1",
+      "size": 153560,
+      "sha256": "7a5dd3403402021fd63fa82f35c66589057b9136837f1d0cd516e20d4b3fb581",
+      "architecture": "linux-aarch64",
+      "source": "CB62 non-512 decrypted approot /usr/lib/libdewarp.so.2.13.1",
+      "required": false,
+      "available": false
+    },
+    {
+      "role": "libnnctrl",
+      "path": "../fixtures/vendor/cv22/libnnctrl.so.0.3.0",
+      "size": 132968,
+      "sha256": "647b38c0ef77558bc58bc2b32e1003bd8c4c781eaf25e195268297edc44f4c3d",
+      "architecture": "linux-aarch64",
+      "source": "CB62 non-512 decrypted approot /usr/lib/libnnctrl.so.0.3.0",
+      "required": false,
+      "available": false
+    },
+    {
+      "role": "libvproc",
+      "path": "../fixtures/vendor/cv22/libvproc.so.0.0.15",
+      "size": 202616,
+      "sha256": "f7d0fbe415db5fccef15bbc714ed3c5be563d098bc83f4e3f23d381f4e24e310",
+      "architecture": "linux-aarch64",
+      "source": "CB62 non-512 decrypted approot /usr/lib/libvproc.so.0.0.15",
+      "required": false,
+      "available": false
+    },
+    {
+      "role": "production_config",
+      "path": "../fixtures/vendor/cv22/cb62-production-config.json",
+      "size": 14028,
+      "sha256": "022d8371a822b702cd7c0cbc81b7280a84b2f724fb52ab8352fd92a38f346908",
+      "architecture": "verkada-config-json",
+      "source": "CB62 non-512 live /mnt/config/config after terminal enablement",
+      "required": false,
+      "available": false
+    },
+    {
+      "role": "vconfig_schema",
+      "path": "../fixtures/vendor/cv22/vconfig-config.pyc",
+      "size": 225428,
+      "sha256": "32609cc9ea84f9f2887c951a33b432177b6592e594ba458eae088c3b52900255",
+      "architecture": "python-3.10-bytecode",
+      "source": "CB62 non-512 NAND rootfs A vconfig/config.pyc",
+      "required": false,
+      "available": false
+    },
+    {
+      "role": "bruce_4k_product_config",
+      "path": "../fixtures/vendor/cv22/bruce_4k.pyc",
+      "size": 5420,
+      "sha256": "9aa2012ffa2ed1ae2683a1b3c0c825187b470446e2ba584e07f91e8a70e5ecbd",
+      "architecture": "python-3.10-bytecode",
+      "source": "CB62 non-512 NAND rootfs A bruce_4k product configuration",
+      "required": false,
+      "available": false
+    },
+    {
+      "role": "bruce_4k_telephoto_product_config",
+      "path": "../fixtures/vendor/cv22/bruce_4k_telephoto.pyc",
+      "size": 5819,
+      "sha256": "d91f20143d3635f1fa471473ff36764ab0d84b10bfb2778027363ebd899d2c46",
+      "architecture": "python-3.10-bytecode",
+      "source": "CB62 non-512 NAND rootfs A bruce_4k_telephoto product configuration",
+      "required": false,
+      "available": false
+    },
+    {
+      "role": "physical_cv22_reference_trace",
+      "path": "../fixtures/oracles/cv22-reference-trace.bin",
+      "size": null,
+      "sha256": null,
+      "architecture": "ambarella-cv22",
+      "source": "future physical-CB62 parity verification",
+      "required": false,
+      "available": false
+    }
+  ]
+}

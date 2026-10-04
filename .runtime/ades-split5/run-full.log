@@ -1,0 +1,242 @@
+[1mCopyright 2015-2022 Ambarella Inc.[0m
+[1mInitializing Ambarella Dag Emulation System(ADES) (libvdg Version: cv22.2.4.2.0.1073.ubu1804)[0m
+ADES started @ /usr/local/amba-cv-tools-2.4.2.0.1073.ubuntu-18.04/cv22/tv2/release/VpRef/cv22.2.4.2.0.1073.ubu1804
+home directory @ /home/xzy
+ADES configuration: chip product = CV25
+loading dag file (/dump/split5.dagbin)
+dag file, /dump/split5.dagbin, is 1224 bytes long
+operator (op0) of type, fastconvolution_operator_t (41), is constructed.
+operator (op1) of type, multiplyadd_operator_t (16), is constructed.
+operator (op2) of type, fastconvolution_operator_t (41), is constructed.
+operator (op3) of type, fastconvolution_operator_t (41), is constructed.
+operator (op4) of type, fastconvolution_operator_t (41), is constructed.
+operator (op5) of type, fastconvolution_operator_t (41), is constructed.
+operator (op6) of type, resample_operator_t (43), is constructed.
+operator (op7) of type, mux_operator_t (68), is constructed.
+operator (op8) of type, fastconvolution_operator_t (41), is constructed.
+operator (op9) of type, multiplyadd_operator_t (16), is constructed.
+operator (op10) of type, terminate_operator_t (255), is constructed.
+Link from OP[0] Port 3 to OP[1] Port 2
+Link from OP[1] Port 3 to OP[2] Port 0
+Link from OP[2] Port 3 to OP[3] Port 0
+Link from OP[3] Port 3 to OP[4] Port 0
+Link from OP[4] Port 3 to OP[5] Port 0
+Link from OP[5] Port 3 to OP[6] Port 0
+Link from OP[6] Port 2 to OP[7] Port 1
+Link from OP[7] Port 3 to OP[8] Port 0
+[1mDagbin loader: Input Descriptor d0 (1x384x38x68)   ->(op0, V0)[0m
+[1mDagbin loader: Input Descriptor d1 (1x128x76x136)   ->(op9, V2)[0m
+[1mDagbin loader: Input Descriptor d2 (1x1x1x293468)   ->(op0, V1)[0m
+[1mDagbin loader: Input Descriptor d3 (1x1x1x1060)   ->(op0, V2)[0m
+[1mDagbin loader: Input Descriptor d4 (1x1x1x1)   ->(op1, V0)[0m
+[1mDagbin loader: Input Descriptor d5 (1x1x1x10160)   ->(op2, V1)[0m
+[1mDagbin loader: Input Descriptor d6 (1x1x1x596)   ->(op2, V2)[0m
+[1mDagbin loader: Input Descriptor d7 (1x1x1x57176)   ->(op3, V1)[0m
+[1mDagbin loader: Input Descriptor d8 (1x1x1x1052)   ->(op3, V2)[0m
+[1mDagbin loader: Input Descriptor d9 (1x1x1x58912)   ->(op4, V1)[0m
+[1mDagbin loader: Input Descriptor d10 (1x1x1x744)   ->(op4, V2)[0m
+[1mDagbin loader: Input Descriptor d11 (1x1x1x5556)   ->(op5, V1)[0m
+[1mDagbin loader: Input Descriptor d12 (1x1x1x320)   ->(op5, V2)[0m
+[1mDagbin loader: Input Descriptor d13 (1x1x1x4)   ->(op6, V1)[0m
+[1mDagbin loader: Input Descriptor d14 (1x1x76x136)   ->(op7, V0)[0m
+[1mDagbin loader: Input Descriptor d15 (1x1x1x1)   ->(op7, V2)[0m
+[1mDagbin loader: Input Descriptor d16 (1x1x1x14272)   ->(op8, V1)[0m
+[1mDagbin loader: Input Descriptor d17 (1x1x1x320)   ->(op8, V2)[0m
+[1mDagbin loader: Input Descriptor d18 (1x1x1x1)   ->(op9, V0)[0m
+[1mDagbin loader: Output Descriptor op0_d3[0m
+[1mDagbin loader: Output Descriptor op10_d0[0m
+[1mDagbin loader: Output Descriptor op1_d3[0m
+[1mDagbin loader: Output Descriptor op2_d3[0m
+[1mDagbin loader: Output Descriptor op3_d3[0m
+[1mDagbin loader: Output Descriptor op4_d3[0m
+[1mDagbin loader: Output Descriptor op5_d3[0m
+[1mDagbin loader: Output Descriptor op6_d2[0m
+[1mDagbin loader: Output Descriptor op7_d3[0m
+[1mDagbin loader: Output Descriptor op8_d3[0m
+[1mDagbin loader: Output Descriptor op9_d3[0m
+loading /dump/d0.bin to descriptor d0
+loading /dump/d1.bin to descriptor d1
+loading /dump/d2.bin to descriptor d2
+loading /dump/d3.bin to descriptor d3
+loading /dump/d5.bin to descriptor d5
+loading /dump/d6.bin to descriptor d6
+loading /dump/d7.bin to descriptor d7
+loading /dump/d8.bin to descriptor d8
+loading /dump/d9.bin to descriptor d9
+loading /dump/d10.bin to descriptor d10
+loading /dump/d11.bin to descriptor d11
+loading /dump/d12.bin to descriptor d12
+loading /dump/d13.bin to descriptor d13
+loading /dump/d14.bin to descriptor d14
+loading /dump/d16.bin to descriptor d16
+loading /dump/d17.bin to descriptor d17
+Assign scalar data to op[1].port[0]
+Assign scalar data to op[7].port[2]
+Assign scalar data to op[9].port[0]
+starting dag execution...
+execute op: op0 (0)
+Assign data to op[0].port[0]
+Assign data to op[0].port[1]
+Assign data to op[0].port[2]
+m_output_depth: 115
+number of kernel output channels: 115
+node_id(0, 3), imode: 2
+op (0) normalized fixed-point 8b MAC ops: hardware MACs/algorithmic MACs = 585679104/1026984960
+Operator node_fastconv_op(0) consumes 1.242
+op (0) completed.
+execute op: op1 (1)
+node_id(1, 3), imode: 2
+op (1) normalized float-point 8b MAC ops: hardware MACs/algorithmic MACs = 594320/594320
+Operator node_madd_op(1) consumes 0.010
+op (1) completed.
+execute op: op2 (2)
+Assign data to op[2].port[1]
+Assign data to op[2].port[2]
+m_output_depth: 115
+number of kernel output channels: 115
+node_id(2, 3), imode: 2
+op (2) normalized fixed-point 8b MAC ops: hardware MACs/algorithmic MACs = 27886528/615121200
+Operator node_fastconv_op(2) consumes 0.040
+op (2) completed.
+execute op: op3 (3)
+Assign data to op[3].port[1]
+Assign data to op[3].port[2]
+m_output_depth: 116
+number of kernel output channels: 116
+node_id(3, 3), imode: 2
+op (3) normalized fixed-point 8b MAC ops: hardware MACs/algorithmic MACs = 101484016/310235040
+Operator node_fastconv_op(3) consumes 0.235
+op (3) completed.
+execute op: op4 (4)
+Assign data to op[4].port[1]
+Assign data to op[4].port[2]
+m_output_depth: 102
+number of kernel output channels: 102
+node_id(4, 3), imode: 2
+op (4) normalized fixed-point 8b MAC ops: hardware MACs/algorithmic MACs = 217727840/550329984
+Operator node_fastconv_op(4) consumes 0.252
+op (4) completed.
+execute op: op5 (5)
+Assign data to op[5].port[1]
+Assign data to op[5].port[2]
+m_output_depth: 64
+number of kernel output channels: 64
+node_id(5, 3), imode: 2
+op (5) normalized fixed-point 8b MAC ops: hardware MACs/algorithmic MACs = 22961424/33736704
+Operator node_fastconv_op(5) consumes 0.038
+op (5) completed.
+execute op: op6 (6)
+Assign data to op[6].port[1]
+node_id(6, 2), imode: 2
+op (6) normalized float-point 8b MAC ops: hardware MACs/algorithmic MACs = 661504/661504
+Operator node_resampler_op(6) consumes 0.013
+op (6) completed.
+execute op: op7 (7)
+Assign data to op[7].port[0]
+node_id(7, 3), imode: 2
+op (7) normalized float-point 8b MAC ops: hardware MACs/algorithmic MACs = 661504/661504
+Operator node_mux_op(7) consumes 0.031
+op (7) completed.
+execute op: op8 (8)
+Assign data to op[8].port[1]
+Assign data to op[8].port[2]
+m_output_depth: 64
+number of kernel output channels: 64
+node_id(8, 3), imode: 2
+op (8) normalized fixed-point 8b MAC ops: hardware MACs/algorithmic MACs = 120393728/169345024
+Operator node_fastconv_op(8) consumes 0.097
+op (8) completed.
+execute op: op9 (9)
+Assign data to op[9].port[2]
+node_id(9, 3), imode: 2
+op (9) normalized float-point 8b MAC ops: hardware MACs/algorithmic MACs = 1323008/1323008
+Operator node_madd_op(9) consumes 0.044
+op (9) completed.
+execute op: op10 (10)
+Operator node_terminate_op(10) consumes 0.001
+op (10) completed.
+TERMINATE OP. Done.
+dag execution completed
+Normalized MAC count summary for dag 0: 
+fixed8b hardware MACs/algorithmic MACs: 1076132640/2705752912
+float8b hardware MACs/algorithmic MACs: 3240336/3240336
+
+vector info (valid): (p, d, h, w) = (1, 384, 38, 68);
+format = 
+	 data size: 8
+	  exp bits: 0
+	  sign bit: 1
+	exp offset: 5
+vector info (valid): (p, d, h, w) = (1, 128, 76, 136);
+format = 
+	 data size: 8
+	  exp bits: 0
+	  sign bit: 0
+	exp offset: 5
+vector info (valid): (p, d, h, w) = (1, 1, 76, 136);
+format = 
+	 data size: 1
+	  exp bits: 0
+	  sign bit: 0
+	exp offset: 0
+vector info (valid): (p, d, h, w) = (1, 115, 38, 68);
+format = 
+	 data size: 16
+	  exp bits: 0
+	  sign bit: 0
+	exp offset: 9
+vector info (valid): (p, d, h, w) = (1, 115, 38, 68);
+format = 
+	 data size: 16
+	  exp bits: 0
+	  sign bit: 0
+	exp offset: 11
+vector info (valid): (p, d, h, w) = (1, 115, 38, 68);
+format = 
+	 data size: 8
+	  exp bits: 0
+	  sign bit: 0
+	exp offset: 4
+vector info (valid): (p, d, h, w) = (1, 116, 38, 68);
+format = 
+	 data size: 16
+	  exp bits: 0
+	  sign bit: 0
+	exp offset: 11
+vector info (valid): (p, d, h, w) = (1, 102, 38, 68);
+format = 
+	 data size: 16
+	  exp bits: 0
+	  sign bit: 0
+	exp offset: 12
+vector info (valid): (p, d, h, w) = (1, 64, 38, 68);
+format = 
+	 data size: 8
+	  exp bits: 0
+	  sign bit: 0
+	exp offset: 3
+vector info (valid): (p, d, h, w) = (1, 64, 76, 136);
+format = 
+	 data size: 8
+	  exp bits: 0
+	  sign bit: 0
+	exp offset: 3
+vector info (valid): (p, d, h, w) = (1, 64, 76, 136);
+format = 
+	 data size: 8
+	  exp bits: 0
+	  sign bit: 0
+	exp offset: 3
+vector info (valid): (p, d, h, w) = (1, 64, 76, 136);
+format = 
+	 data size: 8
+	  exp bits: 0
+	  sign bit: 1
+	exp offset: 4
+vector info (valid): (p, d, h, w) = (1, 128, 76, 136);
+format = 
+	 data size: 8
+	  exp bits: 0
+	  sign bit: 1
+	exp offset: 4
+Stopping ADES CLI ... Bye bye

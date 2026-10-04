@@ -1,0 +1,43 @@
+{
+  "schema": "verkeye.production-detection-parity.v1",
+  "created_utc": "2026-10-03T09:06:46Z",
+  "status": "passed",
+  "source_commit": "3afee7769bfeb10ecb8a020e7b44123095d3d2b9",
+  "model_sha256": "eb768eb6691c08a5648424bb3fbc4a5ee09a64584e7faa3236afa778f5f5eabf",
+  "pipeline_sha256": "c42e1aa765df5ff03354858f6701a315ff0aa635a82796c87f5f54804e9a68be",
+  "oracle_catalog": {
+    "path": "fixtures/oracle/terminal-parity-catalog.json",
+    "sha256": "c1e64e524b0d54a4d7c19a1d79843973828953921c51d2ea667b4cd420b14e05",
+    "case_count": 29,
+    "prediction_matrix_mismatch_count": 0,
+    "decoded_detection_mismatch_count": 0,
+    "note": "The registered production corpus yields no accepted detections at the recovered production thresholds. Every 13566x8 float32 prediction matrix is nevertheless byte-identical to ADES, so deterministic production decoding receives identical bytes."
+  },
+  "nonempty_contract_witness": {
+    "test": "tests/runtime/test_yolov6.py::test_cb62_production_contract_has_exact_nonempty_detection_fields",
+    "test_file_sha256": "bc1a6cb2f07529c361948e1ce0f21af93ea3b58182c39ec58e67ba383d3c6c1a",
+    "accepted_detection_count": 2,
+    "class_ids": [0, 1],
+    "source_indices": [0, 10],
+    "confidence_float32_bits": ["0x3f3851eb", "0x3f43d70a"],
+    "normalized_box_float32_bits": [
+      ["0x00000000", "0x00000000", "0x3bf0f0f1", "0x3c579436"],
+      ["0x3d969697", "0x00000000", "0x3da5a5a6", "0x3c579436"]
+    ],
+    "same_class_suppression_exercised": true,
+    "class_ordering_exercised": true
+  },
+  "decision_boundaries": {
+    "strict_confidence_threshold": "passed",
+    "first_class_tie_break": "passed",
+    "confidence_then_source_order": "passed",
+    "box_grid_stride_and_normalization": "passed",
+    "minimum_area_filter": "passed",
+    "border_or_aspect_filter": "passed",
+    "nms_distance_equality": "passed",
+    "recovered_post_insert_maximum": "passed",
+    "nan_rejection": "passed"
+  },
+  "raw_command": ".venv/bin/python -m pytest -q tests/runtime/test_yolov6.py",
+  "raw_output": "19 passed in 0.17s"
+}

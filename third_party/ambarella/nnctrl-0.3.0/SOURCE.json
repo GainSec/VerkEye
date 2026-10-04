@@ -1,0 +1,11 @@
+{
+  "schema": "verkeye.vendor-source-snapshot.v1",
+  "name": "nnctrl",
+  "version": "0.3.0",
+  "upstream": "https://github.com/cchiou-amba/nnctrl.git",
+  "commit": "aa3856db0028691b688b122a11279d87efd25f65",
+  "git_tree": "b85444bc9bc92d35cbd28e693075e3287670699e",
+  "file_count": 21,
+  "content_sha256": "f9a4bce18eb8de2cc2e1e2f1d984a3fdd29ac8b938d0c819225ba741039bec16",
+  "license": "Apache-2.0"
+}

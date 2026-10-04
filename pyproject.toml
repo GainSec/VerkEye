@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "verkeye"
+version = "0.1.0.dev0"
+description = "Evidence-first local analysis and replay tooling for recovered Verkada CV models"
+requires-python = ">=3.11"
+dependencies = [
+  "jsonschema>=4.18",
+]
+
+[project.scripts]
+verkeye = "verkeye.cli:main"
+
+[project.optional-dependencies]
+dev = [
+  "hypothesis>=6",
+  "pytest>=8",
+]
+runtime = [
+  "numpy>=1.26",
+  "opencv-python-headless>=4.8",
+]
+viewer = [
+  "numpy>=1.26",
+  "opencv-python>=4.8",
+]
+macos = [
+  "mlx>=0.30,<0.31",
+]
+linux = [
+  "openvino>=2025.0,<2027",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"verkeye" = ["assets/demo/*"]
+
+[tool.setuptools.data-files]
+"share/verkeye/schemas" = [
+  "schemas/verkeye-ir-v1.schema.json",
+  "schemas/verkeye-compatibility-profile-v1.schema.json",
+]
+"share/verkeye/accelerated" = ["config/cb62-accelerated-compatibility.json"]
+"share/verkeye/ades" = [
+  "config/cb62-ades-runtime.json",
+  "evidence/compatibility/cvproc-yolov6-pipeline.json",
+  "src/verkeye/compat/native/ades_executor.cpp",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "--import-mode=importlib"

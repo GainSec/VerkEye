@@ -1,0 +1,45 @@
+ldag /dump/split5.dagbin
+lbin -d d0 /dump/d0.bin
+lbin -d d1 /dump/d1.bin
+lbin -d d2 /dump/d2.bin
+lbin -d d3 /dump/d3.bin
+lbin -d d5 /dump/d5.bin
+lbin -d d6 /dump/d6.bin
+lbin -d d7 /dump/d7.bin
+lbin -d d8 /dump/d8.bin
+lbin -d d9 /dump/d9.bin
+lbin -d d10 /dump/d10.bin
+lbin -d d11 /dump/d11.bin
+lbin -d d12 /dump/d12.bin
+lbin -d d13 /dump/d13.bin
+lbin -d d14 /dump/d14.bin
+lbin -d d16 /dump/d16.bin
+lbin -d d17 /dump/d17.bin
+run
+vecinfo d0
+vecinfo d1
+vecinfo d14
+vecinfo op0_d3
+vecinfo op1_d3
+vecinfo op2_d3
+vecinfo op3_d3
+vecinfo op4_d3
+vecinfo op5_d3
+vecinfo op6_d2
+vecinfo op7_d3
+vecinfo op8_d3
+vecinfo op9_d3
+sbin d0 /dump/d0-logical.bin
+sbin d1 /dump/d1-logical.bin
+sbin d14 /dump/d14-logical.bin
+sbin op0_d3 /dump/op0.bin
+sbin op1_d3 /dump/op1.bin
+sbin op2_d3 /dump/op2.bin
+sbin op3_d3 /dump/op3.bin
+sbin op4_d3 /dump/op4.bin
+sbin op5_d3 /dump/op5.bin
+sbin op6_d2 /dump/op6.bin
+sbin op7_d3 /dump/op7.bin
+sbin op8_d3 /dump/op8.bin
+sbin op9_d3 /dump/op9.bin
+quit

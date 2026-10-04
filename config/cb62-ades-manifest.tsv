@@ -1,0 +1,51 @@
+ADES_MANIFEST	1	2.1.7	c5db5f1
+S	0	yolov6s_det_608_1088_300_60epoch_fix_spa75_cv22_auto_fixed_prim_split_0	1780376	233212	2012672
+I	0	images	508	1984512	1048576	1	3	608	1088	1088	512	32	0	0	0	8	0	1
+O	0	__backbone__ERBlock_3__ERBlock_3_dt_1__conv1__conv__Conv_output_0___conv2i___10______relu__Relu_output_0	828	1389888	3035136	1	127	76	136	32	832	16	3	0	0	5	0	0
+S	1	yolov6s_det_608_1088_300_60epoch_fix_spa75_cv22_auto_fixed_prim_split_1	1470704	515564	1985500
+I	1	__backbone__ERBlock_3__ERBlock_3_dt_1__conv1__conv__Conv_output_0___conv2i___10______relu__Relu_output_0	28	1389888	3035136	1	127	76	136	32	32	16	3	0	0	5	0	0
+O	1	__backbone__ERBlock_3__ERBlock_3_dt_1__block__block_dt_2__conv__Conv_output_0___conv2i___16______relu__Relu_output_0	572	1400832	4427776	1	128	76	136	32	576	16	3	0	0	5	0	0
+O	1	__backbone__ERBlock_4__ERBlock_4_dt_1__conv1__conv__Conv_output_0___conv2i___20______relu__Relu_output_0	680	919296	5828608	1	168	38	68	32	684	16	3	0	1	10	0	0
+S	2	yolov6s_det_608_1088_300_60epoch_fix_spa75_cv22_auto_fixed_prim_split_2	1520432	420828	1940632
+I	2	__backbone__ERBlock_4__ERBlock_4_dt_1__conv1__conv__Conv_output_0___conv2i___20______relu__Relu_output_0	28	919296	5828608	1	168	38	68	32	32	16	3	0	1	10	0	0
+O	2	__backbone__ERBlock_4__ERBlock_4_dt_1__block__block_dt_3__conv__Conv_output_0___conv2i___28______relu__Relu_output_0	540	1017792	6750208	1	186	38	68	32	544	16	3	0	1	11	0	0
+S	3	yolov6s_det_608_1088_300_60epoch_fix_spa75_cv22_auto_fixed_prim_split_3	1498824	557324	2055508
+I	3	__backbone__ERBlock_4__ERBlock_4_dt_1__block__block_dt_3__conv__Conv_output_0___conv2i___28______relu__Relu_output_0	28	1017792	6750208	1	186	38	68	32	32	16	3	0	1	11	0	0
+O	3	__backbone__ERBlock_4__ERBlock_4_dt_1__block__block_dt_4__conv__Conv_output_0___conv2i___30______relu__Relu_output_0	396	1400832	7770112	1	256	38	68	32	400	16	3	0	1	12	0	0
+O	3	__backbone__ERBlock_5__ERBlock_5_dt_1__block__block_dt_0__conv__Conv_output_0___conv2i___36______relu__Relu_output_0	552	126176	9170944	1	83	19	34	32	556	16	3	0	1	13	0	0
+S	4	yolov6s_det_608_1088_300_60epoch_fix_spa75_cv22_auto_fixed_prim_split_4	1495768	581696	2075880
+I	4	__backbone__ERBlock_4__ERBlock_4_dt_1__block__block_dt_4__conv__Conv_output_0___conv2i___30______relu__Relu_output_0	28	1400832	7770112	1	256	38	68	32	32	16	3	0	1	12	0	0
+I	4	__backbone__ERBlock_5__ERBlock_5_dt_1__block__block_dt_0__conv__Conv_output_0___conv2i___36______relu__Relu_output_0	68	126176	9170944	1	83	19	34	32	72	16	3	0	1	13	0	0
+O	4	__neck__reduce_layer0__block__conv__Conv_output_0___conv2i___46______act__Relu_output_0	1284	116736	9297920	1	128	19	34	32	1288	16	3	0	0	4	0	0
+O	4	__neck__Concat_output_0	1456	1050624	9416704	1	384	38	68	32	1460	16	3	1	0	5	0	0
+S	5	yolov6s_det_608_1088_300_60epoch_fix_spa75_cv22_auto_fixed_prim_split_5	1620440	446396	2065612
+I	5	__neck__Concat_output_0	28	1050624	9416704	1	384	38	68	32	32	16	3	1	0	5	0	0
+I	5	__backbone__ERBlock_3__ERBlock_3_dt_1__block__block_dt_2__conv__Conv_output_0___conv2i___16______relu__Relu_output_0	64	1400832	4427776	1	128	76	136	32	68	16	3	0	0	5	0	0
+O	5	__neck__reduce_layer1__block__conv__Conv_output_0___conv2i___59______act__Relu_output_0	952	194560	10469376	1	64	38	68	32	956	16	3	0	0	3	0	0
+O	5	__neck__upsample1__upsample_transpose__ConvTranspose_output_0___conv2i___61___	1088	700416	10665984	1	64	76	136	32	1092	16	3	1	0	4	0	0
+O	5	__backbone__ERBlock_3__ERBlock_3_dt_1__block__block_dt_2__conv__Conv_output_0___conv2i___16______muli___444	1136	1400832	11366400	1	128	76	136	32	1140	16	3	1	0	4	0	0
+S	6	yolov6s_det_608_1088_300_60epoch_fix_spa75_cv22_auto_fixed_prim_split_6	1651048	425828	2075040
+I	6	__neck__reduce_layer1__block__conv__Conv_output_0___conv2i___59______act__Relu_output_0	28	194560	10469376	1	64	38	68	32	32	16	3	0	0	3	0	0
+I	6	__neck__upsample1__upsample_transpose__ConvTranspose_output_0___conv2i___61___	68	700416	10665984	1	64	76	136	32	72	16	3	1	0	4	0	0
+I	6	__backbone__ERBlock_3__ERBlock_3_dt_1__block__block_dt_2__conv__Conv_output_0___conv2i___16______muli___444	104	1400832	11366400	1	128	76	136	32	108	16	3	1	0	4	0	0
+I	6	__neck__reduce_layer0__block__conv__Conv_output_0___conv2i___46______act__Relu_output_0	140	116736	9297920	1	128	19	34	32	144	16	3	0	0	4	0	0
+O	6	__neck__Rep_p3__block__block_dt_2__conv__Conv_output_0___conv2i___70______relu__Relu_output_0	1348	700416	12767232	1	64	76	136	32	1352	16	3	0	0	4	0	0
+O	6	__neck__Rep_n3__block__block_dt_2__conv__Conv_output_0___conv2i___81______relu__Relu_output_0	1644	389120	13467648	1	128	38	68	32	1648	16	3	0	0	4	0	0
+O	6	__neck__Rep_n4__conv1__conv__Conv_output_0___conv2i___86______relu__Relu_output_0	1748	228928	13856768	1	251	19	34	32	1752	16	3	0	0	5	0	0
+S	7	yolov6s_det_608_1088_300_60epoch_fix_spa75_cv22_auto_fixed_prim_split_7	769488	1274000	2042380
+I	7	__neck__Rep_n4__conv1__conv__Conv_output_0___conv2i___86______relu__Relu_output_0	28	228928	13856768	1	251	19	34	32	32	16	3	0	0	5	0	0
+O	7	__stems_dt_2__block__act__Mul_output_0______muli___435	1020	194560	14086144	1	256	19	34	32	1024	16	3	1	0	4	0	0
+S	8	yolov6s_det_608_1088_300_60epoch_fix_spa75_cv22_auto_fixed_prim_split_8	1075408	1005776	2075844
+I	8	__stems_dt_2__block__act__Mul_output_0______muli___435	28	194560	14086144	1	256	19	34	32	32	16	3	1	0	4	0	0
+I	8	__neck__Rep_p3__block__block_dt_2__conv__Conv_output_0___conv2i___70______relu__Relu_output_0	64	700416	12767232	1	64	76	136	32	68	16	3	0	0	4	0	0
+I	8	__neck__Rep_n3__block__block_dt_2__conv__Conv_output_0___conv2i___81______relu__Relu_output_0	104	389120	13467648	1	128	38	68	32	108	16	3	0	0	4	0	0
+O	8	output_5	2336	12160	14282752	1	4	19	34	160	2340	32	0	1	2	0	7	1
+O	8	output_2	3116	12160	14295040	1	4	19	34	160	3120	32	0	1	2	0	7	1
+O	8	output_4	4064	43776	14307328	1	4	38	68	288	4068	32	0	1	2	0	7	1
+O	8	output_1	4844	43776	14352384	1	4	38	68	288	4848	32	0	1	2	0	7	1
+O	8	__stems_dt_0__block__act__Mul_output_0______muli___441	5252	661504	14397440	1	64	76	136	32	5256	16	3	1	0	4	0	0
+S	9	yolov6s_det_608_1088_300_60epoch_fix_spa75_cv22_auto_fixed_prim_split_9	1991472	54000	2043396
+I	9	__stems_dt_0__block__act__Mul_output_0______muli___441	28	661504	14397440	1	64	76	136	32	32	16	3	1	0	4	0	0
+O	9	output_3	1204	165376	15060992	1	4	76	136	544	1208	32	0	1	2	0	7	1
+O	9	output_0	1984	165376	15228928	1	4	76	136	544	1988	32	0	1	2	0	7	1
+END

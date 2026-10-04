@@ -1,0 +1,77 @@
+{
+  "schema": "verkeye.cv22.fastconv-known-answer.v1",
+  "identity": {
+    "model_sha256": "eb768eb6691c08a5648424bb3fbc4a5ee09a64584e7faa3236afa778f5f5eabf",
+    "split_index": 0,
+    "operator_id": 0,
+    "output_channel": 1
+  },
+  "input": {
+    "dtype": "uint8",
+    "layout": "CHW",
+    "shape": [3, 608, 1088],
+    "generator": "channel0=x%256; channel1=y%256; channel2=(x+y)%256",
+    "sha256": "dd71f30652c222c6012567263b3fc745fe962e5a1f3820c44f139de3e3f70bde"
+  },
+  "geometry": {
+    "kernel_height": 3,
+    "kernel_width": 3,
+    "stride_y": 2,
+    "stride_x": 2,
+    "padding_top": 1,
+    "padding_left": 1
+  },
+  "channel": {
+    "accumulator_shift": 8,
+    "offset": 7,
+    "output_saturation_max": 255,
+    "final_shift_control": 2,
+    "points": [
+      [0, 0, 0, 35], [0, 0, 1, -5], [0, 0, 2, -32],
+      [0, 1, 0, 70], [0, 1, 2, -69],
+      [0, 2, 0, 57], [0, 2, 1, -7], [0, 2, 2, -49],
+      [1, 0, 0, 38], [1, 0, 2, -34],
+      [1, 1, 0, 70], [1, 1, 1, -3], [1, 1, 2, -70],
+      [1, 2, 0, 56], [1, 2, 1, -10], [1, 2, 2, -51],
+      [2, 0, 0, 21], [2, 0, 2, -24],
+      [2, 1, 0, 57], [2, 1, 2, -54],
+      [2, 2, 0, 47], [2, 2, 1, -5], [2, 2, 2, -38]
+    ]
+  },
+  "expected": [
+    [3, 3, 3, 3, 3, 3, 3, 3],
+    [2, 2, 2, 2, 2, 2, 3, 3],
+    [1, 2, 2, 2, 2, 2, 3, 3],
+    [0, 2, 2, 2, 2, 2, 3, 3]
+  ],
+  "post_accumulator_shift_saturation_witness": {
+    "output_channel": 10,
+    "output_coordinate": [128, 128],
+    "raw_accumulator_without_saturation": 69724,
+    "shifted_accumulator_without_saturation": 544,
+    "shifted_accumulator_saturation_max": 511,
+    "expected": 231,
+    "channel": {
+      "accumulator_shift": 7,
+      "offset": -49,
+      "output_saturation_max": 255,
+      "final_shift_control": 2,
+      "points_sha256": "935ddac44b9d488ca43d67a3c87c865afaf0b1aaf4dbf9ce7a0767f874238ee3",
+      "points": [
+        [0, 0, 0, 41], [0, 0, 1, 96], [0, 0, 2, 34],
+        [0, 1, 0, -42], [0, 1, 1, -75], [0, 1, 2, -56], [0, 2, 0, -8],
+        [1, 0, 0, 60], [1, 0, 1, 121], [1, 0, 2, 47],
+        [1, 1, 0, -36], [1, 1, 1, -67], [1, 1, 2, -59],
+        [1, 2, 0, -25], [1, 2, 1, -41],
+        [2, 0, 0, 18], [2, 0, 1, 72], [2, 0, 2, 16],
+        [2, 1, 0, -35], [2, 1, 1, -62], [2, 1, 2, -40], [2, 2, 0, 18]
+      ]
+    }
+  },
+  "provenance": {
+    "entries_sha256": "9641e82fe6dead2a37df8062a462747f779c227f79adc135778835d71f36a80e",
+    "points_sha256": "46e3ca1caf6413c6b6f4d1bbc7ec7f7b83225d34badfb2bab081ea2dd11b1d73",
+    "oracle_output_sha256": "4aa508dd995b24b5c05a2922f411843797d3d21d96ac23095d7e10ee33a2b0c1",
+    "oracle": "digest-pinned ADES 2.4.2 split-0 execution"
+  }
+}

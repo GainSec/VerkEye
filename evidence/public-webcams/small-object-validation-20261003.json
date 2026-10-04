@@ -1,0 +1,81 @@
+{
+  "schema": "verkeye.public-webcam-small-object-validation.v1",
+  "run_date": "2026-10-03",
+  "model": {
+    "file": "yolov6n_hor.bin",
+    "sha256": "eb768eb6691c08a5648424bb3fbc4a5ee09a64584e7faa3236afa778f5f5eabf",
+    "substituted_or_retrained": false
+  },
+  "backend": "mlx-cv22-exact",
+  "profiles": {
+    "production": {
+      "minimum_normalized_area": 0.0010000000474974513,
+      "disposition": "binary-proved",
+      "default_for": "forensic run commands"
+    },
+    "small-object": {
+      "minimum_normalized_area": 0.0002500000118743628,
+      "disposition": "local operating profile",
+      "default_for": "interactive live viewer",
+      "only_changed_postprocessor_field": "minimum_normalized_area"
+    }
+  },
+  "unchanged_fields": [
+    "model bytes and SHA-256 gate",
+    "ten-split exact graph execution",
+    "six terminal output heads",
+    "raw head packing and decode math",
+    "class labels and class confidence thresholds",
+    "aspect-ratio bounds",
+    "border margin",
+    "NMS distance threshold",
+    "maximum detections"
+  ],
+  "results": [
+    {
+      "provider": "Singapore Land Transport Authority via data.gov.sg",
+      "frame_count": 8,
+      "production_detection_count": 0,
+      "small_object_detection_count": 1,
+      "accepted_detection": {
+        "camera_id": "2704",
+        "class_id": 0,
+        "label": "person",
+        "confidence": 0.10056990385055542,
+        "normalized_box": [
+          0.48842379450798035,
+          0.435824990272522,
+          0.5005468130111694,
+          0.5115434527397156
+        ],
+        "pixel_box": [
+          531.4050884246826,
+          264.98159408569336,
+          544.5949325561523,
+          311.01841926574707
+        ],
+        "raw_candidate_normalized_area": 0.000917964232232116,
+        "visual_review": "box is centered on the upper body of a motorcycle rider",
+        "source_index": 4690,
+        "grid": [66, 34],
+        "stride": 8
+      },
+      "result_file": "evidence/public-webcams/data-gov-sg-20261003/results/small-object-results.json",
+      "result_sha256": "ff1b4555acf2012a93329f8943bf2035ef0e3bff3920562f04ee7cc2953f54a5",
+      "manifest_file": "evidence/public-webcams/data-gov-sg-20261003/results/small-object-manifest.json",
+      "manifest_sha256": "6e04185cfea5408df490321872437686763b5118611fe2be78379303fbbf302f"
+    },
+    {
+      "provider": "NYC DOT Real Time Traffic Information",
+      "frame_count": 10,
+      "production_detection_count": 0,
+      "small_object_detection_count": 0,
+      "interpretation": "low-resolution and mostly night/glare source stills remain below the unchanged class confidence thresholds",
+      "result_file": "evidence/public-webcams/nyctmc-20261003/results/small-object-results.json",
+      "result_sha256": "c2275b441fafaac80b46d0832e51ba7ca23bd910a9065b98c6dd5c34d70837eb",
+      "manifest_file": "evidence/public-webcams/nyctmc-20261003/results/small-object-manifest.json",
+      "manifest_sha256": "41731b165df247d4d2abf814da378c2cd2d935e774b203a6f5cc8bb80d187e01"
+    }
+  ],
+  "claim_boundary": "This validates one visually correct accepted small-object detection without model substitution or confidence-threshold changes. It is not an accuracy benchmark and does not prove reliable recognition on every public traffic camera."
+}

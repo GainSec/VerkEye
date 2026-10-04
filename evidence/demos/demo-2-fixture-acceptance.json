@@ -1,0 +1,46 @@
+{
+  "schema": "verkeye.demo-acceptance.v1",
+  "demo": 2,
+  "asset": {
+    "path": "src/verkeye/assets/demo/production-scene.jpg",
+    "bytes": 365478,
+    "sha256": "459f3696a29606084bbb18e3e2acb2f435f72c31f74f5637c480db0267109741",
+    "source_page": "https://commons.wikimedia.org/wiki/File:Officers_Walking_on_Jinzhou_Street,_Taipei_in_Lunch_Time_20150901.jpg",
+    "license": "CC0 1.0",
+    "source_geometry": [800, 1280, 3]
+  },
+  "geometry": {
+    "policy": "centered-letterbox",
+    "target_size": [608, 1088],
+    "resized_size": [608, 973],
+    "padding": {"top": 0, "right": 58, "bottom": 0, "left": 57},
+    "scale": 0.76
+  },
+  "model": {
+    "path": "fixtures/models/yolov6n_hor.bin",
+    "sha256": "eb768eb6691c08a5648424bb3fbc4a5ee09a64584e7faa3236afa778f5f5eabf"
+  },
+  "operating_profile": "production",
+  "accepted_detections": [
+    {
+      "class_id": 0,
+      "label": "person",
+      "confidence": 0.10056990385055542,
+      "normalized_box": [0.2746865451335907, 0.32252979278564453, 0.5047252178192139, 0.5722070336341858],
+      "source_index": 11447
+    },
+    {
+      "class_id": 0,
+      "label": "person",
+      "confidence": 0.10056990385055542,
+      "normalized_box": [0.3898405134677887, 0.32252979278564453, 0.45574772357940674, 0.5722070336341858],
+      "source_index": 11448
+    }
+  ],
+  "visual_review": {
+    "status": "accepted",
+    "artifact": "evidence/demos/demo-2-annotated.png",
+    "note": "Both accepted boxes visibly overlap people in the central street scene; no non-person label is rendered."
+  },
+  "measured_at": "2026-10-03"
+}

@@ -1,0 +1,123 @@
+{
+  "backend": {
+    "backend": "mlx-cv22-exact",
+    "fastconv_session_count": 55,
+    "model_sha256": "eb768eb6691c08a5648424bb3fbc4a5ee09a64584e7faa3236afa778f5f5eabf",
+    "name": "mlx-cv22-exact",
+    "provider": {
+      "device": "Device(gpu, 0)",
+      "input_channel_chunk_size": 64,
+      "input_dtype": "uint8",
+      "numeric_path": "byte-decomposed float32 partial convolutions with exact int64 accumulation and CV22 requantization; byte-exactness must be established per registered operator",
+      "output_dtype": "uint8",
+      "provider": "mlx",
+      "version": "0.30.6"
+    },
+    "static_assets": {
+      "split4_mask": "154fad821b0f5ba811ef968165267d6d4fd26a53a9e5c1afaf173a61e0f55d32",
+      "split5_mask": "7789374e967c2ea33795ab70a5b083d30634f6fce95c3807d20e761f086fe904"
+    }
+  },
+  "banner": "DEMO 2 | BUNDLED OFFLINE SCENE | PRODUCTION PROFILE",
+  "capture": {
+    "captured_frames": 1,
+    "closed": true,
+    "dropped_frames": 0,
+    "license": "CC0 1.0",
+    "queue_policy": "looping-single-frame",
+    "sha256": "459f3696a29606084bbb18e3e2acb2f435f72c31f74f5637c480db0267109741",
+    "source": "bundled production demo fixture",
+    "source_page": "https://commons.wikimedia.org/wiki/File:Officers_Walking_on_Jinzhou_Street,_Taipei_in_Lunch_Time_20150901.jpg"
+  },
+  "controls": {
+    "pause_resume": [
+      "space",
+      "p"
+    ],
+    "quit": [
+      "q",
+      "escape",
+      "window-close"
+    ]
+  },
+  "elapsed_ns": 113965166,
+  "exit_reason": "frame-limit",
+  "fidelity": {
+    "dvi_hash_gate": "passed before backend execution",
+    "exact_recovered_model": true,
+    "physical_cv22_parity": "pending independent camera fixture",
+    "postprocess_operating_profile": "production"
+  },
+  "geometry": [
+    {
+      "identity": false,
+      "interpolation": "linear",
+      "pad_bgr": [
+        0,
+        0,
+        0
+      ],
+      "padding": {
+        "bottom": 0,
+        "left": 57,
+        "right": 58,
+        "top": 0
+      },
+      "policy": "centered-letterbox",
+      "resized_size": [
+        608,
+        973
+      ],
+      "scale": 0.76,
+      "schema": "verkeye.viewer-geometry.v1",
+      "source_size": [
+        800,
+        1280
+      ],
+      "target_size": [
+        608,
+        1088
+      ]
+    }
+  ],
+  "last_detections": [
+    {
+      "class_id": 0,
+      "confidence": 0.10056990385055542,
+      "label": "person",
+      "normalized_box": [
+        0.2746865451335907,
+        0.32252979278564453,
+        0.5047252178192139,
+        0.5722070336341858
+      ],
+      "source_index": 11447
+    },
+    {
+      "class_id": 0,
+      "confidence": 0.10056990385055542,
+      "label": "person",
+      "normalized_box": [
+        0.3898405134677887,
+        0.32252979278564453,
+        0.45574772357940674,
+        0.5722070336341858
+      ],
+      "source_index": 11448
+    }
+  ],
+  "metrics": {
+    "capture_fps": 0.0,
+    "captured_frames": 1,
+    "display_fps": 0.0,
+    "displayed_frames": 1,
+    "dropped_frames": 0,
+    "inference_fps": 15.18939266383017,
+    "inferred_frames": 1,
+    "recorded_frames": 0
+  },
+  "recording": null,
+  "run_id": "demo-2-2eb2a39340a2",
+  "schema": "verkeye.live-viewer-session.v1",
+  "source": "Bundled CC0 street scene"
+}

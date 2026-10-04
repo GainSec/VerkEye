@@ -1,0 +1,2308 @@
+{
+  "backend": {
+    "backend": "mlx-cv22-exact",
+    "fastconv_session_count": 55,
+    "model_sha256": "eb768eb6691c08a5648424bb3fbc4a5ee09a64584e7faa3236afa778f5f5eabf",
+    "provider": {
+      "device": "Device(gpu, 0)",
+      "input_channel_chunk_size": 64,
+      "input_dtype": "uint8",
+      "numeric_path": "byte-decomposed float32 partial convolutions with exact int64 accumulation and CV22 requantization; byte-exactness must be established per registered operator",
+      "output_dtype": "uint8",
+      "provider": "mlx",
+      "version": "0.30.6"
+    },
+    "static_assets": {
+      "split4_mask": "154fad821b0f5ba811ef968165267d6d4fd26a53a9e5c1afaf173a61e0f55d32",
+      "split5_mask": "7789374e967c2ea33795ab70a5b083d30634f6fce95c3807d20e761f086fe904"
+    }
+  },
+  "case_count": 29,
+  "cases": [
+    {
+      "case_id": "zero",
+      "inference_ns": 69632166,
+      "input_sha256": "544e279c457b5d02f1f57c62436f0cf4ff83acdb0f383b09dc0e2550b988ff3c",
+      "prediction_sha256": "3b1a1eda0ff0ccf25f4a7b37c4b0fabfb5206de61df27c6e1fc95b7fab722978",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "synthetic-constant",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "5126bcf96a01906ebbfd12b2c4f6f93253072665fc9b735f9002e6a639648fff",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "c008b501859838be0874e9d2094f7689041c523e2503701ffff990335c98f029",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "01ff994f76547507da944550323e2a22e86b46547a923ac3cc6c95e513e44120",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "fc4f3886c6e80de0fcc93b8b9fc317d0c6635624dcd8057ab1c4b61c45c88f38",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "62abeac9650ec3f502d57ce7ecb4bea7666f5ab5181dd323e6a2fd79edc62114",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "05ae283e750ef5b83c2c4812020dc5bf8b39d258da73f55a4d59445ba3d5cc6d",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "constant-127",
+      "inference_ns": 30059583,
+      "input_sha256": "66905f1656bc310c36943e33f5c3bfb40bfc235e35fea5bb18e19cea102e178e",
+      "prediction_sha256": "df73e36176661e8641157d66313f0d80ca5cbc3e1f06a449ad1d69c59f72058e",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "synthetic-constant",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "8dbc5f0c88b2bb0b787131c1db9c4b196dfb70c95e2468508c5595f58ca9c6c1",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "1bb9e049f919159cb7295c92a7676c9cce627b3621e05f908b7445d98cc1b38f",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "6dbcf21d607d8ec3201bd7f793e1bcd3df8d26baad9bc5cefc2f65dbaab55428",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "c85e25684c8eaca6385d450b47e5818d9702cb62cd421f2833accb86747ebaca",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "c1592c26554592b0a75d7bfe26f7dec6e9d664c0c8e14aadd163b1f75159052c",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "d6d5b15d2ec150f1704c5a5c5f1620a37bbf62969c25baeb6dc0a8dd922c13a3",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "constant-128",
+      "inference_ns": 30018000,
+      "input_sha256": "41a92de9ba2cc34a33fd23eb70dd14e09c1aa13419c3d5da76804a93d5ec4284",
+      "prediction_sha256": "d6bf3b184491510cc95c006388a57a58e664a73c396c76fb7070737e1398021a",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "synthetic-constant",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "d2fdb102bbe011d70f68068d098ced3d4ef932eb14e182dc8679229f86d9e064",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "2761ad47011e459f275b0aaaafa51c592fa4cb4b38bc60450b6dba33d9235208",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "b6a34b7dc06c5efac9ef42e8aef1229362beeda387aa8d1c6b5d54c8fc3333aa",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "09b90bb31ef622fcbdd0cfb547e6941559817dc1282a726a9a4b57c641781319",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "4f11cb8f53ac3aa1c33d999b36426d6c35338e45df39fac403c72a38a8970c16",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "83b73aaf359ce09b771a5e9d75f770d479fa7b3a809d316f73f4937dcb8f4b50",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "boundary-six-values",
+      "inference_ns": 30715583,
+      "input_sha256": "9ed09d812b1fba0620833d19a4b88e7561fdbd8b488d3df6468526e7a5588dc0",
+      "prediction_sha256": "b6bd7551ca94ea514c8638fdb84b07809e348f1060aaf5ae9ea65027df6cf787",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "synthetic-boundary",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "85bc131cfe34c0f40a7266a22a5761ec4f66860a9c9c8dfc002f91cb6f1af6a7",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "3a9dc771380f6718ccbc541f243a9fb698ce868929f68da69d08ae6e7a66bdcf",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "e4649816743bc1fc6bf04b3a10f1c48bd27cb2f0226af540fe5b1241e0a63fe8",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "910a9174416a9de6e5dda062712c70754769cd91100c2e3bbc1e6f428a6970d6",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "8f5b2342903bd35853ff0134c13befbd465147fa73e3ee0183d0fcf6f572d7d9",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "3c6fcff54ac6eced348b0d3d31a82682d13e2e248fc66483b786a1e4e4bb2ec5",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "impulse",
+      "inference_ns": 30521959,
+      "input_sha256": "546566c08badf6dbe309b5f8ef4eff1dfa39041fd1fc7e153fee4a4f81cc09ad",
+      "prediction_sha256": "ed6f1e35841aa9d8825fbd0d2178ce218610b9236cab6a7a93a2a678a13fc355",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "synthetic-boundary",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "2746a83afb684093b1675ff675a9aefe69662181fd5bcd7d1c634fd73d097b7c",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "1eec72d11a513b282282a25c3e4b97dc42e4385eeb25daa6d572f1c5ea22391c",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "556b10cc9fa14bcdf14dc220b8f3ce4c60aaaaab03c3f8088c4736e82e57ed42",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "7d35c2fd3d343b67ae4f8ab4a95907dfd52ccd4985bc54711ec12027a6575dcf",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "8dea7d7b10fe3f030fcff14b00f1b371e5aef09cd347384d8b82ca0d008c27c9",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "9ea1f03e543d6a568de1f9585058ef232e8f343be61c6a529a8f0a235959f450",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "ramp",
+      "inference_ns": 30457333,
+      "input_sha256": "da6f7ab222e52d778ec987ed6adcbf81f1983cc37042316214c09d2035b4cebc",
+      "prediction_sha256": "ece07bdc0abb3d64fe6b1606646e4183b44d53fa42401c76188a69b569a9a825",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "synthetic-structured",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "29ceeca33b2d2b2c21865a4054e098374b66b2450342a031e782493e2a608026",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "561f75a40168bdc0170b2f9d24811f1292a901f1ea97d2b6883a1c26d1bd1701",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "a15bb62d18907886b745ff448554d697832e398c64102f3a795bb781fd074d79",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "4b5fa01484c06383116160b3c4b912dbd570d8f490c8e0e859e0701594e0b60b",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "083c8896bf55d8f3f7c28da0e96138afe069237d5cfceaf8bc63417682f20fa9",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "fac0ed67df2443c5ead02cb9f8129c59fe186fb6fbdc1b7dc8226cd5cd5e1ae7",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "checkerboard",
+      "inference_ns": 30627084,
+      "input_sha256": "e5c291ce2a1f556a66ff65f339b64bdb8e404ba34dcf09ccdcd2e0ddb92c4df0",
+      "prediction_sha256": "5eba11697aa1665c4c40bc6dc74e634d1cdb73862460b32f34027746444fcf4d",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "synthetic-structured",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "6472e2da5a2a3d86805df5664339f8721c6e6b5707d2643af6a4311e3f869f34",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "9c29a04dfd24e2acba9f6288320854d00d9550ac7275f8cb29810f0d8469165b",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "ed21ba3820ce50f1c9072da801b335c08a6cd4c9c48f498de71b2c03eb4240bc",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "96802fa719f91b4a555998e61499aa8c0c7b37c4093bc4fd07eed133bd12c032",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "983c434767e0f5a90455cfcd67592dd9473a698253ce72249b436fffb1302c9c",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "c8f9c2490e632119355933f3d75142d2c9c794f58491de29548edb90c84cb00d",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "random-seed-cb62",
+      "inference_ns": 30747208,
+      "input_sha256": "3225a51c3ebaacb17ec45dfe0b1881455fbbf3716677bba2c70c8c2cc4c48dd7",
+      "prediction_sha256": "94191e435242bb6ead18b25efb756c904bfaa07871a797f993efff0074c986b3",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "synthetic-seeded-random",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "5d9d57f87b671c627f6b6ecbe21aeaf22b0a03ab52bca7edb173483236088a3f",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "7b09b7c3d4c322d45d6171cfed2e0864520833e3e5ce363b12a93b330bdd7a8b",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "a8a4c717cd1416ffb3c3c3b9f2caff5adb69bdd994a6585ec02e3b86492840e3",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "868209e375326fbb1c473bf06242d51da7fc1b1d22eed2efd34ceda65e821467",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "f8d1556714d57d990f0231e2de228515cd5611db13513fd5399a49ed76957bd1",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "a9ba3517a01d96c37d447653ca789d962d1af2a52584affaab879a170d05fa21",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "synthetic-media",
+      "inference_ns": 30823834,
+      "input_sha256": "43524d9582a21d2155eb74f7fd64aa608f71821b9a8067853fc8a82b1b5806ef",
+      "prediction_sha256": "2a89e6146c87c29f65a2155654575d320dae489a9ab67a01a61e7120d53f83ed",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "generated-image",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "a5e6c6f6d0030194196da4fa89affd68e9eac924f70630306a8df81495f65c58",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "2b84f3a3c4b0f444cd5665846ed90e813b40f93fd7ea712e6e63f1227111d6f3",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "ba0fb135e699fc5ad9a5bdffd0ef8637db039a8c47daf95a1237be350b581990",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "2a9e4ac4d73651e5c2aefd99a82785eff76e76790ed69cacf09e9a90cf0be2d7",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "5a12c49f7018e5bfda425c78aa09ff6778a5b0b508ee1176e3e02765b454b9cc",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "a8dfd13a2845f5769c38ba88e95ad61151414915f950c841ca8a075bece175f5",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "sg-camera-2701",
+      "inference_ns": 30415625,
+      "input_sha256": "0f083b8ed5b6a011fc918c22b74ce0612306ebc383d2d92a6e77ce5efe59260a",
+      "prediction_sha256": "b75d99133b17c5493f413a237340a904d42539549ee9c45eee5c06dc9bcd6fd9",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "public-traffic-camera",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "962cf8709368e47b6d5df91f0673cdda7ac9e0f7d6db048fe6161f83fd158ae1",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "06441aced3d9704a89d8bc74f7e327c560feb078c33c90377d95099bd9934d59",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "d7fbdf5db55e88c8b2bf9d4045394efbfc90afbf79abc9efbf0e66e3dfdecfde",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "551b6214ed095fc558ed568c0fc483f749f1af3f1ebc73046f3eff642843fc8d",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "89a9345674e8dd1c92ed425277070acc6072fdd5ec38bf16caa63b8c0793cca4",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "1cf8946fe4686111c9def66557c52dd4b49e342262063fd4b5e3298ba4549dc1",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "sg-camera-2702",
+      "inference_ns": 30245125,
+      "input_sha256": "224904aaac8cfcb838906d29ffc8e5831411b9e225d1e5b1cb9d7df5f9903bb2",
+      "prediction_sha256": "ba668d191af0f6bfbfb287cfbba37f431878d54107551295748f671b1c01b4c8",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "public-traffic-camera",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "14d56872fb759ced788bd2460c57bd4db5b92bbc7234e2779df2aa121e9534ff",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "fbb83d84f2aae40d8725c69955894feae4db9c4158acff6a76bef92f2e6d616d",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "f2fa9b5acbf8f3475a79ed4b5e7d18103e2107255faa42b654c3f775d5e743b5",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "7c81c667f1febf9de39ff691c27966daa86c2890edf41c3e15e950acf8382ffa",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "a262f14399a3471fba1c7ead9bb763a8e96f694fed05c72ac558ed6ba1923542",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "49a4e10ebd95f534fbf74c4eda5091e2b04e55d700698e13cf047861512d02bf",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "sg-camera-2704",
+      "inference_ns": 31042792,
+      "input_sha256": "2de7206d4d46d965169fe8cc7f4dec899d020403d2fcdcd2f0be5fa547c63347",
+      "prediction_sha256": "4f206889c144eeba093e6c1de850c3e9154372dc02b5bd673db6c97919a04b47",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "public-traffic-camera",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "ef96c74972bed1f3c91cb572f27f2653e957d23088345b324e96f06c6c484890",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "a23eb4c6e8ded0f4a2bb1b34088f6db95ce37113efddecf4fa67aaf6130e489d",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "5db7b382a483cbd240df07ead1f42aa980356b1328ad00e2f588858e03e722c3",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "e06b11aa4cd0e9bf06581c118dd65351ba995e2af7df2e91558b3ec10e14c117",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "aa8a6538837b0eacb8106cbd8e8ab25347a3cc9a48fa4069fdc9cf108438dc22",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "de981d2ff8d58f75434af3abc91ebf06370bf871d8f41b4bf5d6ec7b8cd9f85b",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "sg-camera-4703",
+      "inference_ns": 30446208,
+      "input_sha256": "cd4e0a6da12b63fdd69cfd2cb72f0291c8a90b0e4aa82b2f27a7fd55863903f9",
+      "prediction_sha256": "060abe72dda7c06b46f945ee172e0e41eb2baa18dad41cc65732c009ced0650b",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "public-traffic-camera",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "eba4ede6074913fa594775bd032178b3d6ecfaefbcadd109c6ebd145258c16f6",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "71e6a36db067ab1b0cb1546f38692e04dfb34e28ab23461a267b2ddefb4e52e5",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "abe2ba6188043731b2922641708d281d979fa541c2b1c3add9c4dba48c5221f5",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "2b8fc152ac18813504a5e1950132d02f3eaf9f228a0a627215ca91ca5f282ae0",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "5e487d73f3289480ef8eb78fc12cf2d312fc24de1418943515feecc2b60ce808",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "fe9918be321ceea442a6868875f16da6085b4fb99eebbda2ff81847a6c533b66",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "sg-camera-4712",
+      "inference_ns": 30278125,
+      "input_sha256": "855110143f023d559c4a58814da07d5da1d65ac520c2dac49e88cbbb673fe41e",
+      "prediction_sha256": "924575597a412d9637735e3d1ee753451dda605678e581f0b5869b3a9235f633",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "public-traffic-camera",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "0eeea7b4cce1f1d1c305720602e3a45a475574625c33617dd0e523b003da5ee8",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "b5e950d60f7b3550c6c564eeefb8d0690aba27519e19326d5f9eb5a24bacb91b",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "28bbe0dbf2bd38d3530cdd033bdace2d362c10cc07b7c1e5756835baafec5383",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "bd3222f84992f0ed2f24b5b39e360bf031772a3331730316608e96884c81c80b",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "5b594b622753b7584ed7d6203161ff0050a0d5e312d9f7d30f77b07b28f42659",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "506f9adfcb5447d3a9bb936ab176fd811294fc3aa3af3402475b884a0296d510",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "sg-camera-4713",
+      "inference_ns": 30449083,
+      "input_sha256": "0a03952fa4ad2a6c2b9c91e84d34c53023e8868a0d4bbf7418fdc1209eb58464",
+      "prediction_sha256": "89db2fe10c70087e8d7e56ca872fbc5c51a1f48ea3a3b876f7c7a4f4f62ab978",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "public-traffic-camera",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "b841faa25b15a13184418ffa21f33f235b15bffa833a4585d12a0487828b3859",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "cb17f986e2a0f5433db57cde7193a911edd41dd8b1ead249705d936a1db32edf",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "79ac20aa858afd2b87aeb57569b3dab5d2792184d67793fcee778d311e083fce",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "0917314463cdeb4628b22ddfb4ac39d8c21501f10a540673f99a356544ae5967",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "b65e11da8a7df94f98fc38629981ff2eaa2b00ef24ece186d086077b19ef6da4",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "38281e7a2b84d8e27b515dcd4999ac9ebaf9ffcbad7f77caa1e3e85fa22b2969",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "sg-camera-4798",
+      "inference_ns": 30235208,
+      "input_sha256": "36fcf45f134c1a27fc7fc339e22cc15283787b1b90f31955549217a94a42375c",
+      "prediction_sha256": "bfd43792437f2a675a21e3f4b5c1260791576aac1357be2c13cd9a9b52f3ab95",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "public-traffic-camera",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "c690f91d801ed2b5bb65cf78c4f6d411371de00397b5bbb8d43fd5adc87a8a46",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "3d58794bce8528b0b485517488bc63181ccc5c0efd85685c4d79a73fcdc37cbb",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "a7b00ad45304f7caf63115028b125873e5ae2e4ad747b1c5bfcb6d183ad0d73b",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "1260632ff93353d8121ffe3e669d634ed11fd4807901d9c7382e99d9283d7bce",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "ff11320d3ef6da688e42ad973a5d08fe50a952daab53ceb666ab3c67b9dd4ad8",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "237d48ac08183ae3f36dcb9776716f8302aef340ef6594b39f80054d7b3bf1bd",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "sg-camera-4799",
+      "inference_ns": 30373417,
+      "input_sha256": "b4cd8824b0bd136dd4182602a92c9a3a83e097bafb075c9c61afe122f8a1b0b7",
+      "prediction_sha256": "ac490bc0692f9efaf3fd1b44d4f035ef7315fc1283984f238cb05d917cbac35a",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "public-traffic-camera",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "4804cfe9a53490af8020ff87ec1d6f65b4c5a7fc49a35fb2d6e09d231747a29e",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "b8266a8a32c614ae51dc90896062ae6a8fe18553a009c19346e66d3b9d720d11",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "9fee3d14ae733a66d7c32732f8233fc956285bd9ce381088db34f08143387b8c",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "af313c1528ef40383fba57f1f87147c02a68471513bca66e6d07bb5cc7ca1d36",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "f763f855fadc507ecde9eaa2f9b5c1cc98d74ee02d3badefdd6d356adda60e35",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "4b318f535188cae599ded718b593009479056aee8e8aad4ec22021c072c0bf30",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "nyc-bronx-bruckner-expy-sheridian-blvd",
+      "inference_ns": 30371583,
+      "input_sha256": "57a442e26d3f371eaf3eef5f7d83020d950bf89e61a476f462f4a8008a632d35",
+      "prediction_sha256": "f81712266052c6352c2eccc4e7cdf2171e77e26105827a16568b0845d1115665",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "public-traffic-camera",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "e5412a36d3db96443a487cd667d91c2bb741e38ed6bc6841110df1cb6c27759f",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "1d9aa66bfe78e89cb18bf39b78f4c8166afa8560c18dae18f0ae1633b70ea8ca",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "684eff1aaf9ec17a50ea74fb099e1b2e4cbbeca0c0de7daee0f1afa8b2c18402",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "2eb2a4f4950201d1eadbefe43d200f3794f979db2ddbde2de29adedf1e26fc06",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "4900d4b7a97459a6b7422d65ed47c4372688f4cfee9ef72248a0d4688c7231bc",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "5b4543ee8969b5d744bfdd0982098fa561fd3c3d72624181605018cbaa13d4bb",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "nyc-bronx-grand-concourse-bedford-park-blvd",
+      "inference_ns": 30291917,
+      "input_sha256": "6e1fd0984ec7833a1de80da2ca1dae567f482a7a9da9f0bd6b6141299d41c23c",
+      "prediction_sha256": "ef407118793875437718d5d9ba18241aa28254d0a1d64a938457bfd3dad98379",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "public-traffic-camera",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "a3d730f649fdddcbbe40e1d5a687b47fc270cde428320a0ae94899091ac52ea1",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "ee39b313ba45a660e632b844b17ed63d09ed627db1fa9f7540a453f9358f19cd",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "d166b4f026d68b112b3cca569ae244e96ea32c52af823c8ab0882e5e1ed3527e",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "ef320fff1cd1657c5449a605048915627ef0b165cd63197fd070487ab4a2310b",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "82c373ac2930498db1b40e7a0a5d9eee84f1226c8e9b7705970a202dee5d1df0",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "3978876a6f34471d636d7197dd5036c8a635fdf382ea46e5ce84624f0ab68589",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "nyc-brooklyn-bqe-pearl-st",
+      "inference_ns": 30239500,
+      "input_sha256": "c3e8c03b20cf4e655f71b64b4d0f212cdfb66509a6f9e943ffa0c8485491dda7",
+      "prediction_sha256": "4a3611237eb30ad045a75726b255b125072f9dbbd4d057d485056c1383046e9c",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "public-traffic-camera",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "179d0f1eb6740fa16a0288ed680d509103bc24c1f18849e125bcb25da2e0e3b8",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "cfe59d43e14c04d77b7600b72d5bbf14870d3d1b15874eec25604d96d5b97227",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "c9e00b2d3ab2eab9de68436b5c0dc2e016218b54ab11dd24645ebd1b6ab98698",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "92d4a20db1a5c7a2cb2352c810cc208e9c41326239283682f9438659a48e49db",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "f926312e7cd57c28c3383430daf66efb47dd690ad84da7f6e5c687d2621554c3",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "d76b3f27e05c3ff86cf001d2305ea1bcd7bccafb26e23d1cbd8ab90a54fe74b3",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "nyc-brooklyn-flatbush-ave-dekalb-ave",
+      "inference_ns": 30412625,
+      "input_sha256": "70d0c7585cad96b04e2c6b7994a3198c63bf5053264e04fa7dfc1a8d75fb0df0",
+      "prediction_sha256": "cbed2e6e4a8d63355517c7ee74b87569fa516e95ba5f6e59812d578ecd728b2e",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "public-traffic-camera",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "88542d17101218a1e475cb887360f02cf46be69d3a7082cc9d8298a4cdbf2543",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "87999f8fb1bf8efa4ad5eea9ad25d1bb4120b5b4e29257f4d4d6672c2ca1965e",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "ec94e4d0b4141632b9f19ee487c6346dcf9db76f7f6e7310a2a62b89568dab3c",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "02bb526fbb4768d207e1e3c33bcb2c1664e87e43089aa2d73032ea33de712d33",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "6bc1e4fc4436aa97e47c3be58bb486ed2c0ccd433a9ba6822a3de6a8eaa7d6ff",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "1684e300b990eb942ecb2587f37c6664f9ece120a3b2cf9a9e8de008a3085bcf",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "nyc-manhattan-broadway-45-st",
+      "inference_ns": 30447958,
+      "input_sha256": "c646b7ca5149de0630cffda38e4b624c51872cb5933029965e0d7490a57b592b",
+      "prediction_sha256": "a44467032a22a71e19486b9f8a083ae1396cd9f3d4d1ef1893c09784b12bf14f",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "public-traffic-camera",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "0a997bc7e815b0c8f5aa0c7f16fcb6d83f01968ab6fca5add6dc4d678fa9a051",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "5fbf799106c504361afe88e676928cd677ebd48cfa5b5586174a6e212ea670f1",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "b2ac51c4c04bad5e7402cd10cde2f51741f4de9c835995609e3a875f86eab378",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "b9aeaa51ab3912e6700595d47b37138d58cf65323ccf3bd84e6768f3b5f1b5a9",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "91de75dcf248172d35f8a1d4fc321a51411e15a97741f7adceeed8ea028d93da",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "43b6b6fceecd7de5775b6eb568dae99d19783ef9d1c5a92b740f4096ee92a261",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "nyc-manhattan-central-park-west-86-st",
+      "inference_ns": 30431459,
+      "input_sha256": "9cbc9078464c946a515ad733682652b5521744e0f57e6fa09863dcd6fbac5ac6",
+      "prediction_sha256": "76bb6659b9d0936b8cb1dda7858a28928eed5c0e0e3c6c1b7d3faaf65ab56dc6",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "public-traffic-camera",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "8bc68f03a42267ca4f7f5edc62c0afb86ee25b2797471ca361e98bada0559431",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "bd03bb20b0307b5b414fcfb1de61699abc2e047c32530678957df1451e96bfc6",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "1b284ff4b77c0c90f20d4d4ffdbd519c97b3956c44dcc120966a03d8911a82b5",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "c151aba85036fd19dc477b685357a119eb996ca62653c11c39001bd9cb9b5823",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "8a6e5f72268b916cf40dd775a45d8e835c713bbc5fe7315e72a43f4cb6a766e5",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "7e778f532baa336f485dc00365315e90e2c0f9d2c9eeddc42a3275b0f16ef050",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "nyc-queens-jackie-robinson-pkwy-forest-pk-dr",
+      "inference_ns": 30477375,
+      "input_sha256": "adec6b60cb4e54f111bacfee69133536dd9c1e474d1eb30918738ee9147b280d",
+      "prediction_sha256": "f3a172fecb0271f2076d24ed5cf749f0b06ae56e39c12d0457c03063b917ac1d",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "public-traffic-camera",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "d577f8c77ea22fe34eb1e4202ab4cd4f8ab187c1b0e974ac77cfe5ced3884ad0",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "1222dbf47aaa052278082a30bc37550b424672b74a3b3450ef67212a2c4a679e",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "1068394ebc28ff5b5ed3cc9f47fb71c553fef9bd2080f3f558721eb967af94a3",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "2ea98a0872166dbc2ba2941c3ea13e2e4e2c61076a173f93dd00eb8a7ed8f9b5",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "79ed6d5535f1a4b3ac158daed4cd4e0f0a05a235964124479802aff76e1bd0dd",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "95ebc5ae297ea13e5b7cbeabbe35f747ff28281be4c8f0cefcda8ade53b6e194",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "nyc-queens-queens-blvd-39-st-east",
+      "inference_ns": 30385958,
+      "input_sha256": "b78b9dd7a5ba3664142ae566efe216fac993fed0e03b74e519b834028007ca70",
+      "prediction_sha256": "455db0c9753fb711a8dc7430a0ab3ea30ee3cd7cb3ecaa056ba7c1bd3a0b4925",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "public-traffic-camera",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "060beeb50a0ccd8f0bc80b2f36fbbe9219262066d225c48ef53d0ab859a0d170",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "50966bfabc76ef2cab225c4169ba3dd52cc708c99d8347f75c7dc6e19d52be5c",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "7e909fa7ddc345ffdbaad81695209b455501644ebb7d49974205a2c3328f5110",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "ea6323ebc24a6d37f6d1b3dd53669939e25dccc6910ffb007bff2022e5b7c02d",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "d9cc930b65e13ef9d24a39e850a5282269ce714f9f4def68e541f82b0c2c6197",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "7387643b17ba2a5c0c3757aa0b221a963c0a17346dec921b145eb2618c8a130d",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "nyc-staten-island-hylan-blvd-arden-ave",
+      "inference_ns": 30419459,
+      "input_sha256": "5f44a9b12be2e57f34080e2b1f740915b2e0a1684a0444b1d11fdee918f67aa0",
+      "prediction_sha256": "c2dcd5c0a37a4e01423f2b1f141f2eb52513a8a1c88052e66125a99946cff21c",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "public-traffic-camera",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "d986d4e84397e2b96c66060d8a8c258d52bc73e6fc10670acdca30e7cd041c02",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "a7ccf997921defe061f10af8932697a01cc7fb27f6a050122c252f51bc74bdcb",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "9179ee99c24710c346b82b9a09f8da58a9b3c1dc83dd14e38cbefcff5081bebf",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "653f004c97b1335d10640c2c9442178e04eecc0b122eb969d575feb4758a4a4f",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "e887f3834f5d886d6d358cacfb61ba148a871d48f2d7bcbb8f9ed4965ee107ef",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "3120f1c6ddd3db8c72f7746d0d974f7388f2c71a5a779b276cd97c3e6f15fe8f",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "nyc-staten-island-sie-clove-rd",
+      "inference_ns": 30408125,
+      "input_sha256": "276475a8758bb7b2b13fc89c375d06d1c8113953fb8dc548cf347c88b8c349cd",
+      "prediction_sha256": "4725a24aa7f342ff5db176e5677e9e35e0a5124ca3eda4a21b18efe868988439",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "public-traffic-camera",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "83d1688a2094e1f7fb398e9d4eaa2feb84be3d107424a6aee241dfe4f9817eb6",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "82eb7c97cf09fa22a0aa42f7f702ec21a9b78ded8f119913770a85491c6213f4",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "46cd1d37a5c5756178b65a4848e5abf856b659bb23707686f7802e94e0edd019",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "cfe7c5e40560ff4ae7befd1e99ff229bcd591c854ae2a4b3e8b077ce0f53f7cc",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "614de4be29dce2b5f17f20906aa3d2d12770311c6f5ab6f2c50056793602bac2",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "de2e7726637f96f72899c85da02b8b9688c96f79ea7c69141806ce512212e90a",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "video-testsrc-frame-0",
+      "inference_ns": 30280250,
+      "input_sha256": "43524d9582a21d2155eb74f7fd64aa608f71821b9a8067853fc8a82b1b5806ef",
+      "prediction_sha256": "2a89e6146c87c29f65a2155654575d320dae489a9ab67a01a61e7120d53f83ed",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "decoded-video-frame",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "a5e6c6f6d0030194196da4fa89affd68e9eac924f70630306a8df81495f65c58",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "2b84f3a3c4b0f444cd5665846ed90e813b40f93fd7ea712e6e63f1227111d6f3",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "ba0fb135e699fc5ad9a5bdffd0ef8637db039a8c47daf95a1237be350b581990",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "2a9e4ac4d73651e5c2aefd99a82785eff76e76790ed69cacf09e9a90cf0be2d7",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "5a12c49f7018e5bfda425c78aa09ff6778a5b0b508ee1176e3e02765b454b9cc",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "a8dfd13a2845f5769c38ba88e95ad61151414915f950c841ca8a075bece175f5",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "video-generated-frame-149",
+      "inference_ns": 30353167,
+      "input_sha256": "9113e1ff51357423992149c907575a3ed0629b4d2df718edb3f44e09d57a0c6f",
+      "prediction_sha256": "06a0b0216761e25e96b0368fa4ddca28d867c8f295f2cdb920a6fcbe6e8f5537",
+      "production_detection_count": 0,
+      "production_detections_exact": true,
+      "provenance_kind": "decoded-video-frame",
+      "terminal_tensors": {
+        "output_0": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "85aa04d8ddd266d31966ef640f8ade79e9e8666f2d9f96cb1093c3d9ee8ef7e5",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_1": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "d4f0ad9afdc3705071970cde62bdbac65e6557127abcf84d2d8c65d2f6551714",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_2": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "6d13e50e4aa29b7ec8f818e47f27aca57f35bdcc38e24a7169a391667b2872c9",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        },
+        "output_3": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "795398176d2a88cf90ed3b28adae5f43a50260b9c0df77d0e42e6985b314e7e0",
+          "shape": [
+            1,
+            4,
+            76,
+            136
+          ]
+        },
+        "output_4": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "092405dc9a1b5eed0e4b4c922db2d82f06587257781d2083efcbef8d13b9f1b0",
+          "shape": [
+            1,
+            4,
+            38,
+            68
+          ]
+        },
+        "output_5": {
+          "differing_bytes": 0,
+          "dtype": "float32",
+          "sha256": "fdb2d25bab8505163fc69ba92a8da4f190e548be9b93007fbb29f2eb620303ff",
+          "shape": [
+            1,
+            4,
+            19,
+            34
+          ]
+        }
+      }
+    }
+  ],
+  "catalog": {
+    "path": "<repo-root>/fixtures/oracle/terminal-parity-catalog.json",
+    "sha256": "c1e64e524b0d54a4d7c19a1d79843973828953921c51d2ea667b4cd420b14e05"
+  },
+  "category_counts": {
+    "decoded-video-frame": 2,
+    "generated-image": 1,
+    "public-traffic-camera": 18,
+    "synthetic-boundary": 2,
+    "synthetic-constant": 3,
+    "synthetic-seeded-random": 1,
+    "synthetic-structured": 2
+  },
+  "command": [
+    "<repo-root>/.venv/bin/python",
+    "scripts/verify_accelerated_equivalence.py",
+    "--backend",
+    "mlx",
+    "--json-out",
+    "evidence/equivalence/macos-mlx-terminal-parity.json"
+  ],
+  "created_utc": "2026-10-03T09:01:02.689397+00:00",
+  "elapsed_ns": 1248134000,
+  "equivalence_boundary": "identical uint8 CHW bytes entering the recovered CB62 model",
+  "host": {
+    "machine": "arm64",
+    "processor": "arm",
+    "release": "25.6.0",
+    "system": "Darwin"
+  },
+  "model": {
+    "path": "<repo-root>/fixtures/models/yolov6n_hor.bin",
+    "sha256": "eb768eb6691c08a5648424bb3fbc4a5ee09a64584e7faa3236afa778f5f5eabf"
+  },
+  "oracle": {
+    "cavalry_hash": "c5db5f1",
+    "cavalry_version": "2.1.7",
+    "container_image": "xiezhouyi/cnngen@sha256:4c4266444740d9d52f6dd695fff86763ebb51dfb01b0c9778ca20209308cdcdb",
+    "name": "ambarella-ades-host-emulator",
+    "platform": "linux/amd64"
+  },
+  "pipeline": {
+    "path": "<repo-root>/evidence/compatibility/cvproc-yolov6-pipeline.json",
+    "sha256": "c42e1aa765df5ff03354858f6701a315ff0aa635a82796c87f5f54804e9a68be"
+  },
+  "prediction_mismatch_count": 0,
+  "production_detection_mismatch_count": 0,
+  "schema": "verkeye.accelerated-equivalence.v1",
+  "source_commit": "4c933f516728e2089a4a0a80dd9095d716b394ec",
+  "status": "passed",
+  "terminal_tensor_count": 174,
+  "terminal_tensor_differing_bytes": 0
+}

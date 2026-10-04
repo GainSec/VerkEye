@@ -1,2 +1,2 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+.runtime/ades-split4/*.log whitespace=-trailing-space
+.runtime/ades-split5/*.log whitespace=-trailing-space

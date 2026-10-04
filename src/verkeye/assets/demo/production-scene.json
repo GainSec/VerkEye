@@ -1,0 +1,14 @@
+{
+  "schema": "verkeye.demo-fixture.v1",
+  "title": "Officers Walking on Jinzhou Street, Taipei in Lunch Time 20150901",
+  "author": "玄史生",
+  "source_page": "https://commons.wikimedia.org/wiki/File:Officers_Walking_on_Jinzhou_Street,_Taipei_in_Lunch_Time_20150901.jpg",
+  "source_asset": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/49/Officers_Walking_on_Jinzhou_Street%2C_Taipei_in_Lunch_Time_20150901.jpg/1280px-Officers_Walking_on_Jinzhou_Street%2C_Taipei_in_Lunch_Time_20150901.jpg",
+  "license": "CC0 1.0",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "retrieved_at": "2026-10-03",
+  "bytes": 365478,
+  "sha256": "459f3696a29606084bbb18e3e2acb2f435f72c31f74f5637c480db0267109741",
+  "source_geometry": [800, 1280, 3],
+  "purpose": "Offline Demo 2 production-profile acceptance fixture"
+}

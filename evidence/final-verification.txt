@@ -1,0 +1,178 @@
+VerkEye end-to-end verification transcript
+Date: 2026-10-02
+Branch: feature/verkeye-mvp
+
+1. Complete source-tree regression
+
+$ PYTHONPATH=src pytest -q
+........................................................................ [ 21%]
+........................................................................ [ 42%]
+........................................................................ [ 63%]
+........................................................................ [ 84%]
+.........................................................                [100%]
+346 passed in 21.09s
+
+Kali mirror:
+
+$ cd <owner-storage>/verkeye-goal-run && PYTHONPATH=src python3 -m pytest -q
+........................................................................ [ 20%]
+........................................................................ [ 41%]
+........................................................................ [ 62%]
+........................................................................ [ 83%]
+.........................................................                [100%]
+346 passed in 42.79s
+kali_python=3.14.6
+kali_regression=PASS
+
+2. Workbench-document regression
+
+$ pytest tests/test_workbench_docs.py -q
+....................                                                     [100%]
+20 passed in 0.03s
+
+3. Exact still-image execution
+
+model_sha256=eb768eb6691c08a5648424bb3fbc4a5ee09a64584e7faa3236afa778f5f5eabf
+pipeline_evidence_sha256=c42e1aa765df5ff03354858f6701a315ff0aa635a82796c87f5f54804e9a68be
+container=xiezhouyi/cnngen@sha256:4c4266444740d9d52f6dd695fff86763ebb51dfb01b0c9778ca20209308cdcdb
+cavalry=2.1.7/c5db5f1
+input_sha256=7c035322e7dbafed39ebd1ff41a330181ae59d21680cc784e2e1f6c0409b9503
+decoded_bgr_sha256=1fe44700ca39aa3cccdd067fe2c14398b14ed753afab7d696c87c41bf2266e50
+split_count=10
+raw_tensor_count=22
+backend_wall_ms=35827
+prediction_shape=[13566,8]
+prediction_dtype=float32
+prediction_sha256=2a89e6146c87c29f65a2155654575d320dae489a9ab67a01a61e7120d53f83ed
+detection_count=0
+exact_still_image=PASS
+
+4. Exact lossless file-video execution
+
+$ PYTHONPATH=src python3 -m verkeye.cli run \
+    fixtures/models/yolov6n_hor.bin \
+    --video .runtime/cb62-testsrc-one-frame.mkv \
+    --max-frames 1 \
+    --backend ades \
+    --workspace .runtime/ades-cb62 \
+    --run-id mac-video-testsrc-001 \
+    --json-out .runtime/mac-video-testsrc-001.json \
+    --manifest-out .runtime/mac-video-testsrc-001.manifest.json
+wrote .runtime/mac-video-testsrc-001.json
+wrote .runtime/mac-video-testsrc-001.manifest.json
+video_sha256=cdc54ac8750075cbc555795eb1f23bbb331fc33e06810a9a3d88759183402e2b
+decoded_bgr_sha256=1fe44700ca39aa3cccdd067fe2c14398b14ed753afab7d696c87c41bf2266e50
+split_count=10
+raw_tensor_count=22
+backend_wall_ms=35220
+effective_backend_fps=0.028392958546280524
+prediction_sha256=2a89e6146c87c29f65a2155654575d320dae489a9ab67a01a61e7120d53f83ed
+still_and_video_prediction_hash_match=yes
+detection_count=0
+exact_file_video=PASS
+realtime_claim=no
+
+5. Kali exact still-image and file-video execution
+
+$ cd <owner-storage>/verkeye-goal-run
+$ sudo -n bash -c 'umask 000; PYTHONPATH=src python3 -m verkeye.cli run \
+    fixtures/models/yolov6n_hor.bin \
+    --image .runtime/cb62-testsrc-1088x608.png \
+    --backend ades \
+    --workspace .runtime/ades-cb62-kali \
+    --run-id kali-image-testsrc-001 \
+    --json-out .runtime/kali-image-testsrc-001.json \
+    --manifest-out .runtime/kali-image-testsrc-001.manifest.json'
+wrote .runtime/kali-image-testsrc-001.json
+wrote .runtime/kali-image-testsrc-001.manifest.json
+
+kali_image_backend_wall_ms=65795
+kali_image_raw_tensor_count=22
+kali_image_prediction_sha256=2a89e6146c87c29f65a2155654575d320dae489a9ab67a01a61e7120d53f83ed
+kali_image_detection_count=0
+kali_image_exact_inference=PASS
+
+$ sudo -n bash -c 'umask 000; PYTHONPATH=src python3 -m verkeye.cli run \
+    fixtures/models/yolov6n_hor.bin \
+    --video .runtime/cb62-testsrc-one-frame.mkv \
+    --max-frames 1 \
+    --backend ades \
+    --workspace .runtime/ades-cb62-kali \
+    --run-id kali-video-testsrc-001 \
+    --json-out .runtime/kali-video-testsrc-001.json \
+    --manifest-out .runtime/kali-video-testsrc-001.manifest.json'
+wrote .runtime/kali-video-testsrc-001.json
+wrote .runtime/kali-video-testsrc-001.manifest.json
+
+kali_video_backend_wall_ms=64981
+kali_video_effective_backend_fps=0.01538911374093966
+kali_video_raw_tensor_count=22
+kali_video_prediction_sha256=2a89e6146c87c29f65a2155654575d320dae489a9ab67a01a61e7120d53f83ed
+kali_video_detection_count=0
+kali_video_exact_inference=PASS
+all_22_kali_raw_tensor_hashes_match_macos=yes
+kali_decoded_bgr_hash_matches_macos=yes
+kali_prediction_hash_matches_macos=yes
+
+6. Built-wheel contents and clean installation
+
+$ .venv/bin/python -m build --wheel
+wheel_sha256=806c14a6d315b75909b0e5d57a8efbfb1b7f21a05efcc6c1bc609973c7b97ef8
+wheel_install_with_runtime_extra=PASS
+installed_runtime_spec=share/verkeye/ades/cb62-ades-runtime.json
+installed_pipeline_evidence=share/verkeye/ades/cvproc-yolov6-pipeline.json
+installed_executor_source=share/verkeye/ades/ades_executor.cpp
+
+The installed CLI was launched from /tmp rather than the repository. All three
+runtime defaults resolved to the installed share/verkeye/ades files.
+
+installed_live_import=PASS
+installed_queue_size=2
+installed_runtime_spec_absolute=yes
+installed_runtime_spec_cwd_shadowing=blocked
+installed_wheel_run_id=installed-wheel-image-003
+installed_wheel_split_count=10
+installed_wheel_raw_tensor_count=22
+installed_wheel_backend_wall_ms=36013
+installed_wheel_prediction_sha256=2a89e6146c87c29f65a2155654575d320dae489a9ab67a01a61e7120d53f83ed
+installed_wheel_detection_count=0
+installed_wheel_result_sha256=20f8d09ffec473f2fb96743961e0600bc74a76e613948c2ab71ef970d300497b
+installed_wheel_manifest_sha256=fd517c0d0ebada371d8c6b04b64e7734f5dc895a4de702297777984135c26bb1
+installed_wheel_exact_inference=PASS
+
+7. Fail-closed boundaries
+
+direct_onnx_conversion=blocked
+physical_cv22_parity=pending independent camera fixture
+stateful_cross_frame_deduplication=not implemented
+webcam_requires_explicit_max_frames=yes
+webcam_queue_policy=drop-oldest
+webcam_queue_default_capacity=2
+webcam_drop_accounting=captured,yielded,dropped,discarded_on_close,queued
+webcam_capture_timestamps=monotonic_ns
+realtime_throughput=not achieved
+
+No public model, substitute weights, guessed graph operators, or approximate
+model was used. Image, frame-directory, video, and webcam inputs share the same
+exact decoded-frame execution core. The webcam route is test-covered without a
+physical camera; a physical webcam smoke remains optional follow-up evidence.
+
+8. Workbench publication
+
+Updated objects:
+- VerkEye — Overview & Architecture
+- VerkEye — Conversion Status
+- VerkEye — Local Runner Guide
+- VerkEye — Task Board
+- VerkEye — Research Journal & Raw Evidence
+
+All updated object-content GET readbacks matched local SHA-256 byte-for-byte.
+Every updated public object page returned HTTP 200.
+publication_status=SYNCHRONIZED
+
+9. Diff hygiene
+
+$ git diff --check
+(no output)
+
+closure_regression=PASS

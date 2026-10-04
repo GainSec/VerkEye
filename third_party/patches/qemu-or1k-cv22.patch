@@ -1,0 +1,340 @@
+diff --git a/target/or1k/cpu.c b/target/or1k/cpu.c
+index 66c00c0..e317f19 100644
+--- a/target/or1k/cpu.c
++++ b/target/or1k/cpu.c
+@@ -242,6 +242,23 @@ static void openrisc_any_initfn(Object *obj)
+                       | (IMMUCFGR_NTS & (ctz32(TLB_SIZE) << 2));
+ }
+
++/*
++ * Local CV22 compatibility model.
++ *
++ * The recovered Ambarella scheduler is compiled for an OpenRISC core with
++ * CPUCFGR.ND set.  Keep this model separate from the architectural "any"
++ * model so the diagnostic compatibility work does not change established
++ * QEMU CPU behavior.
++ */
++static void ambarella_cv22_initfn(Object *obj)
++{
++    OpenRISCCPU *cpu = OPENRISC_CPU(obj);
++
++    openrisc_any_initfn(obj);
++    cpu->env.cpucfgr |= CPUCFGR_ND;
++    cpu->env.cv22_extensions = true;
++}
++
+ #ifndef CONFIG_USER_ONLY
+ #include "hw/core/sysemu-cpu-ops.h"
+
+@@ -319,6 +336,7 @@ static const TypeInfo openrisc_cpus_type_infos[] = {
+     },
+     DEFINE_OPENRISC_CPU_TYPE("or1200", or1200_initfn),
+     DEFINE_OPENRISC_CPU_TYPE("any", openrisc_any_initfn),
++    DEFINE_OPENRISC_CPU_TYPE("ambarella-cv22", ambarella_cv22_initfn),
+ };
+
+ DEFINE_TYPES(openrisc_cpus_type_infos)
+diff --git a/target/or1k/cpu.h b/target/or1k/cpu.h
+index fc4387c..38ac77e 100644
+--- a/target/or1k/cpu.h
++++ b/target/or1k/cpu.h
+@@ -215,6 +215,20 @@ typedef struct OpenRISCTLBEntry {
+     uint32_t tr;
+ } OpenRISCTLBEntry;
+
++/*
++ * Bounded, sparse backing state for the two Ambarella CV22 DVP operations
++ * whose operand semantics are established by recovered firmware self-tests.
++ * Unknown reads and capacity exhaustion trap rather than fabricating device
++ * defaults or silently evicting state.
++ */
++#define CV22_DVP_REGISTER_COUNT 256
++
++typedef struct Cv22DvpRegister {
++    uint32_t address;
++    uint32_t value;
++    bool valid;
++} Cv22DvpRegister;
++
+ #ifndef CONFIG_USER_ONLY
+ typedef struct CPUOpenRISCTLBContext {
+     OpenRISCTLBEntry itlb[TLB_SIZE];
+@@ -249,6 +263,9 @@ typedef struct CPUArchState {
+
+     uint32_t dflag;           /* In delay slot (boolean) */
+
++    Cv22DvpRegister cv22_dvp_registers[CV22_DVP_REGISTER_COUNT];
++    uint32_t cv22_dvp_read_latch;
++
+ #ifndef CONFIG_USER_ONLY
+     CPUOpenRISCTLBContext tlb;
+ #endif
+@@ -264,6 +281,7 @@ typedef struct CPUArchState {
+     uint32_t cpucfgr;         /* CPU configure register */
+     uint32_t dmmucfgr;        /* DMMU configure register */
+     uint32_t immucfgr;        /* IMMU configure register */
++    bool cv22_extensions;
+
+ #ifndef CONFIG_USER_ONLY
+     QEMUTimer *timer;
+diff --git a/target/or1k/disas.c b/target/or1k/disas.c
+index 0a46d68..feac045 100644
+--- a/target/or1k/disas.c
++++ b/target/or1k/disas.c
+@@ -31,6 +31,20 @@ typedef disassemble_info DisasContext;
+     (info->fprintf_func(info->stream, "%-9s " format, \
+                         mnemonic, ##__VA_ARGS__))
+
++static bool trans_cv22_dvp_write(disassemble_info *info,
++                                 arg_cv22_dvp_write *a)
++{
++    output("cv22.dvpwr", "r%d, r%d", a->a, a->b);
++    return true;
++}
++
++static bool trans_cv22_dvp_read(disassemble_info *info,
++                                arg_cv22_dvp_read *a)
++{
++    output("cv22.dvprd", "r%d", a->a);
++    return true;
++}
++
+ int print_insn_or1k(bfd_vma addr, disassemble_info *info)
+ {
+     bfd_byte buffer[4];
+diff --git a/target/or1k/helper.h b/target/or1k/helper.h
+index e0a8d40..800f020 100644
+--- a/target/or1k/helper.h
++++ b/target/or1k/helper.h
+@@ -64,3 +64,5 @@ DEF_HELPER_FLAGS_1(rfe, 0, void, env)
+ /* sys */
+ DEF_HELPER_FLAGS_3(mtspr, 0, void, env, i32, i32)
+ DEF_HELPER_FLAGS_3(mfspr, TCG_CALL_NO_WG, i32, env, i32, i32)
++DEF_HELPER_FLAGS_3(cv22_dvp_write, 0, void, env, i32, i32)
++DEF_HELPER_FLAGS_2(cv22_dvp_read, 0, void, env, i32)
+diff --git a/target/or1k/insns.decode b/target/or1k/insns.decode
+index cbf8af7..95b751e 100644
+--- a/target/or1k/insns.decode
++++ b/target/or1k/insns.decode
+@@ -20,6 +20,7 @@
+ &dab            d a b
+ &da             d a
+ &ab             a b
++&a              a
+ &dal            d a l
+ &ai             a i
+ &dab_pair       d a b dp ap bp
+@@ -38,6 +39,11 @@ l_csync         001000 1100000000 00000000 00000000
+
+ l_rfe           001001 ----- ----- -------- --------
+
++# Ambarella CV22 implementation-defined DVP register operations.  These two
++# encodings alone are supported by the isolated ambarella-cv22 CPU model.
++cv22_dvp_write 000111 00000 a:5 b:5 00000000010    &ab
++cv22_dvp_read  000111 00000 a:5 00000 00000000110    &a
++
+ ####
+ # Branch Instructions
+ ####
+diff --git a/target/or1k/sys_helper.c b/target/or1k/sys_helper.c
+index 8ffa31b..e92d4a1 100644
+--- a/target/or1k/sys_helper.c
++++ b/target/or1k/sys_helper.c
+@@ -41,6 +41,61 @@ static inline bool is_user(CPUOpenRISCState *env)
+ #endif
+ }
+
++static Cv22DvpRegister *cv22_dvp_register(CPUOpenRISCState *env,
++                                         uint32_t address, bool allocate)
++{
++    Cv22DvpRegister *free_slot = NULL;
++    int index;
++
++    for (index = 0; index < CV22_DVP_REGISTER_COUNT; index++) {
++        Cv22DvpRegister *entry = &env->cv22_dvp_registers[index];
++
++        if (entry->valid && entry->address == address) {
++            return entry;
++        }
++        if (!entry->valid && free_slot == NULL) {
++            free_slot = entry;
++        }
++    }
++    if (allocate && free_slot != NULL) {
++        free_slot->address = address;
++        free_slot->valid = true;
++        return free_slot;
++    }
++    return NULL;
++}
++
++void HELPER(cv22_dvp_write)(CPUOpenRISCState *env, uint32_t address,
++                            uint32_t value)
++{
++    OpenRISCCPU *cpu = env_archcpu(env);
++    Cv22DvpRegister *entry;
++
++    if (!env->cv22_extensions || (address & 3)) {
++        raise_exception(cpu, EXCP_ILLEGAL);
++    }
++    entry = cv22_dvp_register(env, address, true);
++    if (entry == NULL) {
++        raise_exception(cpu, EXCP_ILLEGAL);
++    }
++    entry->value = value;
++}
++
++void HELPER(cv22_dvp_read)(CPUOpenRISCState *env, uint32_t address)
++{
++    OpenRISCCPU *cpu = env_archcpu(env);
++    Cv22DvpRegister *entry;
++
++    if (!env->cv22_extensions || (address & 3)) {
++        raise_exception(cpu, EXCP_ILLEGAL);
++    }
++    entry = cv22_dvp_register(env, address, false);
++    if (entry == NULL) {
++        raise_exception(cpu, EXCP_ILLEGAL);
++    }
++    env->cv22_dvp_read_latch = entry->value;
++}
++
+ void HELPER(mtspr)(CPUOpenRISCState *env, uint32_t spr, uint32_t rb)
+ {
+     OpenRISCCPU *cpu = env_archcpu(env);
+@@ -234,6 +289,10 @@ uint32_t HELPER(mfspr)(CPUOpenRISCState *env, uint32_t rd, uint32_t spr)
+         raise_exception(cpu, EXCP_ILLEGAL);
+     }
+
++    if (env->cv22_extensions && spr == 0xc060) {
++        return env->cv22_dvp_read_latch;
++    }
++
+ #ifndef CONFIG_USER_ONLY
+     switch (spr) {
+     case TO_SPR(0, 0): /* VR */
+diff --git a/target/or1k/translate.c b/target/or1k/translate.c
+index e00ef45..1cb4d22 100644
+--- a/target/or1k/translate.c
++++ b/target/or1k/translate.c
+@@ -49,6 +49,7 @@ typedef struct DisasContext {
+     uint32_t delayed_branch;
+     uint32_t cpucfgr;
+     uint32_t avr;
++    bool cv22_extensions;
+
+     /* If not -1, jmp_pc contains this value and so is a direct jump.  */
+     vaddr jmp_pc_imm;
+@@ -74,6 +75,20 @@ static inline bool is_user(DisasContext *dc)
+ #endif
+ }
+
++static inline bool has_delay_slot(DisasContext *dc)
++{
++    return !(dc->cpucfgr & CPUCFGR_ND);
++}
++
++static void finish_branch(DisasContext *dc)
++{
++    if (has_delay_slot(dc)) {
++        dc->delayed_branch = 2;
++    } else {
++        dc->base.is_jmp = DISAS_JUMP;
++    }
++}
++
+ /* Include the auto-generated decoder.  */
+ #include "decode-insns.c.inc"
+
+@@ -586,21 +601,21 @@ static bool trans_l_j(DisasContext *dc, arg_l_j *a)
+ 
+     tcg_gen_movi_i32(jmp_pc, tmp_pc);
+     dc->jmp_pc_imm = tmp_pc;
+-    dc->delayed_branch = 2;
++    finish_branch(dc);
+     return true;
+ }
+ 
+ static bool trans_l_jal(DisasContext *dc, arg_l_jal *a)
+ {
+     vaddr tmp_pc = dc->base.pc_next + a->n * 4;
+-    vaddr ret_pc = dc->base.pc_next + 8;
++    vaddr ret_pc = dc->base.pc_next + (has_delay_slot(dc) ? 8 : 4);
+ 
+     tcg_gen_movi_i32(cpu_regs[9], ret_pc);
+     /* Optimize jal being used to load the PC for PIC.  */
+     if (tmp_pc != ret_pc) {
+         tcg_gen_movi_i32(jmp_pc, tmp_pc);
+         dc->jmp_pc_imm = tmp_pc;
+-        dc->delayed_branch = 2;
++        finish_branch(dc);
+     }
+     return true;
+ }
+@@ -609,10 +624,11 @@ static void do_bf(DisasContext *dc, arg_l_bf *a, TCGCond cond)
+ {
+     vaddr tmp_pc = dc->base.pc_next + a->n * 4;
+-    TCGv_i32 t_next = tcg_constant_i32(dc->base.pc_next + 8);
++    TCGv_i32 t_next = tcg_constant_i32(
++        dc->base.pc_next + (has_delay_slot(dc) ? 8 : 4));
+     TCGv_i32 t_true = tcg_constant_i32(tmp_pc);
+ 
+     tcg_gen_movcond_i32(cond, jmp_pc, cpu_sr_f, dc->zero, t_true, t_next);
+-    dc->delayed_branch = 2;
++    finish_branch(dc);
+ }
+ 
+ static bool trans_l_bf(DisasContext *dc, arg_l_bf *a)
+@@ -630,15 +645,16 @@ static bool trans_l_bnf(DisasContext *dc, arg_l_bf *a)
+ static bool trans_l_jr(DisasContext *dc, arg_l_jr *a)
+ {
+     tcg_gen_mov_i32(jmp_pc, cpu_R(dc, a->b));
+-    dc->delayed_branch = 2;
++    finish_branch(dc);
+     return true;
+ }
+ 
+ static bool trans_l_jalr(DisasContext *dc, arg_l_jalr *a)
+ {
+     tcg_gen_mov_i32(jmp_pc, cpu_R(dc, a->b));
+-    tcg_gen_movi_i32(cpu_regs[9], dc->base.pc_next + 8);
+-    dc->delayed_branch = 2;
++    tcg_gen_movi_i32(cpu_regs[9],
++                     dc->base.pc_next + (has_delay_slot(dc) ? 8 : 4));
++    finish_branch(dc);
+     return true;
+ }
+ 
+@@ -1105,6 +1121,24 @@ static bool trans_l_csync(DisasContext *dc, arg_l_csync *a)
+     return true;
+ }
+
++static bool trans_cv22_dvp_write(DisasContext *dc, arg_ab *a)
++{
++    if (!dc->cv22_extensions) {
++        return false;
++    }
++    gen_helper_cv22_dvp_write(tcg_env, cpu_R(dc, a->a), cpu_R(dc, a->b));
++    return true;
++}
++
++static bool trans_cv22_dvp_read(DisasContext *dc, arg_a *a)
++{
++    if (!dc->cv22_extensions) {
++        return false;
++    }
++    gen_helper_cv22_dvp_read(tcg_env, cpu_R(dc, a->a));
++    return true;
++}
++
+ static bool trans_l_rfe(DisasContext *dc, arg_l_rfe *a)
+ {
+     if (is_user(dc)) {
+@@ -1541,6 +1575,7 @@ static void openrisc_tr_init_disas_context(DisasContextBase *dcb, CPUState *cs)
+     dc->delayed_branch = (dc->tb_flags & TB_FLAGS_DFLAG) != 0;
+     dc->cpucfgr = env->cpucfgr;
+     dc->avr = env->avr;
++    dc->cv22_extensions = env->cv22_extensions;
+     dc->jmp_pc_imm = -1;
+
+     bound = -(dc->base.pc_first | TARGET_PAGE_MASK) / 4;

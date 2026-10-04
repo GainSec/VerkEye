@@ -1,0 +1,151 @@
+VerkEye fresh-clone verification
+================================
+Date: 2026-10-03
+Platform: macOS 26.6.2 arm64
+Fresh clone: /tmp/verkeye-fresh-clone.FDPbrk/VerkEye
+source_commit=3afee7769bfeb10ecb8a020e7b44123095d3d2b9
+Physical webcam present: no
+
+Clone and install
+-----------------
+git clone --no-local --branch feature/accelerated-runtime \
+  <repo-root> \
+  /tmp/verkeye-fresh-clone.FDPbrk/VerkEye
+cd /tmp/verkeye-fresh-clone.FDPbrk/VerkEye
+python3 -m venv .venv
+.venv/bin/python -m pip install -U pip
+.venv/bin/python -m pip install -e '.[dev,viewer,macos]'
+
+Raw result:
+Successfully built verkeye
+Successfully installed ... mlx-0.30.6 ... opencv-python-5.0.0.93 ... verkeye-0.1.0.dev0
+
+Recovered assets
+----------------
+mkdir -p .runtime
+ln -s <repo-root>/.runtime/ades-full-kernels \
+  .runtime/ades-full-kernels
+ln -s <repo-root>/.runtime/ades-split4 \
+  .runtime/ades-split4
+ln -s <repo-root>/.runtime/ades-split5 \
+  .runtime/ades-split5
+ln -s <repo-root>/.runtime/oracle \
+  .runtime/oracle
+
+Model identity
+--------------
+shasum -a 256 fixtures/models/yolov6n_hor.bin
+
+Raw output:
+eb768eb6691c08a5648424bb3fbc4a5ee09a64584e7faa3236afa778f5f5eabf  fixtures/models/yolov6n_hor.bin
+
+Exact image command
+-------------------
+.venv/bin/verkeye run fixtures/models/yolov6n_hor.bin \
+  --image <repo-root>/.runtime/cb62-testsrc-1088x608.png \
+  --backend accelerated \
+  --json-out image-result.json \
+  --manifest-out image-result.manifest.json
+
+Raw output:
+wrote image-result.json
+wrote image-result.manifest.json
+
+schema=verkeye.exact-image-inference.v1
+backend=mlx-cv22-exact
+model_sha256=eb768eb6691c08a5648424bb3fbc4a5ee09a64584e7faa3236afa778f5f5eabf
+image_sha256=7c035322e7dbafed39ebd1ff41a330181ae59d21680cc784e2e1f6c0409b9503
+prediction_sha256=2a89e6146c87c29f65a2155654575d320dae489a9ab67a01a61e7120d53f83ed
+terminal_tensor_count=6
+detection_count=0
+
+Exact file-video command
+------------------------
+.venv/bin/verkeye run fixtures/models/yolov6n_hor.bin \
+  --video <repo-root>/.runtime/cb62-testsrc-one-frame.mkv \
+  --max-frames 1 --backend accelerated \
+  --json-out video-result.json \
+  --manifest-out video-result.manifest.json
+
+Raw output:
+wrote video-result.json
+wrote video-result.manifest.json
+
+schema=verkeye.exact-stream-inference.v1
+source_kind=video
+frame_count=1
+prediction_sha256=2a89e6146c87c29f65a2155654575d320dae489a9ab67a01a61e7120d53f83ed
+terminal_tensor_count=6
+detection_count=0
+
+The bounded forensic video command intentionally rejects arbitrary source
+geometry. A 1280x720 input produced the exact fail-closed message:
+error: CB62 exact input must be exactly 608x1088x3 HxWxC
+
+Headless live-viewer command
+----------------------------
+.venv/bin/python scripts/smoke_live_viewer.py \
+  --video <repo-root>/.runtime/viewer-smoke-input.avi \
+  --frames 3 \
+  --summary-out viewer-summary.json \
+  --frame-out viewer-frame.png
+
+Raw output:
+wrote viewer-summary.json
+wrote viewer-frame.png
+inference_fps=22.336032
+
+exit_reason=frame-limit
+source_geometry=1280x720
+geometry_policy=centered-letterbox
+target_geometry=1088x608
+captured_frames=3
+inferred_frames=3
+displayed_frames=3
+dropped_frames=0
+
+Bounded webcam/live-source verification
+---------------------------------------
+No physical webcam was enumerated. The required synthetic camera/video route
+and drop-oldest capture behavior were verified from the fresh installation:
+
+.venv/bin/python -m pytest -q \
+  tests/runtime/test_sources.py::test_video_and_webcam_capture_release_resources_and_preserve_timestamps \
+  tests/runtime/test_live.py \
+  tests/viewer/test_smoke.py
+
+Raw output:
+10 passed in 0.78s
+
+Both installed command surfaces expose the documented controls:
+verkeye run: --webcam WEBCAM, --max-frames MAX_FRAMES, --queue-size QUEUE_SIZE
+verkeye live: --webcam WEBCAM, --video VIDEO, --max-frames MAX_FRAMES
+
+Full exact-equivalence gate from the clean clone
+------------------------------------------------
+.venv/bin/python scripts/verify_accelerated_equivalence.py \
+  --backend mlx \
+  --json-out fresh-clone-mlx-parity.json
+
+Raw output:
+{"backend":"mlx","cases":29,"detection_mismatches":0,"differing_bytes":0,"status":"passed","terminal_tensors":174}
+
+case_count=29
+terminal_tensor_count=174
+terminal_tensor_differing_bytes=0
+prediction_mismatch_count=0
+production_detection_mismatch_count=0
+pipeline_sha256=c42e1aa765df5ff03354858f6701a315ff0aa635a82796c87f5f54804e9a68be
+catalog_sha256=c1e64e524b0d54a4d7c19a1d79843973828953921c51d2ea667b4cd420b14e05
+
+Artifact hashes
+---------------
+4723469c425bffca9d4f651c0fb11144ad76e2319211898b87c6c2ef06ea2cb7  image-result.json
+e9e264d2b30196b82a2fd47867887d89198a6a407363423153e92f0af9103b49  image-result.manifest.json
+74b8f5c60580093072bc9adbb233b30490fb7c6f34ae5410fac81de632f98cad  video-result.json
+94adf1ca3cf702aabd67d468ceac695a54b57b85d00850cf734e3a0fcf27169f  video-result.manifest.json
+ca285ade145ceac70a9585afbd2d16dcd26bd7943802abab4220dae362ca985f  viewer-summary.json
+6475402e553115136c7b8f12148cd66118509aad4120b5145d54390fce0c40c0  viewer-frame.png
+14d58e442f193e73d1a5463cf9508e6a1b4907dd8cfddca209d906af27d3761f  fresh-clone-mlx-parity.json
+
+Disposition: PASS

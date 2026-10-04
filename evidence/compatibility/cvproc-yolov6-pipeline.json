@@ -1,0 +1,489 @@
+{
+  "artifacts": {
+    "bruce_4k": {
+      "path": "<repo-root>/fixtures/vendor/cv22/bruce_4k.pyc",
+      "sha256": "9aa2012ffa2ed1ae2683a1b3c0c825187b470446e2ba584e07f91e8a70e5ecbd",
+      "size": 5420
+    },
+    "bruce_4k_telephoto": {
+      "path": "<repo-root>/fixtures/vendor/cv22/bruce_4k_telephoto.pyc",
+      "sha256": "d91f20143d3635f1fa471473ff36764ab0d84b10bfb2778027363ebd899d2c46",
+      "size": 5819
+    },
+    "cvproc": {
+      "path": "<repo-root>/fixtures/vendor/cv22/cvproc",
+      "sha256": "47aad1ba15b23851ad606ba7ba2e92ceac9289176b0eacf0d124020f5606ba7b",
+      "size": 6773760
+    },
+    "libvproc": {
+      "path": "<repo-root>/fixtures/vendor/cv22/libvproc.so.0.0.15",
+      "sha256": "f7d0fbe415db5fccef15bbc714ed3c5be563d098bc83f4e3f23d381f4e24e310",
+      "size": 202616
+    },
+    "model": {
+      "path": "<repo-root>/fixtures/models/yolov6n_hor.bin",
+      "sha256": "eb768eb6691c08a5648424bb3fbc4a5ee09a64584e7faa3236afa778f5f5eabf",
+      "size": 5561124
+    },
+    "production_config": {
+      "path": "<repo-root>/fixtures/vendor/cv22/cb62-production-config.json",
+      "sha256": "022d8371a822b702cd7c0cbc81b7280a84b2f724fb52ab8352fd92a38f346908",
+      "size": 14028
+    },
+    "vconfig": {
+      "path": "<repo-root>/fixtures/vendor/cv22/vconfig-config.pyc",
+      "sha256": "32609cc9ea84f9f2887c951a33b432177b6592e594ba458eae088c3b52900255",
+      "size": 225428
+    }
+  },
+  "binary_proofs": {
+    "functions": {
+      "config_update": {
+        "sha256": "dd5e7ae1f51244aa555e2a391d0b2a14966a2fc8b7ad76bbccf04bd8d7f06544",
+        "size": 6236,
+        "virtual_address": 5090864
+      },
+      "detection_consumer": {
+        "sha256": "9fedea6cee4352c0c04bfa440bee5d2b9d6a29ca010ab250415efb0f72486b54",
+        "size": 2872,
+        "virtual_address": 5268272
+      },
+      "grid_constructor": {
+        "sha256": "c1cd73ecf7be12239e1b70df341ca95c440d2f35492b8903b72b789423c25151",
+        "size": 5188,
+        "virtual_address": 5231696
+      },
+      "iou_distance": {
+        "sha256": "448630416994b78c7fee1307d13cbb7cc13052d174862ebb7fe13a5d1fbf4fec",
+        "size": 888,
+        "virtual_address": 6520656
+      },
+      "minimum": {
+        "sha256": "3ebc1531a65877cd1e07256898b228dfb9e4e0ed723b42718768175f346e1e35",
+        "size": 344,
+        "virtual_address": 5194560
+      },
+      "postprocess": {
+        "sha256": "baed2630aeb78127b5c3cd436b806dd0faca7f67442cae482c56fc610b1b4b8e",
+        "size": 3780,
+        "virtual_address": 5248992
+      },
+      "secondary_dedup": {
+        "sha256": "ed6a5c6151cb6babdfae3bc15a8026add303ab4197deff58dabb4e1fb395b131",
+        "size": 1792,
+        "virtual_address": 5222624
+      }
+    },
+    "rodata": {
+      "class_animal": {
+        "hex": "616e696d616c00",
+        "size": 7,
+        "virtual_address": 9656272
+      },
+      "class_person": {
+        "hex": "706572736f6e00",
+        "size": 7,
+        "virtual_address": 9919208
+      },
+      "class_vehicle": {
+        "hex": "76656869636c6500",
+        "size": 8,
+        "virtual_address": 9919256
+      },
+      "constructor_defaults_a": {
+        "hex": "6f12833a0ad7233bcdcccc3d00002041cdcccc3db81e053e0000803e0000003f",
+        "size": 32,
+        "virtual_address": 9702032
+      },
+      "constructor_defaults_b": {
+        "hex": "6666263f0000003f",
+        "size": 8,
+        "virtual_address": 9701856
+      },
+      "strides": {
+        "decoded_int32_le": [
+          8,
+          16
+        ],
+        "hex": "0800000010000000",
+        "size": 8,
+        "third_value": {
+          "evidence": "immediate stored by the pinned grid constructor",
+          "value": 32
+        },
+        "virtual_address": 9703352
+      }
+    }
+  },
+  "claim_boundary": "the pinned binaries prove exact production identity-geometry NV12-to-planar-BGR uint8 preprocessing, raw-head geometry, and the core postprocessor; the pinned same-firmware configuration resolves operational thresholds and secondary deduplication parameters; the downstream consumer proves the class-ID label mapping; physical-camera fixtures remain necessary only for independent parity comparison",
+  "class_mapping": {
+    "consumer": {
+      "class_field_load_virtual_address": 5268572,
+      "class_field_offset": 24,
+      "evidence": "the pinned downstream detection consumer loads the emitted class field and selects the exact label strings",
+      "function_virtual_address": 5268272
+    },
+    "labels": [
+      {
+        "class_id": 0,
+        "consumer_branch_virtual_address": 5268576,
+        "label": "person",
+        "string_virtual_address": 9919208
+      },
+      {
+        "class_id": 1,
+        "consumer_branch_virtual_address": 5268584,
+        "label": "vehicle",
+        "string_virtual_address": 9919256
+      },
+      {
+        "class_id": 2,
+        "consumer_branch_virtual_address": 5268592,
+        "label": "animal",
+        "string_virtual_address": 9656272
+      }
+    ],
+    "producer": {
+      "class_id_factory_argument_load_virtual_address": 5250488,
+      "class_id_stack_store_virtual_address": 5249840,
+      "class_loop_virtual_address": 5249832,
+      "evidence": "the pinned postprocessor iterates class IDs 0,1,2 and passes that ID as argument w3 to the detection factory",
+      "factory_call_virtual_address": 5250520
+    },
+    "status": "passed"
+  },
+  "constructor_defaults": {
+    "claim_boundary": "the pinned executable initializes these values; separately reported operational values apply the exact same-firmware default/product/persisted configuration merge and cvproc bindings",
+    "disposition": "exact-constructor-defaults",
+    "operational_override_status": "resolved",
+    "values": {
+      "border_margin": 0.0024999999441206455,
+      "class_0_1_threshold_alternate": 0.12999999523162842,
+      "class_0_1_threshold_primary": 0.10000000149011612,
+      "class_2_threshold": 0.25,
+      "maximum_aspect_ratio": 10.0,
+      "maximum_detections": 30,
+      "minimum_aspect_ratio": 0.10000000149011612,
+      "minimum_normalized_area": 0.0010000000474974513,
+      "nms_distance_threshold": 0.5,
+      "routing_threshold_alternate": 0.6499999761581421,
+      "routing_threshold_primary": 0.5
+    }
+  },
+  "exact_pipeline_gate": {
+    "reason_codes": [],
+    "status": "passed"
+  },
+  "grid": {
+    "levels": [
+      {
+        "grid_height": 76,
+        "grid_width": 136,
+        "row_count": 10336,
+        "start_row": 0,
+        "stride": 8
+      },
+      {
+        "grid_height": 38,
+        "grid_width": 68,
+        "row_count": 2584,
+        "start_row": 10336,
+        "stride": 16
+      },
+      {
+        "grid_height": 19,
+        "grid_width": 34,
+        "row_count": 646,
+        "start_row": 12920,
+        "stride": 32
+      }
+    ],
+    "order": "stride-level, then y-major, then x-minor",
+    "total_rows": 13566
+  },
+  "input": {
+    "evidence": "exact recovered tensor descriptor named images",
+    "height": 608,
+    "shape": [
+      1,
+      3,
+      608,
+      1088
+    ],
+    "storage_dtype": "uint8",
+    "width": 1088
+  },
+  "operational_configuration": {
+    "cvproc_bindings": [
+      {
+        "destination_offset": 11796,
+        "getter_virtual_address": 7506560,
+        "key": "person-threshold",
+        "member": "mPersonThreshold",
+        "type": "float"
+      },
+      {
+        "destination_offset": 11800,
+        "getter_virtual_address": 7507088,
+        "key": "vehicle-threshold",
+        "member": "mVehicleThreshold",
+        "type": "float"
+      },
+      {
+        "destination_offset": 11784,
+        "getter_virtual_address": 7503840,
+        "key": "motion-person-threshold",
+        "member": "mMotionPersonThreshold",
+        "type": "float"
+      },
+      {
+        "destination_offset": 11788,
+        "getter_virtual_address": 7503904,
+        "key": "motion-vehicle-threshold",
+        "member": "mMotionVehicleThreshold",
+        "type": "float"
+      },
+      {
+        "destination_offset": 11792,
+        "getter_virtual_address": 7503808,
+        "key": "motion-animal-threshold",
+        "member": "mMotionAnimalThreshold",
+        "type": "float"
+      },
+      {
+        "destination_offset": 11836,
+        "getter_virtual_address": 7500224,
+        "key": "dedup-vehicle-enabled",
+        "member": "mDedupVehicleEnabled",
+        "type": "bool"
+      },
+      {
+        "destination_offset": 11840,
+        "getter_virtual_address": 7500192,
+        "key": "dedup-iou-threshold",
+        "member": "mDedupIouThreshold",
+        "type": "float"
+      },
+      {
+        "destination_offset": 11844,
+        "getter_virtual_address": 7503648,
+        "key": "max-from-start-dedup-time-sec",
+        "member": "mMaxFromStartDedupTimeSec",
+        "type": "int"
+      },
+      {
+        "destination_offset": 11848,
+        "getter_virtual_address": 7503616,
+        "key": "max-from-last-dedup-time-sec",
+        "member": "mMaxFromLastDedupTimeSec",
+        "type": "int"
+      }
+    ],
+    "effective": {
+      "dedup-iou-threshold": {
+        "source": "firmware_default",
+        "value": 0.8
+      },
+      "dedup-vehicle-enabled": {
+        "source": "firmware_default",
+        "value": true
+      },
+      "max-from-last-dedup-time-sec": {
+        "source": "persisted_override",
+        "value": 20
+      },
+      "max-from-start-dedup-time-sec": {
+        "source": "persisted_override",
+        "value": 20
+      },
+      "motion-animal-threshold": {
+        "source": "persisted_override",
+        "value": 0.65
+      },
+      "motion-person-threshold": {
+        "source": "persisted_override",
+        "value": 0.7
+      },
+      "motion-vehicle-threshold": {
+        "source": "firmware_default",
+        "value": 0.5
+      },
+      "person-threshold": {
+        "source": "persisted_override",
+        "value": 0.875
+      },
+      "vehicle-threshold": {
+        "source": "persisted_override",
+        "value": 0.921875
+      }
+    },
+    "merge_order": [
+      "firmware_defaults",
+      "product_defaults",
+      "persisted_config"
+    ],
+    "merge_proof": {
+      "Config.get_default_config": "all ServiceConfig subclasses",
+      "Config.override_config": "recursive source-over-destination overwrite",
+      "Config.read_config": "firmware defaults, then product config, then /mnt/config/config",
+      "ServiceConfig.default": "validator entry element 0"
+    },
+    "product_overrides": {
+      "bruce-4k": [],
+      "bruce-4k-telephoto": [],
+      "disposition": "no relevant keys in either pinned product profile"
+    },
+    "product_profile": "bruce-4k",
+    "system_version": "v2026.07.30.926397-bruce-4k"
+  },
+  "postprocess_core": {
+    "box_decode": {
+      "center_x": "stride * (grid_x + raw_x)",
+      "center_y": "stride * (grid_y + raw_y)",
+      "clip": "input bounds before normalization",
+      "height": "stride * exp(raw_log_h)",
+      "normalize": "x / input_width and y / input_height",
+      "width": "stride * exp(raw_log_w)"
+    },
+    "confidence": {
+      "candidate_order": "class IDs 0,1,2; within class descending confidence, then ascending source row",
+      "class_selection": "maximum of exactly three class scores",
+      "formula": "objectness * selected_class_score",
+      "threshold_comparison": "strictly greater than class threshold",
+      "tie_break": "first class index"
+    },
+    "filters": {
+      "border_or_aspect": "accept boxes wholly inside the border margin OR inside the inclusive height/width aspect-ratio bounds",
+      "minimum_area": "normalized width * normalized height",
+      "non_finite": "reject with explicit NaN error path"
+    },
+    "gate": {
+      "reason_codes": [],
+      "status": "passed"
+    },
+    "nms": {
+      "accept": "nms_distance_threshold <= minimum_distance",
+      "distance": "1 - IoU",
+      "equality": "accepted"
+    }
+  },
+  "preprocess_binary_proofs": {
+    "cvproc_functions": {
+      "converter_setup": {
+        "sha256": "49ddd01f0b09aa1e8f4c0cb1fc2840cc6feae6068a152740573999f424ffc7ed",
+        "size": 700,
+        "virtual_address": 5186768
+      },
+      "ordinary_converter": {
+        "sha256": "893d061acb99c5dfdd464190e0141287b73af0ad3566f19a3afa871baacc924e",
+        "size": 616,
+        "virtual_address": 5185232
+      },
+      "pipeline_dispatcher": {
+        "sha256": "0293480f7a4fee9cc9357c2496717f1f8d507fce38ed31169ac4ed34ee7bd148",
+        "size": 348,
+        "virtual_address": 5192576
+      }
+    },
+    "cvproc_rodata": {
+      "target_descriptor_shuffle": {
+        "hex": "00010203040506070c0d0e0f00010203",
+        "size": 16,
+        "virtual_address": 9702384
+      }
+    },
+    "libvproc_functions": {
+      "image_deformation": {
+        "sha256": "68772a0f8144f9e8e93752a78d94dfb48e640c09baa3ed835a0649c3b0e0496f",
+        "size": 1076,
+        "virtual_address": 36040
+      },
+      "resize": {
+        "sha256": "e0d5f3fbfc342934f99cbdfdac0ef746157f1d1a37471729890e789364828ab7",
+        "size": 228,
+        "virtual_address": 86724
+      },
+      "yuv2rgb_420": {
+        "sha256": "2d098194d1e854512a4d2a63ad76c98af84c6ff46dbc7b0d78cffb6d16a5d7a5",
+        "size": 3648,
+        "virtual_address": 134708
+      }
+    }
+  },
+  "preprocessing": {
+    "color_conversion": {
+      "formula": {
+        "b": "Y + 1.7719999551773071 * (U - 128)",
+        "g": "Y - 0.34413599967956543 * (U - 128) - 0.714136004447937 * (V - 128)",
+        "r": "Y + 1.4019999504089355 * (V - 128)"
+      },
+      "matrix": "full-range BT.601",
+      "output_channel_order": [
+        "B",
+        "G",
+        "R"
+      ]
+    },
+    "geometry": {
+      "local_policy": "reject-nonmatching-geometry",
+      "operation": "identity",
+      "source_size": [
+        608,
+        1088
+      ],
+      "target_size": [
+        608,
+        1088
+      ]
+    },
+    "local_input_contract": {
+      "accepted": "1088x608 decoded uint8 BGR image",
+      "camera_source_parity": "pending physical-camera fixture comparison",
+      "operation": "planarize without resize, reorder, scaling, or normalization"
+    },
+    "source": {
+      "cvproc_color_enum": 2,
+      "height": 608,
+      "libvproc_internal_format": 10,
+      "pitch": 1088,
+      "pixel_format": "NV12",
+      "width": 1088
+    },
+    "status": "passed",
+    "tensor": {
+      "byte_count": 1984512,
+      "channel_order": [
+        "B",
+        "G",
+        "R"
+      ],
+      "layout": "NCHW-planar-contiguous",
+      "normalization": "none",
+      "shape": [
+        1,
+        3,
+        608,
+        1088
+      ],
+      "storage_dtype": "uint8"
+    }
+  },
+  "raw_output": {
+    "buffer_bytes": 434112,
+    "columns": 8,
+    "element_type": "float32",
+    "layout": [
+      "raw_x",
+      "raw_y",
+      "raw_log_w",
+      "raw_log_h",
+      "objectness",
+      "class_0",
+      "class_1",
+      "class_2"
+    ],
+    "row_bytes": 32,
+    "rows": 13566
+  },
+  "schema": "verkeye.cv22.cvproc-pipeline.v1"
+}

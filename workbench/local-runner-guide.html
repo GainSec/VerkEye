@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VerkEye — Local Runner Guide</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,var(--wb-custom-sky-top,#70cfff),var(--wb-bg,#eaf7ff) 260px);color:var(--wb-ink,#10283f);font:15px/1.58 var(--wb-font-body,system-ui)}main{max-width:1120px;margin:auto;padding:32px 20px 70px}header,.card{background:var(--wb-surface,#fff);border:1px solid var(--wb-rule,#a8d9f2);border-radius:var(--wb-card-radius,16px);box-shadow:var(--wb-card-shadow,0 12px 30px #075f9e20);padding:22px}h1{margin:.2rem 0;font-size:clamp(1.8rem,4vw,3rem)}h2{margin:0 0 12px;color:var(--wb-custom-deep-sky,#075f9e);font-size:1.15rem}.kicker{font:800 .75rem var(--wb-font-mono,monospace);letter-spacing:.13em;text-transform:uppercase;color:var(--wb-accent,#0788d1)}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:15px;margin-top:15px}.card{grid-column:span 6}.wide{grid-column:1/-1}pre,code{font-family:var(--wb-font-mono,monospace)}pre{white-space:pre-wrap;overflow:auto;background:#edf9ff;border:1px solid var(--wb-rule,#a8d9f2);border-radius:10px;padding:14px}.planned{display:inline-block;padding:4px 9px;border-radius:999px;background:#fff2bd;color:#775600;font:800 .72rem var(--wb-font-mono,monospace);text-transform:uppercase}.muted{color:var(--wb-muted,#58758e)}.flow{display:flex;gap:8px;align-items:center;overflow:auto}.node{min-width:155px;padding:12px;border:1px solid var(--wb-rule,#a8d9f2);border-radius:10px;background:#eefaff;text-align:center}.arrow{font-size:1.4rem;color:var(--wb-accent,#0788d1);font-weight:900}@media(max-width:700px){main{padding:16px 9px}.card{grid-column:1/-1}.flow{flex-direction:column}.arrow{transform:rotate(90deg)}}
+</style></head><body><main>
+<header><div class="kicker">Operator interface</div><h1>Local Runner Guide</h1><p>The exact recovered CB62 model runs camera-free through MLX on Apple silicon or OpenVINO on Linux. Ambarella ADES is retained as the independent byte-exact oracle.</p></header>
+<section class="grid">
+<article class="card wide"><h2>Install and run the accelerated backend</h2><div class="flow"><div class="node"><b>Decoded media</b><br>1088 × 608 BGR</div><div class="arrow">→</div><div class="node"><b>Exact graph</b><br>55 fastconv stages</div><div class="arrow">→</div><div class="node"><b>MLX / OpenVINO</b><br>integer-compatible execution</div><div class="arrow">→</div><div class="node"><b>Six heads</b><br>byte-identical to ADES</div><div class="arrow">→</div><div class="node"><b>Detections</b><br>recovered core</div></div><pre># Apple silicon
+python -m pip install -e '.[dev,runtime,macos]'
+
+# Linux
+python -m pip install -e '.[dev,runtime,linux]'
+
+# Image; provider is selected automatically
+verkeye run fixtures/models/yolov6n_hor.bin \
+  --image FRAME.png --backend accelerated \
+  --json-out RESULT.json --manifest-out RESULT.manifest.json
+
+# Video on an OpenVINO GPU
+verkeye run fixtures/models/yolov6n_hor.bin \
+  --video CLIP.mp4 --max-frames 300 \
+  --backend accelerated --accelerated-device GPU \
+  --json-out VIDEO.json --manifest-out VIDEO.manifest.json</pre><p><b>Measured model-boundary pipeline:</b> MLX <b>32.236698 FPS</b> over 100 measured frames after 10 warmups. OpenVINO GPU on Intel UHD 630 <b>3.051105 FPS</b> over 100 measured frames after 10 warmups. The Mac passes its 30 FPS target; the tested Kali GPU remains below 15 FPS.</p><p><b>Correctness:</b> both backends match the Ambarella ADES oracle across the complete <b>29-case</b> corpus, all <b>174 terminal tensors</b>, every 13,566 × 8 prediction matrix and every production detection record with <b>zero differing bytes</b>.</p></article>
+<article class="card wide"><h2>Generate runtime assets in a fresh clone</h2><p>The Git repository carries the independently authored generator and executable source, not the CB62 model or generated parameters. Supply a model extracted from your own CB62, then generate the content-addressed local runtime.</p><pre>mkdir -p fixtures/models
+cp /path/to/owner-extracted/yolov6n_hor.bin fixtures/models/yolov6n_hor.bin
+verkeye generate-runtime fixtures/models/yolov6n_hor.bin
+
+.venv/bin/python scripts/verify_accelerated_equivalence.py \
+  --backend mlx \
+  --json-out evidence/equivalence/macos-mlx-terminal-parity.json</pre><p><b>Fresh-clone result:</b> clean editable install passed; the exact image command produced prediction <code>2a89e614…3ed</code>; strict file-video produced the same prediction; a three-frame centered-letterbox headless viewer completed with 3 captured/inferred/displayed and zero drops; synthetic webcam/drop-oldest tests passed <b>10 tests</b>; the full parity gate passed 29 cases and 174 tensors with zero differing bytes.</p><p class="muted">Raw record: <code>evidence/equivalence/fresh-clone-verification.txt</code>. No physical webcam was enumerated, so the camera adapter was verified with deterministic synthetic capture and the live UI with prerecorded decoded video. This does not claim optical or ISP equivalence.</p></article>
+<article class="card wide"><h2>Run the exact live viewer</h2><div class="flow"><div class="node"><b>Camera index / file</b><br><code>--webcam 0</code> or <code>--video</code></div><div class="arrow">→</div><div class="node"><b>centered-letterbox</b><br>1088 × 608</div><div class="arrow">→</div><div class="node"><b>Exact CB62</b><br>accelerated session</div><div class="arrow">→</div><div class="node"><b>Native display</b><br>labels + metrics</div><div class="arrow">→</div><div class="node"><b>Optional record</b><br>annotated MP4</div></div><pre># Clean Mac installation with GUI-enabled OpenCV
+python -m pip install -e '.[dev,viewer,macos]'
+
+# Selected local camera; continuous until Q, Esc, or window close
+verkeye live fixtures/models/yolov6n_hor.bin \
+  --webcam 0 --backend accelerated --queue-size 2 \
+  --detection-profile small-object \
+  --summary-out evidence/viewer/webcam-session.json
+
+# Prerecorded file with annotated recording
+verkeye live fixtures/models/yolov6n_hor.bin \
+  --video clip.mp4 --backend accelerated \
+  --detection-profile small-object \
+  --record evidence/viewer/clip-annotated.mp4 --record-fps 30 \
+  --summary-out evidence/viewer/clip-session.json</pre><p><b>Detection profiles:</b> the live viewer defaults to <code>small-object</code>, which changes only minimum normalized area from <code>0.001</code> to <code>0.00025</code>. Model bytes, class thresholds, decode and NMS are unchanged. Use <code>--detection-profile production</code> for the exact recovered area gate; bounded forensic <code>run</code> commands default to production.</p><p><b>Controls:</b> <b>Space / P</b> pauses or resumes; <b>Q / Esc</b> quits cleanly. The HUD renders the recovered <b>person</b>, <b>vehicle</b>, and <b>animal</b> labels with confidence, Capture FPS, Inference FPS, Display FPS, and captured/inferred/displayed/dropped/recorded counters.</p><p><b>Backpressure:</b> webcams keep the bounded drop-oldest queue. If the exact runtime falls behind, stale frames are dropped and counted instead of accumulating latency. Video files remain sequential.</p><p><b>Acceptance:</b> a 300-frame Mac prerecorded run measured <b>31.88 FPS</b> inference and <b>30.26 FPS</b> capture/display with <b>300 captured</b> and <b>zero drops</b>. No physical webcam was enumerated for the final run. Raw results: <code><repo-root>/evidence/viewer/macos-prerecorded-summary.json</code>; rendered frame: <code><repo-root>/evidence/viewer/macos-prerecorded-frame.png</code>.</p></article>
+<article class="card wide"><h2>Reproduce the Cavalry ABI correlations</h2><pre>git clone --filter=blob:none https://github.com/cchiou-amba/amba-virt /tmp/verkeye-amba-virt
+git -C /tmp/verkeye-amba-virt checkout 71b1b786689f690248524b5139838b0a778047c7
+
+.venv/bin/python scripts/analyze_public_cavalry_abi.py \
+  --ioctl-header /tmp/verkeye-amba-virt/guest-os/linux/amba-cavalry/include/cavalry_ioctl.h \
+  --gen-header /tmp/verkeye-amba-virt/guest-os/linux/amba-cavalry/include/cavalry_gen.h \
+  --driver-report evidence/compatibility/cavalry-driver-abi.json \
+  --out evidence/compatibility/public-cavalry-abi.json
+
+.venv/bin/python scripts/analyze_cavalry_capture.py \
+  --model fixtures/models/yolov6n_hor.bin \
+  --driver fixtures/vendor/cv22/cavalry.ko \
+  --snapshot evidence/compatibility/ioctl-shim-run-003/run-dags-000000.bin \
+  --arena evidence/compatibility/ioctl-shim-run-003/working-memory.bin \
+  --probe-stdout evidence/compatibility/ioctl-shim-run-003/stdout.txt \
+  --ioctl-trace evidence/compatibility/ioctl-shim-run-003/ioctl.jsonl \
+  --physical-base 0x10000000 \
+  --json-out evidence/compatibility/ioctl-shim-run-003/capture-analysis.json</pre><p>The public correlation reports <b>35 of 38</b> recovered driver requests and all 17 userspace-observed requests as numerical matches. The capture analysis verifies the pinned NNCtrl assignment source, names the DVI/port/poke fields, preserves raw words, and records 10 descriptors, 39 port records, and zero poke records. The public report hashes to <code>26036a120700d90f913f68ebd466414beb60de8baa766d3cc1e80694c1d2cd76</code>; the capture report hashes to <code>18e22466b1a56842c4321e62141022151faf04724d3313a7480a7aa43182c927</code>.</p><p><b>Latest complete verification:</b> <code>320 complete macOS checks</code> pass.</p><div class="warning"><b>Fail-closed boundary:</b> contemporary public headers do not replace historical CB62 structure layouts. Four prefix words remain unnamed, and firmware-side accelerator computation remains unsupported.</div></article>
+<article class="card wide"><h2>Data flow</h2><div class="flow"><div class="node"><b>Working</b><br>decoded image</div><div class="arrow">→</div><div class="node"><b>Exact</b><br>1088 × 608 uint8 planar BGR</div><div class="arrow">→</div><div class="node"><b>Working</b><br>ten digest-verified ADES splits</div><div class="arrow">→</div><div class="node"><b>Exact</b><br>22 raw tensors + 13,566 × 8 float32</div><div class="arrow">→</div><div class="node"><b>Working</b><br>binary-proved detector core + JSON</div></div></article>
+<article class="card"><h2>Implemented inspection</h2><pre>verkeye inspect MODEL.bin \
+  --json-out container-map.json \
+  --manifest-out container-map.manifest.json
+
+verkeye map MODEL.bin \
+  --json-out recovery-map.json \
+  --manifest-out recovery-map.manifest.json
+
+verkeye ir MODEL.bin \
+  --json-out MODEL.ir.json \
+  --manifest-out MODEL.ir.manifest.json
+
+python3 scripts/generate_weight_map.py \
+  MODEL.bin --json-out compiled-map.json
+
+python3 scripts/analyze_descriptor_abi.py \
+  --library fixtures/vendor/cv22/libnnctrl.so.0.3.0 \
+  --source third_party/ambarella/nnctrl-0.3.0 \
+  --out evidence/compatibility/descriptor-abi.json
+
+python3 scripts/generate_tensor_map.py \
+  fixtures/models/yolov6n_hor.bin \
+  --json-out evidence/yolov6n_hor.tensor-map.json</pre><p class="muted">These commands produce deterministic container, compiled-span, descriptor-ABI, tensor, feasibility-gate, and schema-validated IR evidence without claiming inference. Each CLI record uses schema <code>verkeye.execution-manifest.v1</code>; outputs are atomic and include complete input/output hashes.</p></article>
+<article class="card"><h2>Blocked conversion design</h2><pre>verkeye convert MODEL.bin \
+  --output MODEL.onnx \
+  --manifest-out convert.manifest.json
+
+verkeye validate MODEL.bin MODEL.onnx \
+  --manifest-out validate.manifest.json</pre><p><span class="planned">exposed · blocked by gates</span></p><p class="muted">Both commands return exit code 2 with a structured blocker manifest. The exact artifact has unresolved parameters and numeric semantics, so no ONNX file is emitted.</p></article>
+<article class="card wide"><h2>Exact image and video — operational</h2><pre>verkeye run fixtures/models/yolov6n_hor.bin \
+  --image FRAME.png \
+  --backend ades \
+  --workspace .runtime/ades-cb62 \
+  --runtime-spec config/cb62-ades-runtime.json \
+  --pipeline-evidence evidence/compatibility/cvproc-yolov6-pipeline.json \
+  --json-out RESULT.json \
+  --manifest-out RESULT.manifest.json
+
+verkeye run fixtures/models/yolov6n_hor.bin \
+  --video CLIP.mkv --max-frames 10 \
+  --backend ades \
+  --json-out VIDEO.json \
+  --manifest-out VIDEO.manifest.json
+
+verkeye run fixtures/models/yolov6n_hor.bin \
+  --frames ./frames --max-frames 10 \
+  --json-out FRAMES.json \
+  --manifest-out FRAMES.manifest.json
+
+verkeye run fixtures/models/yolov6n_hor.bin \
+  --webcam 0 --max-frames 10 --queue-size 2 \
+  --json-out WEBCAM.json \
+  --manifest-out WEBCAM.manifest.json</pre><p><span class="planned">implemented · exact-model gate passed</span></p><p>The first run prepares the pinned workspace automatically; <code>--prepare</code> forces regeneration and revalidation. Image, frame-directory, file-video, and webcam frames all enter the same exact decoded-frame core. Webcam input requires an explicit frame bound. <code>--queue-size</code> bounds a concurrent drop-oldest capture queue; the result reports queue policy/capacity/high-water mark and captured, yielded, dropped, discarded-on-close, and queued frame counts, while each processed frame carries its capture monotonic timestamp. The command rejects a changed model, runtime spec, container architecture, Cavalry identity, any changed DVI, missing tensor, changed pipeline evidence, undecodable media, or geometry other than exactly 1088 × 608.</p><p class="muted">Exact image and lossless one-frame FFV1 file-video smokes passed on both macOS (35.827 / 35.220 seconds) and Kali (65.795 / 64.981 seconds). All 22 real-input tensor hashes, decoded-BGR hashes, the 13,566 × 8 prediction hash, and zero-detection output matched across both hosts. Measured host-emulator rates are far below real time, so live capture is operational with bounded freshness-oriented backpressure but real-time inference is not claimed. A clean wheel installation run from <code>/tmp</code> resolved its packaged runtime assets and reproduced the same prediction hash with 22 tensors.</p></article>
+<article class="card wide"><h2>Inspectable backend contract</h2><p>The shared backend API now records the backend identity, exact source SHA-256, raw output tensors, per-node timings, and SHA-256/shape/dtype/size for every intermediate. Loading rejects a changed artifact, input dtype or shape mismatch, missing tensors, unknown operators, and output-contract mismatches. Its two exact integer operators exist only as synthetic contract fixtures. Loading the pinned CB62 IR stops on <code>cv22.opaque_compiled_split</code> and explicitly selects the compatibility path; it never substitutes those fixtures for model computation.</p><pre>.venv/bin/python -m pytest \
+  tests/runtime/test_backend.py \
+  tests/runtime/test_operators.py \
+  tests/runtime/test_reference.py -q
+
+10 passed</pre></article>
+<article class="card wide"><h2>Reproduce the compatibility evidence</h2><pre>.venv/bin/python scripts/analyze_cavalry_capture.py \
+  --ioctl-trace evidence/compatibility/ioctl-shim-run-003/ioctl.jsonl \
+  --snapshot evidence/compatibility/ioctl-shim-run-003/run-dags-000000.bin \
+  --arena evidence/compatibility/ioctl-shim-run-003/working-memory.bin \
+  --model fixtures/models/yolov6n_hor.bin \
+  --probe-stdout evidence/compatibility/ioctl-shim-run-003/stdout.txt \
+  --driver fixtures/vendor/cv22/cavalry.ko \
+  --physical-base 0x10000000 \
+  --json-out evidence/compatibility/ioctl-shim-run-003/capture-analysis.json
+
+.venv/bin/python scripts/analyze_visorc_boot.py \
+  --driver fixtures/vendor/cv22/cavalry.ko \
+  --firmware fixtures/vendor/cv22/cavalry.bin \
+  --out evidence/compatibility/visorc-boot.json
+
+.venv/bin/python scripts/analyze_cvproc_pipeline.py \
+  --cvproc fixtures/vendor/cv22/cvproc \
+  --libvproc fixtures/vendor/cv22/libvproc.so.0.0.15 \
+  --model fixtures/models/yolov6n_hor.bin \
+  --tensor-map evidence/yolov6n_hor.tensor-map.json \
+  --production-config fixtures/vendor/cv22/cb62-production-config.json \
+  --vconfig fixtures/vendor/cv22/vconfig-config.pyc \
+  --bruce-4k-config fixtures/vendor/cv22/bruce_4k.pyc \
+  --bruce-4k-telephoto-config fixtures/vendor/cv22/bruce_4k_telephoto.pyc \
+  --out evidence/compatibility/cvproc-yolov6-pipeline.json</pre><p>The first command revalidates the pinned driver, parses <code>CAVALRY_RUN_DAGS</code> request <code>0xc0084303</code>, validates all ten 2,860-byte descriptors and their 128 primary / 64 secondary bounds, reconstructs the shared command buffer, and records the mailbox/response contract. The second command verifies the exact <code>0xED000000</code> register window, 77 ordered startup writes, the reset sequence at <code>0x80228</code>, mailbox kick, start/stop state transitions, firmware metadata, and 62 instruction-byte proofs. The third pins the detector ABI, production preprocessing, exact class mapping, core postprocessor, deployed configuration, default/product/persisted precedence, nine effective settings and nine <code>cvproc</code> bindings. Its exact-pipeline semantic gate passes with no unresolved reason codes.</p><p>The executable sparse VISORC model reproduces the register trace and interrupt state machine. It deliberately fails closed before native ORC opcode execution. The word at firmware offset <code>0x54</code> is exactly <code>0x28000</code>; its semantic name remains unresolved. <code>0x80000002</code> is the stop response, not a startup response.</p><p><b>Current macOS verification:</b> <code>320 complete checks</code> pass. The updated pipeline evidence hashes to <code>ffd295e8382bf29877f4c54be1d9a37948531fc2d16c22c6528b30dbe598b405</code>.</p><div class="warning"><b>Current stop:</b> the command witness reaches <code>0x5F1FC ← 0x1400</code>, but native accelerator computation remains unsupported and <code>inference_produced=false</code>.</div></article>
+<article class="card"><h2>Outputs</h2><ul><li>Frame-level detections: class, confidence and bounding box</li><li>Run statistics and inference timing</li><li>Optional annotated images or video</li><li>Input/output SHA-256 values</li><li>Tool version, complete command line and warnings</li></ul></article>
+<article class="card"><h2>Current scope</h2><p>macOS and Linux inspection and exact camera-free execution are supported. Image, ordered frame-directory, file-video, and bounded webcam execution are operational. MLX provides real-time Mac execution; OpenVINO provides exact Linux execution with hardware-dependent throughput. Physical-camera parity remains pending.</p></article>
+<article class="card wide"><h2>Exact local paths</h2><pre>Project:
+<repo-root>
+
+Pinned model:
+<repo-root>/fixtures/models/yolov6n_hor.bin
+
+Canonical source on Kali:
+<owner-storage>/bull-cam-2-non512/offline-approot/b/var/cache/cvproc/yolov6n_hor.bin</pre></article>
+<article class="card wide"><h2>Reproduce the corrected CV22 OpenRISC boundary discovery</h2><p>This diagnostic is for compatibility-layer reverse engineering; it is not an inference command. It requires a QEMU OpenRISC build produced from <code>third_party/patches/qemu-or1k-cv22.patch</code> with CPU model <code>ambarella-cv22</code>. The exact firmware remains immutable; each generated probe is independently hashed.</p><pre>.venv/bin/python scripts/discover_openrisc_boundaries.py \
+  --firmware fixtures/vendor/cv22/cavalry.bin \
+  --qemu /path/to/qemu-system-or1k \
+  --trace-dir evidence/compatibility/openrisc-discovery-run-002 \
+  --max-iterations 32 \
+  --timeout-seconds 0.5 \
+  --out evidence/compatibility/openrisc-discovery-run-002.json</pre><p>The recorded run produced <b>23 trace-proven boundaries</b>. Correct OpenRISC opcode classification is: <b>0x07 and 0x10 are unallocated</b>, <b>0x1c = l.cust1</b>, and <b>0x1f = l.cust4</b>. The corrected profile proves +4 call/return and not-taken conditional fallthrough; the run still ends with <code>timeout_without_illegal_instruction_boundary</code> and <code>fidelity_gate=failed_by_construction</code>.</p><div class="warning"><b>Do not use the patched probes as model output.</b> Replacing earlier trap words with <code>l.nop 0</code> proves only that later addresses are reachable under a deliberately altered execution. It does not implement those words or preserve accelerator behavior. Corrected report: <code>evidence/compatibility/openrisc-discovery-run-002.json</code>. Correction reconciliation: <code>evidence/compatibility/openrisc-control-flow-correction.json</code>. Twenty-one run-001 context snapshots are superseded. Verification: <code>27 focused checks passed</code>.</div></article>
+<article class="card wide"><h2>Build the exact custom-instruction constraint ledger</h2><pre>.venv/bin/python scripts/analyze_openrisc_surface.py \
+  --firmware fixtures/vendor/cv22/cavalry.bin \
+  --disassembly evidence/compatibility/cavalry-openrisc-objdump.txt \
+  --boundaries evidence/compatibility/ambarella-custom.json \
+  --out evidence/compatibility/openrisc-custom-surface.json
+
+.venv/bin/python scripts/build_openrisc_constraint_ledger.py \
+  --surface evidence/compatibility/openrisc-custom-surface.json \
+  --contexts evidence/compatibility/openrisc-context-run-002.json \
+  --dvp-evidence evidence/compatibility/cv22-dvp-run-002/cv22-dvp-evidence.json \
+  --out evidence/compatibility/openrisc-constraint-ledger.json</pre><p>The result contains <b>26 proven occurrences</b>, <b>23 dynamic contexts</b>, <b>3 static-only</b> sites, <b>427 conditional</b> occurrences, and <b>367 excluded</b> rows. Only <b>1 exact context</b> precedes every unsupported word; <b>22 tainted contexts</b> retain their prior-NOP counts. The existing DVP pair covers <b>zero of the 26</b>, leaving <code>CV22_CUSTOM_INSTRUCTION_SEMANTICS_UNRESOLVED</code>.</p><p class="muted">Surface SHA-256: <code>91834bfb2e737b1ff987ae6c5cedee72a4fbfbb547688fba36b9818a94e5f48a</code>. Ledger SHA-256: <code>ed6fa5bc989fc5416e91ed87458c27cce0c854f67377cf67e6a7ce16dd9dccf8</code>.</p></article>
+<article class="card wide"><h2>Evidence index</h2><p class="muted">Reference-backend contract: <code><repo-root>/evidence/compatibility/reference-backend.txt</code>. Corrected OpenRISC boundary report: <code><repo-root>/evidence/compatibility/openrisc-discovery-run-002.json</code>. Corrected context report: <code><repo-root>/evidence/compatibility/openrisc-context-run-002.json</code>. Complete surface: <code><repo-root>/evidence/compatibility/openrisc-custom-surface.json</code>. Constraint ledger: <code><repo-root>/evidence/compatibility/openrisc-constraint-ledger.json</code>. These are separate checkpoints: the reference contract proves fail-closed host behavior, while the OpenRISC artifacts constrain control flow and register inputs without claiming custom-instruction semantics.</p></article>
+</section></main></body></html>

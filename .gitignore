@@ -5,13 +5,7 @@ __pycache__/
 dist/
 build/
 *.egg-info/
-.runtime/*
-!.runtime/ades-full-kernels/
-!.runtime/ades-full-kernels/**
-!.runtime/ades-split4/
-!.runtime/ades-split4/**
-!.runtime/ades-split5/
-!.runtime/ades-split5/**
+.runtime/
 fixtures/oracle/bundles/
 /fixtures/models/yolov6n_hor.bin
 /fixtures/models/yolov6n_ver.bin

@@ -246,6 +246,42 @@ def build_run_argv(
     )
 
 
+def build_capture_argv(
+    spec: AdesRuntimeSpec,
+    workspace: str | Path,
+    *,
+    docker_command: Sequence[str] = ("docker",),
+) -> tuple[str, ...]:
+    """Build the bounded owner-local parameter and static-mask capture."""
+
+    command = (
+        "set +u; set -o pipefail; "
+        f"source {spec.toolchain_env}; env_status=$?; "
+        "if [ \"$env_status\" -ne 0 ] && [ \"$env_status\" -ne 1 ]; then "
+        "exit \"$env_status\"; fi; set -eu; "
+        "if [ -e /work/capture ]; then "
+        "echo 'capture workspace already exists' >&2; exit 73; fi; "
+        "mkdir -p /work/capture/fastconv /work/capture/operators "
+        "/work/capture/masks; "
+        "g++ -std=c++17 -shared -fPIC -O2 "
+        "-o /work/ades_kernel_capture.so /work/ades_kernel_capture.cpp -ldl; "
+        "g++ -std=c++17 -shared -fPIC -O2 "
+        "-o /work/ades_operator_capture.so /work/ades_operator_capture.cpp -ldl; "
+        f"head -c {_INPUT_BYTES} /dev/zero > /work/capture/input.tensor; "
+        "env VERKEYE_FASTCONV_DUMP=/work/capture/fastconv "
+        "VERKEYE_OPERATOR_DUMP=/work/capture/operators "
+        "VERKEYE_MASK_DUMP=/work/capture/masks "
+        "LD_PRELOAD=/work/ades_kernel_capture.so:/work/ades_operator_capture.so "
+        f"/work/ades-executor {spec.libvasamif} /work/manifest.tsv "
+        "/work/parse /work/capture/input.tensor /work/capture/run "
+        "> /work/capture/stdout.tsv 2> /work/capture/stderr.log"
+    )
+    return (
+        *_docker_prefix(spec, Path(workspace), docker_command),
+        command,
+    )
+
+
 Runner = Callable[..., subprocess.CompletedProcess[str]]
 
 
@@ -407,6 +443,39 @@ class DockerAdesRuntime:
             manifest=manifest,
             dvi_sha256=self._verify_dvi(),
         )
+
+    def capture_runtime_assets(
+        self,
+        *,
+        kernel_capture_source: str | Path,
+        operator_capture_source: str | Path,
+    ) -> Path:
+        """Capture model-derived parameters and masks in the prepared runtime."""
+
+        self.prepared()
+        sources = (
+            (Path(kernel_capture_source), self.workspace / "ades_kernel_capture.cpp"),
+            (
+                Path(operator_capture_source),
+                self.workspace / "ades_operator_capture.cpp",
+            ),
+        )
+        for source, destination in sources:
+            if not source.is_file():
+                raise AdesRuntimeError(f"missing native capture source {source}")
+            shutil.copyfile(source, destination)
+        self._verify_container_image()
+        self._run(
+            build_capture_argv(
+                self.spec,
+                self.workspace,
+                docker_command=self.docker_command,
+            )
+        )
+        capture = self.workspace / "capture"
+        if not (capture / "stdout.tsv").is_file():
+            raise AdesRuntimeError("ADES runtime capture did not produce evidence")
+        return capture
 
     def infer(
         self,

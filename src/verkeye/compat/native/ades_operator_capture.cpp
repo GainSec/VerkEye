@@ -38,8 +38,10 @@ static_assert(sizeof(RawVector) == 3 * sizeof(void*));
 using Exec = void (*)(void*);
 using CopyOutputs = void (*)(void*, RawVector*);
 using WriteData = void (*)(const void*, std::FILE*);
+using ImportVector = void (*)(void*, void*, unsigned, bool);
 
 std::atomic<unsigned> sequence{0};
+std::atomic<unsigned> import_sequence{0};
 
 template <typename Function>
 Function resolve(const char* symbol) {
@@ -153,7 +155,54 @@ void execute_and_dump(void* self, const char* kind, const char* symbol) {
   dump_outputs(self, kind);
 }
 
+void dump_imported_vector(const char* root, unsigned call, unsigned slot,
+                          const void* vector) {
+  if (vector == nullptr) {
+    std::fprintf(stderr,
+                 "VERKEYE_MASK null imported vector call=%u slot=%u\n", call,
+                 slot);
+    std::abort();
+  }
+  static auto write_data = resolve_loaded<WriteData>(
+      "libvamba_vec.so", "_ZNK11vector_data18write_data_to_fileEP8_IO_FILE");
+  const std::string path = std::string(root) + "/import-" +
+                           std::to_string(call) + "-slot-" +
+                           std::to_string(slot) + ".bin";
+  std::FILE* output = std::fopen(path.c_str(), "wb");
+  if (output == nullptr) {
+    std::fprintf(stderr, "VERKEYE_MASK cannot create %s\n", path.c_str());
+    std::abort();
+  }
+  write_data(vector, output);
+  if (std::fclose(output) != 0) {
+    std::fprintf(stderr, "VERKEYE_MASK cannot close %s\n", path.c_str());
+    std::abort();
+  }
+}
+
 }  // namespace
+
+// node_mux_op::set_data imports each of its three inputs through this exported
+// dag_base::import_vector PLT boundary. Capture every imported vector and let
+// the owner-local generator
+// select only the two exact, mask-shaped contracts after execution.
+extern "C" void verkeye_import_vector(void* self, void* vector, unsigned slot,
+                                      bool primary)
+    asm("_ZN8dag_base13import_vectorEP11vector_datajb");
+
+extern "C" void verkeye_import_vector(void* self, void* vector, unsigned slot,
+                                      bool primary) {
+  static auto original = resolve<ImportVector>(
+      "_ZN8dag_base13import_vectorEP11vector_datajb");
+  const char* root = std::getenv("VERKEYE_MASK_DUMP");
+  if (root != nullptr && *root != '\0') {
+    const auto call = import_sequence.fetch_add(1, std::memory_order_relaxed);
+    dump_imported_vector(root, call, slot, vector);
+    std::fprintf(stderr, "VERKEYE_MASK import=%u slot=%u primary=%u\n", call,
+                 slot, primary ? 1U : 0U);
+  }
+  original(self, vector, slot, primary);
+}
 
 #define VERKEYE_CAPTURE_WRAPPER(wrapper, symbol_name, kind_name)           \
   extern "C" void wrapper(void* self) asm(symbol_name);                    \

@@ -32,6 +32,7 @@ from ..cv22.operators import (
     scale_unsigned,
 )
 from ..cv22.parameter_extraction import parse_fastconv_capture
+from ..runtime.generation import GeneratedRuntime, GeneratedRuntimeError
 from .macos import MlxFastconvSession
 
 
@@ -68,11 +69,18 @@ class Cb62MlxSession:
     def __init__(
         self,
         *,
-        capture_root: str | Path,
-        split4_root: str | Path,
-        split5_root: str | Path,
+        capture_root: str | Path | None = None,
+        split4_root: str | Path | None = None,
+        split5_root: str | Path | None = None,
+        generated_runtime: GeneratedRuntime | None = None,
     ) -> None:
-        capture_path = Path(capture_root)
+        if generated_runtime is None and (
+            capture_root is None or split4_root is None or split5_root is None
+        ):
+            raise Cb62AcceleratedError(
+                "accelerated runtime requires a generated runtime or all legacy roots"
+            )
+        capture_path = Path(capture_root) if capture_root is not None else None
         self._sessions: dict[int, MlxFastconvSession] = {}
 
         def add(
@@ -82,23 +90,32 @@ class Cb62MlxSession:
             input_dtype: str,
             output_dtype: str,
         ) -> None:
-            entries_path = capture_path / f"fastconv-{call}-entries.bin"
-            try:
-                entries = entries_path.read_bytes()
-            except OSError as error:
-                raise Cb62AcceleratedError(
-                    f"missing recovered fastconv capture {entries_path}"
-                ) from error
-            count = len(entries) // 96
-            payloads: dict[int, bytes] = {}
-            for index in range(count):
-                point_path = (
-                    capture_path
-                    / f"fastconv-{call}-entry-{index}-offset-0.bin"
-                )
-                if point_path.is_file():
-                    payloads[index] = point_path.read_bytes()
-            capture = parse_fastconv_capture(entries, payloads)
+            if generated_runtime is not None:
+                try:
+                    capture = generated_runtime.fastconv_capture(call)
+                except GeneratedRuntimeError as error:
+                    raise Cb62AcceleratedError(
+                        f"invalid generated fastconv package for call {call}"
+                    ) from error
+            else:
+                assert capture_path is not None
+                entries_path = capture_path / f"fastconv-{call}-entries.bin"
+                try:
+                    entries = entries_path.read_bytes()
+                except OSError as error:
+                    raise Cb62AcceleratedError(
+                        f"missing recovered fastconv capture {entries_path}"
+                    ) from error
+                count = len(entries) // 96
+                payloads: dict[int, bytes] = {}
+                for index in range(count):
+                    point_path = (
+                        capture_path
+                        / f"fastconv-{call}-entry-{index}-offset-0.bin"
+                    )
+                    if point_path.is_file():
+                        payloads[index] = point_path.read_bytes()
+                capture = parse_fastconv_capture(entries, payloads)
             self._sessions[call] = MlxFastconvSession(
                 capture.channels,
                 geometry,
@@ -170,11 +187,19 @@ class Cb62MlxSession:
         for specification in specifications:
             add(*specification)
 
-        split4_path = Path(split4_root)
-        split5_path = Path(split5_root)
+        split4_mask_path = (
+            generated_runtime.split4_mask
+            if generated_runtime is not None
+            else Path(split4_root) / "d9-logical.bin"  # type: ignore[arg-type]
+        )
+        split5_mask_path = (
+            generated_runtime.split5_mask
+            if generated_runtime is not None
+            else Path(split5_root) / "d14-logical.bin"  # type: ignore[arg-type]
+        )
         try:
-            self._split4_mask = (split4_path / "d9-logical.bin").read_bytes()
-            self._split5_mask = (split5_path / "d14-logical.bin").read_bytes()
+            self._split4_mask = split4_mask_path.read_bytes()
+            self._split5_mask = split5_mask_path.read_bytes()
         except (OSError, ValueError) as error:
             raise Cb62AcceleratedError("recovered static graph assets are incomplete") from error
 
@@ -222,8 +247,8 @@ class Cb62MlxSession:
                 "fastconv_session_count": len(self._sessions),
                 "provider": dict(self._sessions[0].identity),
                 "static_assets": {
-                    "split4_mask": _sha256(split4_path / "d9-logical.bin"),
-                    "split5_mask": _sha256(split5_path / "d14-logical.bin"),
+                    "split4_mask": _sha256(split4_mask_path),
+                    "split5_mask": _sha256(split5_mask_path),
                 },
             }
         )

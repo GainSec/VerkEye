@@ -204,6 +204,70 @@ def encode_fastconv_capture(capture: FastconvCapture) -> bytes:
     return bytes(output)
 
 
+def decode_fastconv_capture(
+    payload: bytes | bytearray | memoryview,
+) -> FastconvCapture:
+    """Decode one deterministic, address-free ``.vkfc`` package."""
+
+    encoded = bytes(payload)
+    if len(encoded) < 12 or encoded[:8] != b"VKFC\x01\x00\x00\x00":
+        raise FastconvCaptureError("invalid normalized fastconv header")
+    channel_count = struct.unpack_from("<I", encoded, 8)[0]
+    if channel_count == 0:
+        raise FastconvCaptureError("normalized fastconv has no channels")
+    offset = 12
+    channels: list[FastconvChannel] = []
+    channel_header_size = struct.calcsize("<QqQQI")
+    for channel_index in range(channel_count):
+        if offset > len(encoded) or channel_header_size > len(encoded) - offset:
+            raise FastconvCaptureError(
+                f"normalized fastconv channel {channel_index} is truncated"
+            )
+        (
+            accumulator_shift,
+            channel_offset,
+            output_saturation_max,
+            final_shift_control,
+            point_count,
+        ) = struct.unpack_from("<QqQQI", encoded, offset)
+        offset += channel_header_size
+        point_bytes = point_count * _POINT_SIZE
+        if offset > len(encoded) or point_bytes > len(encoded) - offset:
+            raise FastconvCaptureError(
+                f"normalized fastconv channel {channel_index} points are truncated"
+            )
+        raw_points = encoded[offset : offset + point_bytes]
+        points: list[SparseKernelPoint] = []
+        for point_offset in range(0, point_bytes, _POINT_SIZE):
+            input_channel, kernel_y, kernel_x, weight = struct.unpack_from(
+                "<IIqq", raw_points, point_offset
+            )
+            if kernel_y > 255 or kernel_x < 0 or kernel_x > 255:
+                raise FastconvCaptureError(
+                    f"normalized channel {channel_index} has invalid kernel coordinate"
+                )
+            points.append(
+                SparseKernelPoint(input_channel, kernel_y, kernel_x, weight)
+            )
+        channels.append(
+            FastconvChannel(
+                points=tuple(points),
+                accumulator_shift=accumulator_shift,
+                offset=channel_offset,
+                output_saturation_max=output_saturation_max,
+                final_shift_control=final_shift_control,
+                points_sha256=hashlib.sha256(raw_points).hexdigest(),
+            )
+        )
+        offset += point_bytes
+    if offset != len(encoded):
+        raise FastconvCaptureError("normalized fastconv has trailing data")
+    return FastconvCapture(
+        channels=tuple(channels),
+        entries_sha256=hashlib.sha256(encoded).hexdigest(),
+    )
+
+
 def catalog_fastconv_captures(
     capture_root: str | Path, graph_document: Mapping[str, Any]
 ) -> tuple[dict[str, object], dict[str, bytes]]:

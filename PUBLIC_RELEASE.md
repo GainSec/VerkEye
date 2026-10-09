@@ -1,5 +1,7 @@
 # VerkEye public release manifest
 
+Public project: <https://github.com/GainSec/VerkEye>
+
 This repository is a fresh-history public snapshot of internal VerkEye commit
 `1233882ef2ac3fe240fc18fab3ece7cab865caa2`.
 
@@ -27,19 +29,18 @@ eb768eb6691c08a5648424bb3fbc4a5ee09a64584e7faa3236afa778f5f5eabf
 
 The paths are ignored by Git, and public package metadata does not embed them.
 
-## Included generated runtime
+## Owner-generated runtime boundary
 
-VerkEye's generated compatibility runtime is included directly in this
-repository:
+The repository includes the independently authored generator, normalized
+runtime format, manifest verifier, native capture hooks, and accelerated
+execution implementation. It does not include generated runtime parameters,
+weights, masks, raw ADES captures, or preparation workspaces.
 
-| Directory | Files | Bytes | Canonical tree SHA-256 |
-|---|---:|---:|---|
-| `.runtime/ades-full-kernels` | 7,519 | 100,167,528 | `92840f3b25d4b8a3c3664e72e0889898e1df4580c6b500d262d6713542253418` |
-| `.runtime/ades-split4` | 46 | 8,839,183 | `e3705740eff64fac2e58a915cd61fc2059af3e85a977e0529937c73c16ceee73` |
-| `.runtime/ades-split5` | 32 | 11,309,532 | `cf30293fcb46908ce908a6476fd3dfb0f7dc82d2a764968d819423f67c27cff6` |
-
-The machine-readable record is
-`config/cb62-generated-runtime-assets.json`.
+Owners can run `verkeye generate-runtime` against the hash-pinned model
+extracted from their own CB62. Output is written beneath the Git-ignored
+`.runtime/generated/` tree and is verified before atomic installation. Public
+wheels include generator source and capture tooling, not the owner model or
+the resulting runtime contents.
 
 ## Included Workbench demo output
 
@@ -57,10 +58,20 @@ These are the run outputs published on the VerkEye Workbench:
 The corresponding operator-facing HTML is
 `workbench/one-command-demos.html`.
 
+## Evidence boundary
+
+The public `evidence/` tree is intentionally limited to the runtime pipeline
+contract, the published demo outputs, and compact machine-readable parity and
+performance records. Large intermediate traces, duplicated captures, raw
+development runs, and private forensic working material are excluded from the
+public repository because they are not needed to install, run, or audit the
+published claims. The exact retained inventory and purpose of each group are
+documented in `evidence/README.md`.
+
 ## Clean-public verification
 
 With all owner-supplied camera artifacts absent, the installed public test
-environment completes with **352 passed and 180 explicitly skipped**. Skips
+environment completes with **336 passed and 198 explicitly skipped**. Skips
 cover tests requiring a recovered model, the recovered CV22 forensic corpus,
 generated ADES oracle bundles, or an unavailable optional accelerator.
 

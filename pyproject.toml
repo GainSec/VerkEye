@@ -50,6 +50,8 @@ where = ["src"]
   "config/cb62-ades-runtime.json",
   "evidence/compatibility/cvproc-yolov6-pipeline.json",
   "src/verkeye/compat/native/ades_executor.cpp",
+  "src/verkeye/compat/native/ades_kernel_capture.cpp",
+  "src/verkeye/compat/native/ades_operator_capture.cpp",
 ]
 
 [tool.pytest.ini_options]

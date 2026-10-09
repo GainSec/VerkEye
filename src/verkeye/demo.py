@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections.abc import Callable, Iterator
 from dataclasses import dataclass
 import importlib.util
+import os
 from pathlib import Path
 import sysconfig
 import time
@@ -26,6 +27,7 @@ from .runtime.demo_sources import (
     resolve_production_demo_fixture,
 )
 from .runtime.inference import ExactFrameSession
+from .runtime.generation import generated_runtime_path, load_generated_runtime
 from .runtime.sources import MediaFrame, MediaSourceError
 from .viewer.controller import LiveViewerSession, OpenCvDisplay
 
@@ -39,9 +41,7 @@ class DemoRuntimePaths:
     model: Path
     runtime_spec: Path
     pipeline_evidence: Path
-    capture_root: Path
-    split4_root: Path
-    split5_root: Path
+    generated_runtime_root: Path
 
 
 @dataclass(frozen=True, slots=True)
@@ -94,9 +94,16 @@ def resolve_demo_runtime_paths() -> DemoRuntimePaths:
     repository = Path(__file__).resolve().parents[2]
     shared = Path(sysconfig.get_path("data")) / "share" / "verkeye"
     model = _first_existing(
-        (
-            repository / "fixtures/models/yolov6n_hor.bin",
-            shared / "models/yolov6n_hor.bin",
+        tuple(
+            (
+                [Path(os.environ["VERKEYE_MODEL"])]
+                if os.environ.get("VERKEYE_MODEL")
+                else []
+            )
+            + [
+                repository / "fixtures/models/yolov6n_hor.bin",
+                shared / "models/yolov6n_hor.bin",
+            ]
         ),
         label="model",
     )
@@ -114,21 +121,17 @@ def resolve_demo_runtime_paths() -> DemoRuntimePaths:
         ),
         label="pipeline evidence",
     )
+    spec = load_runtime_spec(runtime_spec)
+    generated_base = Path(
+        os.environ.get("VERKEYE_RUNTIME_BASE", repository / ".runtime/generated")
+    )
     return DemoRuntimePaths(
         model=model,
         runtime_spec=runtime_spec,
         pipeline_evidence=pipeline,
-        capture_root=_first_existing(
-            (repository / ".runtime/ades-full-kernels",),
-            label="accelerated full-kernel captures",
-        ),
-        split4_root=_first_existing(
-            (repository / ".runtime/ades-split4",),
-            label="accelerated split-4 captures",
-        ),
-        split5_root=_first_existing(
-            (repository / ".runtime/ades-split5",),
-            label="accelerated split-5 captures",
+        generated_runtime_root=_first_existing(
+            (generated_runtime_path(generated_base, spec.model_sha256),),
+            label="owner-generated accelerated runtime",
         ),
     )
 
@@ -187,21 +190,20 @@ def _build_exact_session(
     preset: DemoPreset,
     paths: DemoRuntimePaths,
 ) -> ExactFrameSession:
+    spec = load_runtime_spec(paths.runtime_spec)
+    generated_runtime = load_generated_runtime(
+        paths.generated_runtime_root,
+        expected_model_sha256=spec.model_sha256,
+    )
     if importlib.util.find_spec("mlx") is not None:
-        provider: Any = Cb62MlxSession(
-            capture_root=paths.capture_root,
-            split4_root=paths.split4_root,
-            split5_root=paths.split5_root,
-        )
+        provider: Any = Cb62MlxSession(generated_runtime=generated_runtime)
     elif importlib.util.find_spec("openvino") is not None:
         import openvino as ov
 
         devices = tuple(ov.Core().available_devices)
         device = "GPU" if "GPU" in devices else "CPU"
         provider = OpenVinoCb62Session(
-            capture_root=paths.capture_root,
-            split4_root=paths.split4_root,
-            split5_root=paths.split5_root,
+            generated_runtime=generated_runtime,
             device=device,
         )
     else:
@@ -211,7 +213,7 @@ def _build_exact_session(
     return ExactFrameSession(
         model=paths.model,
         backend=AcceleratedCb62Runtime(session=provider),
-        runtime_spec=load_runtime_spec(paths.runtime_spec),
+        runtime_spec=spec,
         pipeline_evidence=paths.pipeline_evidence,
         operating_profile=preset.profile,
     )

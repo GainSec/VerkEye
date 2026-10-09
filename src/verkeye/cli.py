@@ -40,6 +40,12 @@ from .runtime.inference import (
     run_exact_image,
     run_exact_stream,
 )
+from .runtime.generation import (
+    GeneratedRuntimeError,
+    generated_runtime_path,
+    generate_owner_runtime,
+    load_generated_runtime,
+)
 from .runtime.live import LiveCaptureStream
 from .runtime.sources import MediaSourceError, iter_capture, iter_frame_directory
 from .viewer.controller import (
@@ -117,19 +123,25 @@ def _add_exact_backend_arguments(
         ),
     )
     command.add_argument(
+        "--generated-runtime-base",
+        type=Path,
+        default=Path(".runtime/generated"),
+        help="content-addressed owner-local runtime directory",
+    )
+    command.add_argument(
         "--accelerated-capture-root",
         type=Path,
-        default=Path(".runtime/ades-full-kernels"),
+        default=None,
     )
     command.add_argument(
         "--accelerated-split4-root",
         type=Path,
-        default=Path(".runtime/ades-split4"),
+        default=None,
     )
     command.add_argument(
         "--accelerated-split5-root",
         type=Path,
-        default=Path(".runtime/ades-split5"),
+        default=None,
     )
     command.add_argument(
         "--accelerated-device",
@@ -194,6 +206,50 @@ def _parser() -> argparse.ArgumentParser:
     validate.add_argument("model", type=Path)
     validate.add_argument("converted", type=Path)
     validate.add_argument("--manifest-out", type=Path, required=True)
+
+    generate = subcommands.add_parser(
+        "generate-runtime",
+        help="derive accelerated runtime assets locally from an owner model",
+    )
+    generate.add_argument("model", type=Path)
+    generate.add_argument(
+        "--output", type=Path, default=Path(".runtime/generated")
+    )
+    generate.add_argument(
+        "--runtime-spec",
+        type=Path,
+        default=_default_runtime_asset("config/cb62-ades-runtime.json"),
+    )
+    generate.add_argument(
+        "--executor-source",
+        type=Path,
+        default=_default_runtime_asset(
+            "src/verkeye/compat/native/ades_executor.cpp"
+        ),
+    )
+    generate.add_argument(
+        "--kernel-capture-source",
+        type=Path,
+        default=_default_runtime_asset(
+            "src/verkeye/compat/native/ades_kernel_capture.cpp"
+        ),
+    )
+    generate.add_argument(
+        "--operator-capture-source",
+        type=Path,
+        default=_default_runtime_asset(
+            "src/verkeye/compat/native/ades_operator_capture.cpp"
+        ),
+    )
+    generate.add_argument("--workspace", type=Path)
+    generate.add_argument(
+        "--docker-command",
+        nargs="+",
+        default=["docker"],
+        help="container command and optional fixed arguments (default: docker)",
+    )
+    generate.add_argument("--force", action="store_true")
+    generate.add_argument("--keep-workspace", action="store_true")
 
     run = subcommands.add_parser("run", help="execute the exact recovered model")
     run.add_argument("model", type=Path)
@@ -273,6 +329,48 @@ def _run_demo_command(demo: int) -> int:
     from .demo import run_demo
 
     return run_demo(demo)
+
+
+def _generate_runtime_command(args: argparse.Namespace) -> int:
+    spec = load_runtime_spec(args.runtime_spec)
+    workspace = args.workspace
+    if args.keep_workspace and workspace is None:
+        workspace = (
+            args.output.parent
+            / f"generation-workspace-{spec.model_sha256[:12]}"
+        )
+    runtime = generate_owner_runtime(
+        model=args.model,
+        output_base=args.output,
+        spec=spec,
+        executor_source=args.executor_source,
+        kernel_capture_source=args.kernel_capture_source,
+        operator_capture_source=args.operator_capture_source,
+        workspace=workspace,
+        docker_command=tuple(args.docker_command),
+        force=args.force,
+        keep_workspace=args.keep_workspace,
+    )
+    summary = {
+        "schema": "verkeye.runtime-generation-result.v1",
+        "runtime_root": str(runtime.root.resolve()),
+        "model_sha256": runtime.model_sha256,
+        "fastconv_count": len(runtime.fastconv),
+        "mask_members": [
+            str(runtime.split4_mask.relative_to(runtime.root)),
+            str(runtime.split5_mask.relative_to(runtime.root)),
+        ],
+    }
+    if workspace is not None:
+        summary["workspace"] = str(workspace.resolve())
+    print(
+        json.dumps(
+            summary,
+            indent=2,
+            sort_keys=True,
+        )
+    )
+    return 0
 
 
 def _gate_summary(
@@ -409,17 +507,26 @@ def _exact_backend(args: argparse.Namespace) -> tuple[Any, Any]:
     spec = load_runtime_spec(args.runtime_spec)
     mlx_available = importlib.util.find_spec("mlx") is not None
     openvino_available = importlib.util.find_spec("openvino") is not None
-    assets_available = (
-        args.accelerated_capture_root.is_dir()
+    legacy_assets_available = (
+        args.accelerated_capture_root is not None
+        and args.accelerated_split4_root is not None
+        and args.accelerated_split5_root is not None
+        and args.accelerated_capture_root.is_dir()
         and args.accelerated_split4_root.is_dir()
         and args.accelerated_split5_root.is_dir()
     )
+    generated_root = generated_runtime_path(
+        args.generated_runtime_base, spec.model_sha256
+    )
+    generated_available = (generated_root / "manifest.json").is_file()
+    assets_available = legacy_assets_available or generated_available
     accelerated_available = assets_available and (
         mlx_available or openvino_available
     )
     if args.backend == "accelerated" and not assets_available:
         raise Cb62AcceleratedError(
-            "the accelerated CB62 capture assets are unavailable"
+            "the accelerated CB62 runtime is unavailable; run "
+            "`verkeye generate-runtime OWNER_MODEL.bin` first"
         )
     if args.backend == "accelerated" and not (
         mlx_available or openvino_available
@@ -430,12 +537,21 @@ def _exact_backend(args: argparse.Namespace) -> tuple[Any, Any]:
     if args.backend == "accelerated" or (
         args.backend == "auto" and accelerated_available
     ):
+        if legacy_assets_available:
+            session_kwargs: dict[str, object] = {
+                "capture_root": args.accelerated_capture_root,
+                "split4_root": args.accelerated_split4_root,
+                "split5_root": args.accelerated_split5_root,
+            }
+        else:
+            session_kwargs = {
+                "generated_runtime": load_generated_runtime(
+                    generated_root,
+                    expected_model_sha256=spec.model_sha256,
+                )
+            }
         if mlx_available:
-            session = Cb62MlxSession(
-                capture_root=args.accelerated_capture_root,
-                split4_root=args.accelerated_split4_root,
-                split5_root=args.accelerated_split5_root,
-            )
+            session = Cb62MlxSession(**session_kwargs)
         else:
             import openvino as ov
 
@@ -450,10 +566,8 @@ def _exact_backend(args: argparse.Namespace) -> tuple[Any, Any]:
                     f"OpenVINO device {device} is unavailable; found {devices}"
                 )
             session = OpenVinoCb62Session(
-                capture_root=args.accelerated_capture_root,
-                split4_root=args.accelerated_split4_root,
-                split5_root=args.accelerated_split5_root,
                 device=device,
+                **session_kwargs,
             )
         return spec, AcceleratedCb62Runtime(session=session)
     backend = DockerAdesRuntime(
@@ -731,6 +845,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                     "semantic_constants": len(document["graph"]["constants"]),
                 },
             )
+        if args.command == "generate-runtime":
+            return _generate_runtime_command(args)
         if args.command == "run" and args.image is not None:
             return _run_exact_image_command(args, raw_argv)
         if args.command == "run":
@@ -747,6 +863,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         Cb62AcceleratedError,
         ExactImageInferenceError,
         MediaSourceError,
+        GeneratedRuntimeError,
         ViewerError,
     ) as exc:
         print(f"error: {exc}", file=sys.stderr)

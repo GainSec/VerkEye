@@ -21,6 +21,7 @@ from verkeye.cv22.parameter_extraction import (
     FastconvChannel,
     parse_fastconv_capture,
 )
+from verkeye.runtime.generation import GeneratedRuntime
 
 
 def _capture(root: Path, call: int):
@@ -434,9 +435,10 @@ class OpenVinoCb62Session:
     def __init__(
         self,
         *,
-        capture_root: str | Path,
-        split4_root: str | Path,
-        split5_root: str | Path,
+        capture_root: str | Path | None = None,
+        split4_root: str | Path | None = None,
+        split5_root: str | Path | None = None,
+        generated_runtime: GeneratedRuntime | None = None,
         device: str = "CPU",
         inference_threads: int = 6,
         diagnostics: bool = False,
@@ -446,9 +448,17 @@ class OpenVinoCb62Session:
 
         if inference_threads <= 0:
             raise ValueError("inference_threads must be positive")
-        captures = {
-            call: _capture(Path(capture_root), call) for call in range(55)
-        }
+        if generated_runtime is None and (
+            capture_root is None or split4_root is None or split5_root is None
+        ):
+            raise ValueError(
+                "accelerated runtime requires a generated runtime or all legacy roots"
+            )
+        captures = (
+            {call: generated_runtime.fastconv_capture(call) for call in range(55)}
+            if generated_runtime is not None
+            else {call: _capture(Path(capture_root), call) for call in range(55)}  # type: ignore[arg-type]
+        )
         g3 = lambda stride=1: FastconvGeometry(3, 3, stride, stride, 1, 1)
         g1 = FastconvGeometry(1, 1, 1, 1, 0, 0)
         gt = FastconvGeometry(
@@ -661,8 +671,16 @@ class OpenVinoCb62Session:
                 backbone_p4 = x
         backbone_p5 = x
 
-        split4 = Path(split4_root)
-        split5 = Path(split5_root)
+        split4_mask_path = (
+            generated_runtime.split4_mask
+            if generated_runtime is not None
+            else Path(split4_root) / "d9-logical.bin"  # type: ignore[arg-type]
+        )
+        split5_mask_path = (
+            generated_runtime.split5_mask
+            if generated_runtime is not None
+            else Path(split5_root) / "d14-logical.bin"  # type: ignore[arg-type]
+        )
         reduced_p5 = fc(19, backbone_p5)
         d15 = max_filter(reduced_p5)
         d16 = max_filter(d15)
@@ -681,7 +699,7 @@ class OpenVinoCb62Session:
         upsampled = upsample2(upsample_source, 19, 34)
         split4_upsampled = upsampled
         upsampled = ops.select(
-            mask((split4 / "d9-logical.bin").read_bytes(), 38, 68),
+            mask(split4_mask_path.read_bytes(), 38, 68),
             upsampled,
             ops.constant(0, ov.Type.u8),
         )
@@ -697,7 +715,7 @@ class OpenVinoCb62Session:
         reduced_medium = x
         high_upsample = upsample2(reduced_medium, 38, 68)
         high_upsample = ops.select(
-            mask((split5 / "d14-logical.bin").read_bytes(), 76, 136),
+            mask(split5_mask_path.read_bytes(), 76, 136),
             high_upsample,
             ops.constant(0, ov.Type.u8),
         )

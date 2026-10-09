@@ -1,15 +1,27 @@
 # VerkEye
 
-Taking a Verkada CB62 Vision Model Off the Camera
+Public project: [github.com/GainSec/VerkEye](https://github.com/GainSec/VerkEye)
 
-See what a Verkada Bullet Cam (LPR) sees. A port of a Ambarella CV22 ML model to run on MacOS and Linux enabling you to take the model from your CB62 and run it locally. 
+This repository is Part 8 of the Verkracked Security Research Project by
+[Jon “GainSec” Gaines](https://gainsec.com).
 
-This is part 8 of the Verkracked Security Research project. Part 0, 4 and 5 are public at the time of this release, with parts 1,2,3,6 and 7 pending the responsible disclosure window. 
+## Related Verkracked releases
 
-[Part 0 - Security Research on Verkada Anti-Crime Devices](https://gainsec.com/2026/09/06/verkracked-security-research-on-verkada-anti-crime-devices-part-0/) 
-[Parts 4 & 5](https://gainsec.com/2026/09/06/verkracked-parts-4-5-local-cloud-and-sub-ghz-frameworks-for-verkada-alarm-hubs/)
+| Part | Project | Links |
+| --- | --- | --- |
+| Part 0 | Introduction to the Verkracked research project | [GainSec article](https://gainsec.com/2026/09/06/verkracked-security-research-on-verkada-anti-crime-devices-part-0/) |
+| Part 4 | Alarm-hub local cloud framework | [GitHub](https://github.com/GainSec/verkada-verkracked-alarm-hub-local-framework) · [Parts 4 & 5 article](https://gainsec.com/2026/09/06/verkracked-parts-4-5-local-cloud-and-sub-ghz-frameworks-for-verkada-alarm-hubs/) |
+| Part 5 | Alarm-hub Sub-GHz interoperability framework | [GitHub](https://github.com/GainSec/verkada-verkracked-subghz-framework) · [Parts 4 & 5 article](https://gainsec.com/2026/09/06/verkracked-parts-4-5-local-cloud-and-sub-ghz-frameworks-for-verkada-alarm-hubs/) |
+| Part 7B | CB62 local cloud emulator | [GitHub](https://github.com/GainSec/verkada-verkracked-bullet-cam-cloud-emulator) |
+| Part 8 | VerkEye CB62 model runtime | [GitHub](https://github.com/GainSec/VerkEye) · [GainSec article](https://gainsec.com/2026/10/04/verkracked-part-8-verkeye/) |
+| Part 10 | CB62 firmware dumper | [GitHub](https://github.com/GainSec/verkada-verkracked-ambrella-CB62-firmwaredumper) |
 
-VerkEye is an evidence-first research tool for inspecting and reconstructing Ambarella CV22 model packages recovered from Verkada cameras. The current proof of concept targets the exact CB62 `yolov6n_hor.bin` artifact:
+Parts without linked public material remain subject to their disclosure and
+publication schedules.
+
+VerkEye is an evidence-first research tool for inspecting and reconstructing
+Ambarella CV22 model packages recovered from Verkada cameras. The current proof
+of concept targets the exact CB62 `yolov6n_hor.bin` artifact:
 
 - Size: `5,561,124` bytes
 - SHA-256: `eb768eb6691c08a5648424bb3fbc4a5ee09a64584e7faa3236afa778f5f5eabf`
@@ -29,13 +41,13 @@ retrain the model, or invent graph operators.
 
 ## Quick start
 
-The public repository contains the complete generated VerkEye runtime.
-No external runtime-asset store is required.
-This repository intentionally excludes recovered camera artifacts: the
-horizontal and vertical models plus the CV22 vendor executables, libraries,
-kernel module, firmware, bytecode, and production configuration. The original
-horizontal model remains an owner-supplied input and is never embedded in
-public packages.
+The public repository contains the independently authored runtime generator,
+parsers, accelerated execution code, and validation methodology. Generated
+runtime parameters are not distributed. This repository intentionally excludes
+recovered camera artifacts: the horizontal and vertical models, generated
+runtime contents, CV22 vendor executables, libraries, kernel modules, firmware,
+bytecode, and production configuration. The horizontal model remains an
+owner-supplied input and is never embedded in public packages.
 
 On Apple silicon, clone or unpack the repository, then supply the exact model
 from a CB62 you own before installing VerkEye:
@@ -54,6 +66,11 @@ python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -U pip
 python -m pip install -e '.[dev,viewer,macos]'
+
+# Docker Desktop (or another Docker-compatible runtime) must be running.
+verkeye generate-runtime fixtures/models/yolov6n_hor.bin
+
+export VERKEYE_MODEL="$PWD/fixtures/models/yolov6n_hor.bin"
 verkeye --demo 2
 ```
 
@@ -62,8 +79,18 @@ Use `verkeye --demo 1` for the refreshed Singapore traffic-camera demo, or
 for a local webcam. Linux uses the `linux` extra in place of `macos`; the tested
 Intel UHD 630 OpenVINO host is exact but slower than the Apple-silicon path.
 
-The generated runtime directories remain part of the public project. Only the
-owner-extracted model must be supplied separately.
+The generation step invokes a digest-pinned linux/amd64 Ambarella ADES image,
+captures the parameters produced from the owner's model, converts them to an
+address-free local format, verifies the complete result, and stores it beneath
+the Git-ignored `.runtime/generated/` directory. Neither the owner model nor
+the generated runtime is added to the repository.
+
+The public `evidence/` directory is deliberately compact. It contains the
+runtime pipeline contract, the published demo images and records, and the
+machine-readable parity and performance summaries needed to audit the release.
+The much larger raw forensic/development corpus is intentionally excluded; it
+is not required to install or run VerkEye. See [`evidence/README.md`](evidence/README.md)
+for the exact boundary.
 
 An owner-supplied recovered vertical build can also be used as a hash-pinned
 comparison oracle. A
@@ -335,28 +362,38 @@ printf '%s  %s\n' \
   fixtures/models/yolov6n_hor.bin | shasum -a 256 -c -
 ```
 
-### Included generated runtime
+### Generate the owner-local runtime
 
-The generated accelerated runtime is part of the project rather than a
-separate download. Exact MLX and OpenVINO execution uses these immutable,
-tracked directories:
+Generated runtime parameters are not distributed. Build them from the exact
+model extracted from your own CB62:
 
-| Destination in a working clone | Required for | Purpose |
-|---|---|---|
-| `.runtime/ades-full-kernels` | Inference | Recovered parameters and fastconv records for 55 stages |
-| `.runtime/ades-split4` | Inference | Exact split-4 static mask material |
-| `.runtime/ades-split5` | Inference | Exact split-5 static mask material |
+```bash
+# Requires Docker/Podman capable of running the pinned linux/amd64 image.
+verkeye generate-runtime fixtures/models/yolov6n_hor.bin
+```
 
-Their file counts, byte counts, and canonical tree digests are pinned in
-`config/cb62-generated-runtime-assets.json`. The larger 29-case ADES oracle
-corpus is needed only for full parity verification; ordinary image, video,
-webcam, and demo inference does not read it.
+The command fails closed unless the model hash matches the supported CB62
+horizontal package. It prepares the pinned ADES toolchain, captures all 55
+fast-convolution parameter sets and the two required static masks, removes
+process-local addresses, verifies every member, and atomically installs:
 
-Session construction fails closed if required recovered records or masks are
-missing, malformed, or inconsistent. The parity gate below is the definitive
-asset and execution check; it validates the exact model, pipeline, catalog,
-all 29 input hashes, all 174 terminal tensors, assembled predictions, and
-production detections.
+```text
+.runtime/generated/<model-sha256>/
+├── manifest.json
+├── fastconv/call-000.vkfc ... call-054.vkfc
+└── masks/split4.bin, split5.bin
+```
+
+Every member's size and SHA-256 is recorded in the local manifest. `run` and
+`live` discover this content-addressed runtime automatically. The entire
+`.runtime/` tree is ignored by Git. See
+[`docs/OWNER_RUNTIME_GENERATION.md`](docs/OWNER_RUNTIME_GENERATION.md) for
+requirements, alternate container commands, diagnostics, and cleanup.
+
+The larger 29-case ADES oracle corpus is needed only for full parity
+verification. Ordinary image, video, webcam, and demo inference does not read
+it. Session construction fails closed if any local package or mask is missing,
+malformed, or inconsistent.
 
 ```bash
 # Apple silicon
@@ -389,21 +426,22 @@ verkeye run fixtures/models/yolov6n_hor.bin \
   --json-out VIDEO.json --manifest-out VIDEO.manifest.json
 ```
 
-For an advanced checkout that intentionally relocates generated runtime
-material, override the tracked defaults with these `run` or `live` options:
+To relocate owner-generated runtime material, select its parent directory:
 
 ```text
---accelerated-capture-root /absolute/path/to/ades-full-kernels
---accelerated-split4-root /absolute/path/to/ades-split4
---accelerated-split5-root /absolute/path/to/ades-split5
+--generated-runtime-base /absolute/path/to/generated
 ```
+
+The legacy `--accelerated-capture-root`, `--accelerated-split4-root`, and
+`--accelerated-split5-root` flags remain available only for researchers
+migrating older private workspaces.
 
 ### Owner-supplied model boundary
 
-This repository intentionally excludes recovered camera artifacts. The
-generated runtime directories remain part of the public project. Extract
-`yolov6n_hor.bin` from a CB62 you own and place it at that path. Exact execution
-fails closed unless the file is 5,561,124 bytes and has SHA-256
+This repository intentionally excludes recovered camera artifacts and all
+generated runtime contents. Extract `yolov6n_hor.bin` from a CB62 you own and
+place it at that path. Exact execution fails closed unless the file is
+5,561,124 bytes and has SHA-256
 `eb768eb6691c08a5648424bb3fbc4a5ee09a64584e7faa3236afa778f5f5eabf`.
 
 `run` defaults to the binary-proved `production` postprocessor profile. For
@@ -429,10 +467,9 @@ shown above runs locally through MLX or OpenVINO and does not require Docker.
 Only the independent `--backend ades` oracle requires a Docker-compatible
 runtime capable of running its pinned linux/amd64 image. Its first run prepares
 and verifies the ADES workspace automatically; `--prepare` forces regeneration.
-Built wheels carry the runtime specification, pipeline evidence, and native
-executor source under `share/verkeye/ades`; the recovered model remains an
-explicit, owner-supplied, hash-verified input and is never embedded in the
-public package.
+Built wheels carry the runtime specification, pipeline evidence, native
+executor, and capture-hook sources under `share/verkeye/ades`; they do not
+carry a recovered model or generated parameters.
 
 ## Live viewer
 
@@ -447,9 +484,9 @@ passed to inference and annotated.
 ### One-command demonstrations
 
 After installing the `viewer` and platform extras, either fixed demonstration
-uses the generated runtime already present in the checkout and starts from the
-top-level command. No model path, source path, or operating-profile argument is
-needed:
+uses the owner-generated runtime and starts from the top-level command. Set
+`VERKEYE_MODEL` to the owner model first; no source path or operating-profile
+argument is needed:
 
 ```bash
 # Current Singapore LTA traffic stills, refreshed every 60 seconds.
@@ -691,98 +728,6 @@ wrote and decoded all 300 annotated 1088 × 608 frames.
 The final command/output transcript is preserved at
 `evidence/final-verification.txt`.
 
-### Reproduce the corrected OpenRISC control-flow evidence
-
-The CV22 profile is a no-delay OpenRISC target. The pinned QEMU patch therefore
-uses a four-byte fallthrough for calls, returns, and not-taken conditional
-branches. Build upstream QEMU commit
-`f7ada39edacaa5c26b30e98b94017b0b2ccbcf94`, apply
-`third_party/patches/qemu-or1k-cv22.patch`, and pass the resulting
-`qemu-system-or1k` path below:
-
-```bash
-# Requires owner-supplied CV22 firmware in the ignored fixture path.
-.venv/bin/python scripts/discover_openrisc_boundaries.py \
-  --firmware fixtures/vendor/cv22/cavalry.bin \
-  --qemu /path/to/qemu-system-or1k \
-  --trace-dir evidence/compatibility/openrisc-discovery-run-002 \
-  --max-iterations 32 \
-  --timeout-seconds 0.5 \
-  --out evidence/compatibility/openrisc-discovery-run-002.json
-
-.venv/bin/python scripts/analyze_openrisc_correction.py \
-  --old-reachability evidence/compatibility/openrisc-reachability-superseded-delay-slot.json \
-  --new-reachability evidence/compatibility/openrisc-reachability-run-001.json \
-  --old-discovery evidence/compatibility/openrisc-discovery-run-001.json \
-  --new-discovery evidence/compatibility/openrisc-discovery-run-002.json \
-  --old-context evidence/compatibility/openrisc-context-run-001.json \
-  --new-context evidence/compatibility/openrisc-context-run-002.json \
-  --fallthrough evidence/compatibility/openrisc-cv22-conditional-fallthrough.json \
-  --out evidence/compatibility/openrisc-control-flow-correction.json
-```
-
-The corrected discovery preserves all 23 boundary addresses, but changes 21
-register-context snapshots. The run-001 contexts are therefore superseded.
-Both discovery runs remain `failed_by_construction`: earlier trap words are
-replaced with `l.nop 0` only to reveal later control flow, not to emulate their
-state transitions or produce inference.
-
-### Reproduce the OpenRISC static-context evidence
-
-GNU `or1k-elf-objdump` is used only as a disassembler; VerkEye independently
-checks every parsed four-byte row against the exact pinned firmware before
-accepting the report.
-
-```bash
-or1k-elf-objdump -D -b binary -m or1k -EL \
-  --adjust-vma=0x400000 fixtures/vendor/cv22/cavalry.bin \
-  > evidence/compatibility/cavalry-openrisc-objdump.txt
-
-.venv/bin/python scripts/analyze_openrisc_static.py \
-  --firmware fixtures/vendor/cv22/cavalry.bin \
-  --disassembly evidence/compatibility/cavalry-openrisc-objdump.txt \
-  --boundaries evidence/compatibility/ambarella-custom.json \
-  --runtime-base 0x400000 \
-  --context-instructions 6 \
-  --out evidence/compatibility/openrisc-static-run-001.json
-```
-
-The report retains byte-exact static context, uninterpreted bit slices, the
-nearest preceding direct-call target without an intervening return, and every
-direct caller for all 23 trace-reached words. It explicitly leaves state
-transitions unresolved and does not enable inference.
-
-### Reproduce the complete custom-instruction surface and constraint ledger
-
-The corrected no-delay control-flow profile is also applied to every
-opcode-shaped disassembly row in all four implementation-defined families.
-This keeps ordinary reachability, paths that have already crossed an unknown
-instruction, and excluded rows separate:
-
-```bash
-.venv/bin/python scripts/analyze_openrisc_surface.py \
-  --firmware fixtures/vendor/cv22/cavalry.bin \
-  --disassembly evidence/compatibility/cavalry-openrisc-objdump.txt \
-  --boundaries evidence/compatibility/ambarella-custom.json \
-  --out evidence/compatibility/openrisc-custom-surface.json
-
-.venv/bin/python scripts/build_openrisc_constraint_ledger.py \
-  --surface evidence/compatibility/openrisc-custom-surface.json \
-  --contexts evidence/compatibility/openrisc-context-run-002.json \
-  --dvp-evidence evidence/compatibility/cv22-dvp-run-002/cv22-dvp-evidence.json \
-  --out evidence/compatibility/openrisc-constraint-ledger.json
-```
-
-The surface contains 26 proven occurrences: 23 dynamic and three static-only.
-Another 427 occurrences are conditional after unresolved computation, and 367
-opcode-shaped rows are excluded rather than promoted to code. The ledger joins
-all 26 proven sites with the corrected CPU snapshots: one context is exact, 22
-are explicitly tainted by earlier NOP substitutions, and three were not
-dynamically observed. The bounded QEMU DVP model implements selectors `0x002`
-and `0x006`, but zero of the 26 proven runtime sites use those selectors.
-Consequently the `CV22_CUSTOM_INSTRUCTION_SEMANTICS_UNRESOLVED` gate remains
-blocked without weakening execution fidelity.
-
 # Author
 
-[Jon 'GainSec' Gaines](https://gainsec.com/)
+[Jon 'GainSec' Gaines](https://gainsec.com)
